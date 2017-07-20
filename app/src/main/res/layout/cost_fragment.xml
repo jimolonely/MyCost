@@ -1,11 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="1"
-        />
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="餐饮"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGray" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/fbl_food"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:alignContent="stretch"
+        app:alignItems="stretch"
+        app:flexWrap="wrap"
+        app:justifyContent="center">
+        <!--<TextView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="早餐"-->
+        <!--android:textSize="18sp"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="午餐"-->
+        <!--android:textSize="18sp"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="晚餐"-->
+        <!--android:textSize="18sp"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="零食"-->
+        <!--android:textSize="18sp"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:text="其他"-->
+        <!--android:textSize="18sp"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="交通"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGray" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/fbl_transport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:alignContent="stretch"
+        app:alignItems="stretch"
+        app:flexWrap="wrap"
+        app:justifyContent="center"></com.google.android.flexbox.FlexboxLayout>
+
+    <include layout="@layout/input_cost" />
 </LinearLayout>
