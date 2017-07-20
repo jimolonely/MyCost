@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginTop="20dp"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +20,16 @@
             android:text="日期"
             android:textSize="15sp" />
 
-        <DatePicker
+        <TextView
             android:id="@+id/input_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp">
-
-        </DatePicker>
+            android:layout_marginLeft="10dp"
+            android:gravity="center|left"
+            android:hint="点击选日期"
+            android:text=""
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"></TextView>
     </LinearLayout>
 
     <LinearLayout
@@ -51,6 +53,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:gravity="center|left"
+            android:hint="请选择"
             android:text=""
             android:textColor="@color/colorAccent"
             android:textSize="15sp"></TextView>
@@ -105,7 +108,7 @@
             android:layout_marginLeft="10dp"
             android:gravity="center|left"
             android:hint="备注内容"
-            android:inputType="numberDecimal"
+            android:inputType="text"
             android:textColor="@color/colorAccent"
             android:textSize="15sp"></EditText>
     </LinearLayout>

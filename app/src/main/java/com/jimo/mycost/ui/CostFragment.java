@@ -1,5 +1,6 @@
 package com.jimo.mycost.ui;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -38,7 +39,7 @@ public class CostFragment extends Fragment {
     FlexboxLayout fl_food;
 
     @ViewInject(R.id.input_date)
-    DatePicker input_date;
+    TextView input_date;
 
     @ViewInject(R.id.input_type)
     TextView input_type;
@@ -91,8 +92,6 @@ public class CostFragment extends Fragment {
 
         //transport
 
-
-        initDatePicker();
     }
 
     /**
@@ -109,6 +108,7 @@ public class CostFragment extends Fragment {
             cloudStore();
         }
     }
+
 
     /**
      * 同步云端
@@ -140,17 +140,20 @@ public class CostFragment extends Fragment {
         return true;
     }
 
-    private void initDatePicker() {
+    @Event(R.id.input_date)
+    private void dateClick(View view) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        input_date.init(year, month, day, new DatePicker.OnDateChangedListener() {
+        int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                date = i + "-" + i1 + "-" + "-" + i2;
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                date = i + "-" + (i1 + 1) + "-" + "-" + i2;
+                input_date.setText(date);
             }
-        });
+        }, year, month, day);
+        datePickerDialog.show();
     }
 
     private class FoodOnClickListener implements View.OnClickListener {
