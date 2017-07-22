@@ -22,7 +22,7 @@ public class MyApp extends Application {
         x.Ext.setDebug(false); //输出debug日志，开启会影响性能
     }
 
-    DbManager.DaoConfig daoConfig = new DbManager.DaoConfig()
+    static DbManager.DaoConfig daoConfig = new DbManager.DaoConfig()
             .setDbName("mycost.db")
             // 不设置dbDir时, 默认存储在app的私有目录.
             .setDbDir(new File("/mnt/sdcard"))
@@ -50,4 +50,8 @@ public class MyApp extends Application {
                     Log.i("创建表", table.getName());
                 }
             });
+
+
+    public static DbManager dbManager = x.getDb(daoConfig);
+
 }

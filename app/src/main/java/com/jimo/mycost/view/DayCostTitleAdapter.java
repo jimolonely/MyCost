@@ -16,26 +16,26 @@ import java.util.List;
  * 适配器
  */
 
-public class DayCostAdapter extends BaseAdapter {
+public class DayCostTitleAdapter extends BaseAdapter {
 
-    private List<DayCostItem> items;
+    private List<DayCostTitle> titles;
     private LayoutInflater inflater;
     private Context context;
 
-    public DayCostAdapter(List<DayCostItem> items, Context context) {
-        this.items = items;
+    public DayCostTitleAdapter(List<DayCostTitle> titles, Context context) {
+        this.titles = titles;
         this.inflater = LayoutInflater.from(context);
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return titles.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return items.get(i);
+        return titles.get(i);
     }
 
     @Override
@@ -47,21 +47,23 @@ public class DayCostAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder = null;
         if (view == null) {
-            view = inflater.inflate(R.layout.day_cost_item, null);
+            view = inflater.inflate(R.layout.day_cost_title, null);
             holder = new ViewHolder();
-            holder.tv_money = (TextView) view.findViewById(R.id.tv_money);
-            holder.tv_type = (TextView) view.findViewById(R.id.tv_type);
+            holder.tv_date = (TextView) view.findViewById(R.id.tv_date);
+            holder.list_item = (CostListView) view.findViewById(R.id.cost_list_view);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.tv_money.setText(items.get(i).getMoney());
-        holder.tv_type.setText(items.get(i).getType());
+        List<DayCostItem> items = this.titles.get(i).getItems();
+        DayCostItemAdapter dayCostItemAdapter = new DayCostItemAdapter(items, context);
+        holder.list_item.setAdapter(dayCostItemAdapter);
+        holder.tv_date.setText(this.titles.get(i).getDate());
         return view;
     }
 
     class ViewHolder {
-        private TextView tv_type;
-        private TextView tv_money;
+        private TextView tv_date;
+        private CostListView list_item;
     }
 }

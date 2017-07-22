@@ -16,8 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
+import com.jimo.mycost.MyApp;
+import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.model.CostInComeRecord;
 
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -58,8 +63,11 @@ public class CostFragment extends Fragment {
     //存储输入的值
     private String date;
     private String type;
-    private String money;
+    private float money;
     private String remark;
+
+    //同步类型。默认是插入
+    private int modifyType = MyConst.SYNC_TYPE_INSERT;
 
     @Nullable
     @Override
@@ -101,6 +109,8 @@ public class CostFragment extends Fragment {
      */
     @Event(R.id.btn_finish)
     private void finishClick(View view) {
+        money = Float.parseFloat(String.valueOf(input_money.getText()));
+        remark = String.valueOf(input_remark.getText());
         if (checkInput(view)) {
 
             localStore();
@@ -122,6 +132,19 @@ public class CostFragment extends Fragment {
      */
     private void localStore() {
 
+        DbManager db = MyApp.dbManager;
+
+        switch (modifyType) {
+            case MyConst.SYNC_TYPE_INSERT:
+                CostInComeRecord cost = new CostInComeRecord(MyConst.COST, money,
+                        remark, date, type, MyConst.getUserName(getContext()), MyConst.SYNC_TYPE_INSERT);
+                try {
+                    db.save(cost);
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 
 
@@ -133,7 +156,7 @@ public class CostFragment extends Fragment {
             Snackbar.make(view, "选择用途", Snackbar.LENGTH_SHORT).show();
             return false;
         }
-        if (TextUtils.isEmpty(money)) {
+        if (TextUtils.isEmpty(String.valueOf(money))) {
             Snackbar.make(view, "输入金额", Snackbar.LENGTH_SHORT).show();
             return false;
         }
@@ -177,5 +200,7 @@ public class CostFragment extends Fragment {
         }
     }
 
+
+    //在从主页面点击一条数据进来时确定是修改
 
 }

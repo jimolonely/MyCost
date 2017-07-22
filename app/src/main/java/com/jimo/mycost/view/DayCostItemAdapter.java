@@ -16,13 +16,13 @@ import java.util.List;
  * 适配器
  */
 
-public class DayCostAdapter extends BaseAdapter {
+public class DayCostItemAdapter extends BaseAdapter {
 
     private List<DayCostItem> items;
     private LayoutInflater inflater;
     private Context context;
 
-    public DayCostAdapter(List<DayCostItem> items, Context context) {
+    public DayCostItemAdapter(List<DayCostItem> items, Context context) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
         this.context = context;

@@ -6,9 +6,36 @@
     android:layout_height="match_parent"
     tools:context="com.jimo.mycost.MainActivity">
 
+    <RelativeLayout
+        android:id="@+id/rl_up"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorGray">
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/btn_star" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="MyCost"
+            android:textColor="@color/colorWhite" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_upload" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:orientation="vertical">
 
         <TextView
@@ -50,18 +77,22 @@
                 android:textSize="20sp" />
         </RelativeLayout>
 
-        <ListView
+        <com.jimo.mycost.view.CostListView
+            android:id="@+id/clv_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:divider="@color/colorGray"
+            android:dividerHeight="1dp">
 
-        </ListView>
+        </com.jimo.mycost.view.CostListView>
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_down"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorGray">
 
         <ImageButton
             android:id="@+id/ib_statistic"
@@ -72,8 +103,8 @@
             android:id="@+id/ib_add"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:src="@color/colorPrimary" />
+            android:layout_centerInParent="true"
+            android:src="@android:drawable/ic_menu_add" />
 
         <ImageButton
             android:layout_width="50dp"
