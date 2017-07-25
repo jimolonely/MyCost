@@ -16,6 +16,9 @@ public class MyConst {
     public static final int IN_COME = 1;
     public static final int COST = 0;
 
+    public static final int ITEM_TYPE1 = 0;
+    public static final int ITEM_TYPE2 = 1;
+
     //获取用户名
     public static String getUserName(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);

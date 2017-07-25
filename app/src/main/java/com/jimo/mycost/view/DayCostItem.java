@@ -5,12 +5,32 @@ package com.jimo.mycost.view;
  */
 
 public class DayCostItem {
-    private String type;
+    private String date;
+    private int itemType;
+    private String type;//cost type
     private String money;
 
-    public DayCostItem(String type, String money) {
+    public DayCostItem(String date, int itemType, String type, String money) {
+        this.date = date;
+        this.itemType = itemType;
         this.type = type;
         this.money = money;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
     }
 
     public String getMoney() {

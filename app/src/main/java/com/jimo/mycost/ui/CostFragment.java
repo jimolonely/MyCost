@@ -2,6 +2,7 @@ package com.jimo.mycost.ui;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.CostInComeRecord;
+import com.jimo.mycost.model.MonthCost;
+import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -43,6 +46,9 @@ public class CostFragment extends Fragment {
     @ViewInject(R.id.fbl_food)
     FlexboxLayout fl_food;
 
+    @ViewInject(R.id.fbl_transport)
+    FlexboxLayout fl_transport;
+
     @ViewInject(R.id.input_date)
     TextView input_date;
 
@@ -55,10 +61,9 @@ public class CostFragment extends Fragment {
     @ViewInject(R.id.input_remark)
     EditText input_remark;//备注
 
-    @ViewInject(R.id.btn_finish)
-    Button btn_finish;
-
     private List<String> foodTitles = new ArrayList<>(Arrays.asList("早餐", "午餐", "晚餐", "其他"));
+    private List<String> transportTitles = new ArrayList<>(Arrays.asList(
+            "地铁", "公交", "共享单车", "滴滴", "的士", "火车", "飞机", "其他"));
 
     //存储输入的值
     private String date;
@@ -89,17 +94,25 @@ public class CostFragment extends Fragment {
     private void initData() {
         //food
         for (String s : foodTitles) {
-            TextView tv = new TextView(getContext());
-            tv.setText(s);
-            tv.setTextSize(18);
-            tv.setGravity(Gravity.CENTER);
-            tv.setPadding(10, 5, 10, 5);
-            tv.setOnClickListener(new FoodOnClickListener());
+            TextView tv = getTextView(s, new FoodOnClickListener());
             fl_food.addView(tv);
         }
 
         //transport
+        for (String s : transportTitles) {
+            fl_transport.addView(getTextView(s, new TransportClickListener()));
+        }
+    }
 
+    @NonNull
+    private TextView getTextView(String s, View.OnClickListener listener) {
+        TextView tv = new TextView(getContext());
+        tv.setText(s);
+        tv.setTextSize(18);
+        tv.setGravity(Gravity.CENTER);
+        tv.setPadding(10, 5, 10, 5);
+        tv.setOnClickListener(listener);
+        return tv;
     }
 
     /**
@@ -109,41 +122,86 @@ public class CostFragment extends Fragment {
      */
     @Event(R.id.btn_finish)
     private void finishClick(View view) {
-        money = Float.parseFloat(String.valueOf(input_money.getText()));
-        remark = String.valueOf(input_remark.getText());
         if (checkInput(view)) {
-
-            localStore();
-
-            cloudStore();
+            try {
+                money = Float.parseFloat(String.valueOf(input_money.getText()));
+                remark = String.valueOf(input_remark.getText());
+            } catch (Exception e) {
+                Snackbar.make(view, "error", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            if (localStore(view)) {
+                clearInput();
+                JimoUtil.mySnackbar(view, "保存成功");
+            }
         }
     }
 
-
-    /**
-     * 同步云端
-     */
-    private void cloudStore() {
-
+    //清空输入框
+    private void clearInput() {
+        input_date.setText("");
+        input_type.setText("");
+        input_money.setText("");
+        input_remark.setText("");
     }
+
 
     /**
      * 存本地数据库
      */
-    private void localStore() {
+    private boolean localStore(View view) {
 
         DbManager db = MyApp.dbManager;
 
         switch (modifyType) {
             case MyConst.SYNC_TYPE_INSERT:
+                String userName = MyConst.getUserName(getContext());
                 CostInComeRecord cost = new CostInComeRecord(MyConst.COST, money,
-                        remark, date, type, MyConst.getUserName(getContext()), MyConst.SYNC_TYPE_INSERT);
+                        remark, date, type, userName, MyConst.SYNC_TYPE_INSERT);
+                //TODO 事务
                 try {
                     db.save(cost);
+
+                    int month = getMonth(date);
+                    int year = getYear(date);
+                    MonthCost monthCost = db.selector(MonthCost.class).
+                            where("month", "=", month).and("year", "=", year).
+                            and("user_name", "=", userName).findFirst();
+                    if (monthCost == null) {
+                        monthCost = new MonthCost(year, month, money, MyConst.COST, MyConst.SYNC_TYPE_INSERT, userName);
+                        db.save(monthCost);
+                    } else {
+                        monthCost.setSyncType(MyConst.SYNC_TYPE_UPDATE);
+                        monthCost.setMoney(monthCost.getMoney() + money);
+                        db.update(monthCost, "money", "sync_type");
+                    }
+                    return true;
                 } catch (DbException e) {
                     e.printStackTrace();
+                    JimoUtil.mySnackbar(view, "error local store");
+                    return false;
                 }
-                break;
+        }
+
+        return false;
+    }
+
+    public int getYear(String date) {
+        int first = date.indexOf('-');
+        try {
+            return Integer.parseInt(date.substring(0, first));
+        } catch (Exception e) {
+            return Calendar.getInstance().get(Calendar.YEAR);
+        }
+    }
+
+    public int getMonth(String date) {
+        int first = date.indexOf('-') + 1;
+        int last = date.lastIndexOf('-');
+        try {
+            return Integer.parseInt(date.substring(first, last));
+        } catch (Exception e) {
+            return Calendar.getInstance().get(Calendar.MONTH) + 1;
         }
     }
 
@@ -152,6 +210,10 @@ public class CostFragment extends Fragment {
      * 检查输入
      */
     private boolean checkInput(View view) {
+        if (TextUtils.isEmpty(date)) {
+            Snackbar.make(view, "选择日期", Snackbar.LENGTH_SHORT).show();
+            return false;
+        }
         if (TextUtils.isEmpty(type)) {
             Snackbar.make(view, "选择用途", Snackbar.LENGTH_SHORT).show();
             return false;
@@ -172,7 +234,7 @@ public class CostFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                date = i + "-" + (i1 + 1) + "-" + "-" + i2;
+                date = i + "-" + (i1 + 1) + "-" + i2;
                 input_date.setText(date);
             }
         }, year, month, day);
@@ -186,20 +248,23 @@ public class CostFragment extends Fragment {
 
             if (view instanceof TextView) {
                 TextView tv = (TextView) view;
-                int i = foodTitles.indexOf(tv.getText());
-                switch (i) {
-                    case 0:
-                        Snackbar.make(view, tv.getText(), Snackbar.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        Snackbar.make(view, tv.getText(), Snackbar.LENGTH_SHORT).show();
-                        break;
-
-                }
+                type = "餐饮 " + String.valueOf(tv.getText());
+                input_type.setText(type);
             }
         }
     }
 
+    private class TransportClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                type = "交通 " + String.valueOf(tv.getText());
+                input_type.setText(type);
+            }
+        }
+    }
 
     //在从主页面点击一条数据进来时确定是修改
 

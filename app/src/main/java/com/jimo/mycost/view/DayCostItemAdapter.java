@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 
 import java.util.List;
@@ -44,24 +45,52 @@ public class DayCostItemAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return items.get(position).getItemType();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder holder = null;
-        if (view == null) {
-            view = inflater.inflate(R.layout.day_cost_item, null);
-            holder = new ViewHolder();
-            holder.tv_money = (TextView) view.findViewById(R.id.tv_money);
-            holder.tv_type = (TextView) view.findViewById(R.id.tv_type);
-            view.setTag(holder);
+        DayCostItem item = items.get(i);
+        if (item.getItemType() == MyConst.ITEM_TYPE1) {
+            ViewHolder1 holder = null;
+            if (view == null) {
+                view = inflater.inflate(R.layout.day_cost_item, null);
+                holder = new ViewHolder1();
+                holder.tv_money = (TextView) view.findViewById(R.id.tv_money);
+                holder.tv_type = (TextView) view.findViewById(R.id.tv_type);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder1) view.getTag();
+            }
+            holder.tv_money.setText(item.getMoney());
+            holder.tv_type.setText(item.getType());
         } else {
-            holder = (ViewHolder) view.getTag();
+            ViewHolder2 holder2 = null;
+            if (view == null) {
+                view = inflater.inflate(R.layout.day_cost_title, null);
+                holder2 = new ViewHolder2();
+                holder2.tv_date = (TextView) view.findViewById(R.id.tv_date);
+                view.setTag(holder2);
+            } else {
+                holder2 = (ViewHolder2) view.getTag();
+            }
+            holder2.tv_date.setText(item.getDate());
         }
-        holder.tv_money.setText(items.get(i).getMoney());
-        holder.tv_type.setText(items.get(i).getType());
         return view;
     }
 
-    class ViewHolder {
+    class ViewHolder1 {
         private TextView tv_type;
         private TextView tv_money;
+    }
+
+    class ViewHolder2 {
+        private TextView tv_date;
     }
 }

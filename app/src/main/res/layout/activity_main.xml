@@ -33,12 +33,14 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_month_total"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="@color/colorRed"
@@ -53,6 +55,7 @@
             android:background="@color/colorRed">
 
             <TextView
+                android:id="@+id/tv_month_cost"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -68,6 +71,7 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/tv_month_income"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
@@ -77,15 +81,23 @@
                 android:textSize="20sp" />
         </RelativeLayout>
 
-        <com.jimo.mycost.view.CostListView
-            android:id="@+id/clv_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/colorGray"
-            android:dividerHeight="1dp">
 
-        </com.jimo.mycost.view.CostListView>
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rl_down"
+        android:layout_below="@+id/ll_center">
+
+        <com.jimo.mycost.view.MyCostView
+            android:id="@+id/lv_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/colorGray"
+            android:dividerHeight="1dp"></com.jimo.mycost.view.MyCostView>
+    </ScrollView>
+
 
     <RelativeLayout
         android:id="@+id/rl_down"
