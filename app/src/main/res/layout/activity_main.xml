@@ -4,55 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/icons"
     tools:context="com.jimo.mycost.MainActivity">
 
     <RelativeLayout
         android:id="@+id/rl_up"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/colorGray">
+        android:layout_height="50dp"
+        android:background="@color/colorPrimaryDark"
+        android:padding="10dp"
+        >
 
         <ImageButton
-            android:layout_width="60dp"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@android:drawable/btn_star" />
+            android:background="@mipmap/android_up"
+            />
 
         <TextView
-            android:layout_width="60dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="MyCost"
-            android:textColor="@color/colorWhite" />
+            android:textSize="25sp"
+            android:textColor="@color/icons" />
 
         <ImageButton
-            android:layout_width="60dp"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:src="@android:drawable/ic_menu_upload" />
+            android:background="@mipmap/upload_to_cloud"
+            />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_month_total"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@color/colorRed"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="本月：-1000元"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:textColor="@color/icons"
+            android:textSize="30sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/colorRed">
+            android:background="@color/colorPrimary">
 
             <TextView
                 android:id="@+id/tv_month_cost"
@@ -60,14 +66,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="-1000"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/primary_light"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@color/colorWhite"
+                android:background="@color/divider"
                 android:textSize="20sp" />
 
             <TextView
@@ -77,7 +83,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:text="+2000"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/primary_light"
                 android:textSize="20sp" />
         </RelativeLayout>
 
@@ -94,7 +100,7 @@
             android:id="@+id/lv_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/colorGray"
+            android:divider="@color/divider"
             android:dividerHeight="1dp"></com.jimo.mycost.view.MyCostView>
     </ScrollView>
 
@@ -104,23 +110,27 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorGray">
+        android:background="@color/icons">
 
         <ImageButton
             android:id="@+id/ib_statistic"
             android:layout_width="50dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@mipmap/ic_tubiao"
+            />
 
         <ImageButton
             android:id="@+id/ib_add"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:src="@android:drawable/ic_menu_add" />
+            android:background="@mipmap/android_add_circle" />
 
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/android_up"
+            />
     </RelativeLayout>
 </RelativeLayout>

@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="餐饮-早餐" />
+        android:text="餐饮-早餐"
+        android:textColor="@color/secondary_text" />
 
     <TextView
         android:id="@+id/tv_money"
@@ -19,5 +20,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:text="-10元" />
+        android:text="-10元"
+        android:textColor="@color/secondary_text" />
 </RelativeLayout>

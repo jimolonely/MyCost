@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,6 +34,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.jimo.mycost.util.JimoUtil.getMonth;
+import static com.jimo.mycost.util.JimoUtil.getYear;
 
 /**
  * Created by root on 17-7-19.
@@ -83,7 +85,6 @@ public class CostFragment extends Fragment {
 
         initViews();
 
-//        return inflater.inflate(R.layout.cost_fragment,container,false);
         return view;
 
     }
@@ -112,6 +113,7 @@ public class CostFragment extends Fragment {
         tv.setGravity(Gravity.CENTER);
         tv.setPadding(10, 5, 10, 5);
         tv.setOnClickListener(listener);
+        tv.setTextColor(getResources().getColor(R.color.secondary_text));
         return tv;
     }
 
@@ -184,25 +186,6 @@ public class CostFragment extends Fragment {
         }
 
         return false;
-    }
-
-    public int getYear(String date) {
-        int first = date.indexOf('-');
-        try {
-            return Integer.parseInt(date.substring(0, first));
-        } catch (Exception e) {
-            return Calendar.getInstance().get(Calendar.YEAR);
-        }
-    }
-
-    public int getMonth(String date) {
-        int first = date.indexOf('-') + 1;
-        int last = date.lastIndexOf('-');
-        try {
-            return Integer.parseInt(date.substring(first, last));
-        } catch (Exception e) {
-            return Calendar.getInstance().get(Calendar.MONTH) + 1;
-        }
     }
 
 
