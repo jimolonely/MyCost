@@ -51,6 +51,9 @@ public class CostFragment extends Fragment {
     @ViewInject(R.id.fbl_transport)
     FlexboxLayout fl_transport;
 
+    @ViewInject(R.id.fbl_study)
+    FlexboxLayout fl_study;
+
     @ViewInject(R.id.input_date)
     TextView input_date;
 
@@ -63,9 +66,10 @@ public class CostFragment extends Fragment {
     @ViewInject(R.id.input_remark)
     EditText input_remark;//备注
 
-    private List<String> foodTitles = new ArrayList<>(Arrays.asList("早餐", "午餐", "晚餐", "其他"));
+    private List<String> foodTitles = new ArrayList<>(Arrays.asList("早餐", "午餐", "晚餐", "零食", "其他"));
     private List<String> transportTitles = new ArrayList<>(Arrays.asList(
             "地铁", "公交", "共享单车", "滴滴", "的士", "火车", "飞机", "其他"));
+    private List<String> studyTitles = new ArrayList<>(Arrays.asList("买书", "文具", "付费课程", "其他"));
 
     //存储输入的值
     private String date;
@@ -83,13 +87,8 @@ public class CostFragment extends Fragment {
 
         initData();
 
-        initViews();
-
         return view;
 
-    }
-
-    private void initViews() {
     }
 
     private void initData() {
@@ -102,6 +101,11 @@ public class CostFragment extends Fragment {
         //transport
         for (String s : transportTitles) {
             fl_transport.addView(getTextView(s, new TransportClickListener()));
+        }
+
+        //study
+        for (String s : studyTitles) {
+            fl_study.addView(getTextView(s, new StudyClickListener()));
         }
     }
 
@@ -168,7 +172,7 @@ public class CostFragment extends Fragment {
                     int year = getYear(date);
                     MonthCost monthCost = db.selector(MonthCost.class).
                             where("month", "=", month).and("year", "=", year).
-                            and("user_name", "=", userName).findFirst();
+                            and("user_name", "=", userName).and("in_out", "=", MyConst.COST).findFirst();
                     if (monthCost == null) {
                         monthCost = new MonthCost(year, month, money, MyConst.COST, MyConst.SYNC_TYPE_INSERT, userName);
                         db.save(monthCost);
@@ -244,6 +248,18 @@ public class CostFragment extends Fragment {
             if (view instanceof TextView) {
                 TextView tv = (TextView) view;
                 type = "交通 " + String.valueOf(tv.getText());
+                input_type.setText(type);
+            }
+        }
+    }
+
+    private class StudyClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                type = "学习 " + String.valueOf(tv.getText());
                 input_type.setText(type);
             }
         }

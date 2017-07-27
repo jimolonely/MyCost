@@ -7,10 +7,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.jimo.mycost.R;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -39,6 +41,11 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
         x.view().inject(this);
 
         initViews();
+    }
+
+    @Event(R.id.ib_back)
+    private void back(View view) {
+        this.finish();
     }
 
     private void initViews() {
