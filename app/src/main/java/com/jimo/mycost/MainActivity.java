@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     String d = tc.getDate();
                     if (d != null && d.equals(c.getDate())) {
                         dayCostItems.add(new DayCostItem(tc.getDate(), MyConst.ITEM_TYPE1,
-                                tc.getTypeName(), String.valueOf(tc.getMoney())));
+                                tc.getTypeName() + "  " + tc.getRemark(), String.valueOf(tc.getMoney())));
                     }
                 }
             }

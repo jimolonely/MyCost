@@ -54,6 +54,9 @@ public class CostFragment extends Fragment {
     @ViewInject(R.id.fbl_study)
     FlexboxLayout fl_study;
 
+    @ViewInject(R.id.fbl_life)
+    FlexboxLayout fl_life;
+
     @ViewInject(R.id.input_date)
     TextView input_date;
 
@@ -70,7 +73,8 @@ public class CostFragment extends Fragment {
     private List<String> transportTitles = new ArrayList<>(Arrays.asList(
             "地铁", "公交", "共享单车", "滴滴", "的士", "火车", "飞机", "其他"));
     private List<String> studyTitles = new ArrayList<>(Arrays.asList("买书", "文具", "付费课程", "其他"));
-
+    private List<String> lifeTitles = new ArrayList<>(Arrays.asList("健康",
+            "服饰", "居家", "娱乐", "人情", "旅游", "通讯", "其他"));
     //存储输入的值
     private String date;
     private String type;
@@ -106,6 +110,11 @@ public class CostFragment extends Fragment {
         //study
         for (String s : studyTitles) {
             fl_study.addView(getTextView(s, new StudyClickListener()));
+        }
+
+        //life
+        for (String s : lifeTitles) {
+            fl_life.addView(getTextView(s, new LifeClickListener()));
         }
     }
 
@@ -260,6 +269,18 @@ public class CostFragment extends Fragment {
             if (view instanceof TextView) {
                 TextView tv = (TextView) view;
                 type = "学习 " + String.valueOf(tv.getText());
+                input_type.setText(type);
+            }
+        }
+    }
+
+    private class LifeClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                type = "生活 " + String.valueOf(tv.getText());
                 input_type.setText(type);
             }
         }
