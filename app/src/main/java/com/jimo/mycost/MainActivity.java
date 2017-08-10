@@ -168,6 +168,19 @@ public class MainActivity extends AppCompatActivity {
         dayCostItemAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 点击刷新列表
+     *
+     * @param view
+     */
+    @Event(R.id.ib_refresh)
+    private void ibRefreshClick(View view) {
+        //刷新列表
+        queryData();
+        dayCostItemAdapter.notifyDataSetChanged();
+        JimoUtil.mySnackbar(view, "已刷新");
+    }
+
     public int getMonth() {
         return Calendar.getInstance().get(Calendar.MONTH) + 1;
     }

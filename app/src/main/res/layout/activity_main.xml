@@ -124,9 +124,10 @@
             android:background="@mipmap/android_add_circle" />
 
         <ImageButton
+            android:id="@+id/ib_refresh"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@mipmap/android_up" />
+            android:background="@mipmap/refresh" />
     </RelativeLayout>
 </RelativeLayout>

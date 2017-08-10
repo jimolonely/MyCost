@@ -110,7 +110,7 @@ public class InComeFragment extends Fragment {
     private void finishClick(View view) {
         if (checkInput(view)) {
             try {
-                money = Float.parseFloat(String.valueOf(input_money.getText()));
+                money = Math.round(Float.parseFloat(String.valueOf(input_money.getText())) * 100) / 100;
                 remark = String.valueOf(input_remark.getText());
             } catch (Exception e) {
                 Snackbar.make(view, "error", Snackbar.LENGTH_SHORT).show();
@@ -200,7 +200,16 @@ public class InComeFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                date = i + "-" + (i1 + 1) + "-" + i2;
+                if (i1 < 9) {
+                    date = i + "-0" + (i1 + 1);
+                } else {
+                    date = i + "-" + (i1 + 1);
+                }
+                if (i2 < 10) {
+                    date += "-0" + i2;
+                } else {
+                    date += "-" + i2;
+                }
                 input_date.setText(date);
             }
         }, year, month, day);
