@@ -29,6 +29,7 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -120,9 +121,10 @@ public class MainActivity extends Activity {
             if (monthInCome != null) {
                 i = monthInCome.getMoney();
             }
-            tv_cost.setText("-" + c);
-            tv_income.setText("+" + i);
-            tv_total.setText(month + "月: " + (i - c) + "元");
+            DecimalFormat format = new DecimalFormat("#.##");
+            tv_cost.setText("-" + format.format(c));
+            tv_income.setText("+" + format.format(i));
+            tv_total.setText(month + "月: " + format.format(i - c) + "元");
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_income, "月记录查询出错");
             e.printStackTrace();

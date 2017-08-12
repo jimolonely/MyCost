@@ -139,8 +139,7 @@ public class CostFragment extends Fragment {
     private void finishClick(View view) {
         if (checkInput(view)) {
             try {
-                //保留2位小数
-                money = Math.round(Float.parseFloat(String.valueOf(input_money.getText())) * 100) / 100;
+                money = Float.parseFloat(String.valueOf(input_money.getText()));
                 remark = String.valueOf(input_remark.getText());
             } catch (Exception e) {
                 Snackbar.make(view, "error", Snackbar.LENGTH_SHORT).show();
