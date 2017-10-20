@@ -22,6 +22,7 @@ import com.jimo.mycost.view.DayCostItemAdapter;
 import org.json.JSONArray;
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
@@ -76,8 +77,43 @@ public class MainActivity extends Activity {
         listViewCost.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DayCostItem dayCostTitle = dayCostItems.get(i);
+//                DayCostItem dayCostTitle = dayCostItems.get(i);
+                //TODO 显示item
+            }
+        });
 
+        //长按时提示删除
+        listViewCost.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
+                final DayCostItem item = dayCostItems.get(i);
+                if (item.getItemType() == MyConst.ITEM_TYPE2) {
+                    JimoUtil.mySnackbar(tv_income, "这个不可以删哦");
+                    return true;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("删除");
+                builder.setMessage("确定删除吗?");
+                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DbManager db = MyApp.dbManager;
+                        WhereBuilder wb = WhereBuilder.b();
+                        wb.and("id", "=", item.getId());
+                        try {
+                            db.delete(CostInComeRecord.class, wb);
+                            queryData();
+                            dayCostItemAdapter.notifyDataSetChanged();
+                            JimoUtil.mySnackbar(view, "删除成功");
+                        } catch (DbException e) {
+                            JimoUtil.mySnackbar(view, "删除失败");
+                            e.printStackTrace();
+                        }
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
+                return true;
             }
         });
     }
@@ -146,12 +182,12 @@ public class MainActivity extends Activity {
             if (!dates.contains(c.getDate())) {
                 dates.add(c.getDate());
                 dayCostItems.add(new DayCostItem(c.getDate(), MyConst.ITEM_TYPE2,
-                        c.getTypeName(), String.valueOf(c.getMoney())));
+                        c.getTypeName(), String.valueOf(c.getMoney()), c.getId()));
                 for (CostInComeRecord tc : costInComeRecords) {
                     String d = tc.getDate();
                     if (d != null && d.equals(c.getDate())) {
                         dayCostItems.add(new DayCostItem(tc.getDate(), MyConst.ITEM_TYPE1,
-                                tc.getTypeName() + "  " + tc.getRemark(), String.valueOf(tc.getMoney())));
+                                tc.getTypeName() + "  " + tc.getRemark(), String.valueOf(tc.getMoney()), tc.getId()));
                     }
                 }
             }

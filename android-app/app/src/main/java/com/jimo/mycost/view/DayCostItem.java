@@ -9,12 +9,22 @@ public class DayCostItem {
     private int itemType;
     private String type;//cost type
     private String money;
+    private Long id;
 
-    public DayCostItem(String date, int itemType, String type, String money) {
+    public DayCostItem(String date, int itemType, String type, String money, Long id) {
         this.date = date;
         this.itemType = itemType;
         this.type = type;
         this.money = money;
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDate() {
