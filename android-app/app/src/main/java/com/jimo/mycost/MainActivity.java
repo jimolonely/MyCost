@@ -15,11 +15,11 @@ import com.alibaba.fastjson.JSON;
 import com.jimo.mycost.model.CostInComeRecord;
 import com.jimo.mycost.model.MonthCost;
 import com.jimo.mycost.ui.AddCostActivity;
+import com.jimo.mycost.ui.DataStatisticActivity;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.DayCostItem;
 import com.jimo.mycost.view.DayCostItemAdapter;
 
-import org.json.JSONArray;
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
 import org.xutils.db.sqlite.WhereBuilder;
@@ -203,6 +203,15 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    /**
+     * 跳到数据统计页面
+     *
+     * @param v
+     */
+    public void ibStatisticClick(View v) {
+        Intent intent = new Intent(this, DataStatisticActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onResume() {
