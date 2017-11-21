@@ -14,6 +14,7 @@ import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.Subject;
 import com.jimo.mycost.util.JimoUtil;
+import com.jimo.mycost.view.AddSubjectDialog;
 import com.jimo.mycost.view.SelectSubjectDialog;
 
 import org.xutils.DbManager;
@@ -113,6 +114,25 @@ public class TimeCostActivity extends AppCompatActivity {
      */
     public void addSubject(View view) {
         //添加完成后重新加载主题
+        AddSubjectDialog addSubjectDialog = new AddSubjectDialog();
+        addSubjectDialog.show(getFragmentManager(), new AddSubjectDialog.Callback() {
+            @Override
+            public void onOk(String subjectName, String endDate) {
+                saveOneSubject(subjectName, endDate);
+            }
+        });
+    }
+
+    private void saveOneSubject(String subjectName, String endDate) {
+        DbManager dbManager = MyApp.dbManager;
+        Subject subject = new Subject(subjectName, endDate);
+        try {
+            dbManager.save(subject);
+            loadSubject();
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_select_subject, "存储主题错误");
+        }
+        JimoUtil.mySnackbar(tv_select_subject, "保存成功");
     }
 
     public void closeActivity(View view) {

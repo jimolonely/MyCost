@@ -223,6 +223,7 @@ public class CostFragment extends Fragment {
 
     @Event(R.id.input_date)
     private void dateClick(View view) {
+        //TODO 重构
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

@@ -16,6 +16,14 @@ public class Subject {
     @Column(name = "end_time")
     private String endTime;
 
+    public Subject() {
+    }
+
+    public Subject(String subjectName, String endTime) {
+        SubjectName = subjectName;
+        this.endTime = endTime;
+    }
+
     public int getId() {
         return id;
     }
