@@ -38,6 +38,7 @@
         android:gravity="center"
         android:padding="5dp"
         android:text="选择主题"
+        android:onClick="selectSubject"
         android:textSize="20sp" />
 
     <Chronometer
