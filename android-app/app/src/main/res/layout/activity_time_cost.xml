@@ -53,7 +53,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:onClick="addSubject"
-            android:src="@mipmap/add" />
+            android:background="@mipmap/add" />
     </RelativeLayout>
 
     <Chronometer

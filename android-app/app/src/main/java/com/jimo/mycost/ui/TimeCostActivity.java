@@ -10,14 +10,21 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
+import com.jimo.mycost.model.Subject;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.SelectSubjectDialog;
 
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ContentView(R.layout.activity_time_cost)
 public class TimeCostActivity extends AppCompatActivity {
@@ -28,13 +35,36 @@ public class TimeCostActivity extends AppCompatActivity {
     private TextView tv_select_subject;
 
     private boolean isStop = true;//控制开始结束
+    private String[] subjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+
+        init();
     }
 
+    private void init() {
+        loadSubject();
+    }
+
+    private void loadSubject() {
+        DbManager db = MyApp.dbManager;
+        try {
+            List<Subject> sbs = db.selector(Subject.class).findAll();
+            if (sbs == null) {
+                sbs = new ArrayList<>();
+            }
+            subjects = new String[sbs.size()];
+            int i = 0;
+            for (Subject sb : sbs) {
+                subjects[i++] = sb.getSubjectName();
+            }
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_select_subject, "加载主题出错");
+        }
+    }
 
     public void recordTime(View view) {
         Button btn = (Button) view;
@@ -67,7 +97,7 @@ public class TimeCostActivity extends AppCompatActivity {
     public void selectSubject(View view) {
         SelectSubjectDialog selectSubjectDialog = new SelectSubjectDialog();
         String title = "选择主题";
-        final String[] items = {"1", "2"};
+        final String[] items = subjects;
         selectSubjectDialog.show(title, items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -82,7 +112,7 @@ public class TimeCostActivity extends AppCompatActivity {
      * @param view
      */
     public void addSubject(View view) {
-
+        //添加完成后重新加载主题
     }
 
     public void closeActivity(View view) {
