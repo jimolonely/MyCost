@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -26,7 +27,7 @@ public class TimeCostActivity extends AppCompatActivity {
     @ViewInject(R.id.tv_choose_subject)
     private TextView tv_select_subject;
 
-    private boolean isStop;//控制开始结束
+    private boolean isStop = true;//控制开始结束
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +38,16 @@ public class TimeCostActivity extends AppCompatActivity {
 
     public void recordTime(View view) {
         Button btn = (Button) view;
-        if (isStop) {
+        if (!isStop) {
             timer.stop();
             btn.setText("开始计时");
-            isStop = false;
+            isStop = true;
             saveTheTime(view);
         } else {
             timer.setBase(SystemClock.elapsedRealtime());
             timer.setFormat("%s");
             timer.start();
-            isStop = true;
+            isStop = false;
             btn.setText("停止计时");
         }
     }
@@ -73,5 +74,38 @@ public class TimeCostActivity extends AppCompatActivity {
                 tv_select_subject.setText(items[i]);
             }
         }, getFragmentManager());
+    }
+
+    /**
+     * 添加主题
+     *
+     * @param view
+     */
+    public void addSubject(View view) {
+
+    }
+
+    public void closeActivity(View view) {
+        handleReturn();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            handleReturn();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 在退出前判断是否处于计时状态
+     */
+    private void handleReturn() {
+        if (isStop) {
+            this.finish();
+        } else {
+            JimoUtil.mySnackbar(tv_select_subject, "请先停止计时才能退出");
+        }
     }
 }
