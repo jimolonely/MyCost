@@ -16,6 +16,7 @@ import com.jimo.mycost.model.CostInComeRecord;
 import com.jimo.mycost.model.MonthCost;
 import com.jimo.mycost.ui.AddCostActivity;
 import com.jimo.mycost.ui.DataStatisticActivity;
+import com.jimo.mycost.ui.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.DayCostItem;
 import com.jimo.mycost.view.DayCostItemAdapter;
@@ -51,9 +52,6 @@ public class MainActivity extends Activity {
 
     private List<DayCostItem> dayCostItems;
     private DayCostItemAdapter dayCostItemAdapter;
-
-    private float inCome = 0;
-    private float cost = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +198,11 @@ public class MainActivity extends Activity {
     @Event(R.id.ib_add)
     private void ibAddClick(View v) {
         Intent intent = new Intent(this, AddCostActivity.class);
+        startActivity(intent);
+    }
+
+    public void ibTimerClick(View view) {
+        Intent intent = new Intent(this, TimeCostActivity.class);
         startActivity(intent);
     }
 

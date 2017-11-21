@@ -14,9 +14,11 @@
         android:padding="10dp">
 
         <ImageButton
+            android:id="@+id/btn_open_timer"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:background="@mipmap/android_up" />
+            android:background="@mipmap/timer"
+            android:onClick="ibTimerClick" />
 
         <TextView
             android:layout_width="100dp"

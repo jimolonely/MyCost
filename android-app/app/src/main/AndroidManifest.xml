@@ -24,7 +24,8 @@
         <activity
             android:name=".ui.AddCostActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.DataStatisticActivity"></activity>
+        <activity android:name=".ui.DataStatisticActivity" />
+        <activity android:name=".ui.TimeCostActivity"></activity>
     </application>
 
 </manifest>
