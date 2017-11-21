@@ -124,13 +124,13 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:background="@mipmap/android_add_circle" />
+            android:background="@mipmap/add_full" />
 
         <ImageButton
             android:id="@+id/ib_refresh"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@mipmap/refresh" />
+            android:background="@mipmap/refresh_full" />
     </RelativeLayout>
 </RelativeLayout>

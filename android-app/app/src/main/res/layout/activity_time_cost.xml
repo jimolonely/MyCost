@@ -17,8 +17,8 @@
             android:id="@+id/ib_back"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:onClick="closeActivity"
-            android:background="@mipmap/back" />
+            android:background="@mipmap/back"
+            android:onClick="closeActivity" />
 
         <TextView
             android:layout_width="100dp"
@@ -42,9 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:hint="选择主题"
             android:onClick="selectSubject"
             android:padding="5dp"
-            android:text="选择主题"
+            android:text=""
             android:textSize="20sp" />
 
         <ImageButton
@@ -52,8 +53,8 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:onClick="addSubject"
-            android:background="@mipmap/add" />
+            android:background="@mipmap/add"
+            android:onClick="addSubject" />
     </RelativeLayout>
 
     <Chronometer
@@ -75,7 +76,7 @@
         android:layout_margin="20dp"
         android:background="@color/colorPrimary"
         android:onClick="recordTime"
-        android:text="开始"
+        android:text="开始计时"
         android:textColor="@color/icons"
         android:textSize="18sp" />
 </LinearLayout>

@@ -3,7 +3,9 @@ package com.jimo.mycost.util;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by root on 17-7-25.
@@ -33,5 +35,10 @@ public class JimoUtil {
         } catch (Exception e) {
             return Calendar.getInstance().get(Calendar.MONTH) + 1;
         }
+    }
+
+    public static String getDateTimeNow() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(new Date());
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.Subject;
+import com.jimo.mycost.model.TimeRecord;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.AddSubjectDialog;
 import com.jimo.mycost.view.SelectSubjectDialog;
@@ -37,6 +38,7 @@ public class TimeCostActivity extends AppCompatActivity {
 
     private boolean isStop = true;//控制开始结束
     private String[] subjects;
+    private String startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +72,17 @@ public class TimeCostActivity extends AppCompatActivity {
     public void recordTime(View view) {
         Button btn = (Button) view;
         if (!isStop) {
-            timer.stop();
-            btn.setText("开始计时");
-            isStop = true;
-            saveTheTime(view);
+            String subjectName = tv_select_subject.getText().toString();
+            if ("".equals(subjectName)) {
+                JimoUtil.mySnackbar(tv_select_subject, "请先选择主题");
+            } else {
+                timer.stop();
+                btn.setText("开始计时");
+                isStop = true;
+                saveTheTime(subjectName);
+            }
         } else {
+            startTime = JimoUtil.getDateTimeNow();
             timer.setBase(SystemClock.elapsedRealtime());
             timer.setFormat("%s");
             timer.start();
@@ -83,11 +91,23 @@ public class TimeCostActivity extends AppCompatActivity {
         }
     }
 
-    private void saveTheTime(View view) {
-        String s = timer.getText().toString();
-        JimoUtil.mySnackbar(view, s);
-
-        getFragmentManager();
+    /**
+     * 保存时间到数据库
+     *
+     * @param subjectName
+     */
+    private void saveTheTime(String subjectName) {
+        String timeLen = timer.getText().toString();
+        JimoUtil.mySnackbar(tv_select_subject, timeLen);
+        DbManager db = MyApp.dbManager;
+        TimeRecord timeRecord = new TimeRecord(subjectName, timeLen, startTime, JimoUtil.getDateTimeNow());
+        try {
+            db.save(timeRecord);
+            timer.setBase(SystemClock.elapsedRealtime());
+            JimoUtil.mySnackbar(tv_select_subject, "保存成功");
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_select_subject, "保存时间出错");
+        }
     }
 
     /**
@@ -129,10 +149,10 @@ public class TimeCostActivity extends AppCompatActivity {
         try {
             dbManager.save(subject);
             loadSubject();
+            JimoUtil.mySnackbar(tv_select_subject, "保存成功");
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_select_subject, "存储主题错误");
         }
-        JimoUtil.mySnackbar(tv_select_subject, "保存成功");
     }
 
     public void closeActivity(View view) {

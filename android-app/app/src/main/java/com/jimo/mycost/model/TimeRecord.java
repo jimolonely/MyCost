@@ -11,12 +11,32 @@ import org.xutils.db.annotation.Table;
 public class TimeRecord {
     @Column(name = "id", isId = true, autoGen = true, property = "NOT NULL")
     private long id;
+    @Column(name = "subject_name")
+    private String subjectName;
     @Column(name = "time_len")
-    private int timeLen;
+    private String timeLen;
     @Column(name = "start_time")
     private String startTime;
     @Column(name = "end_time")
     private String endTime;
+
+    public TimeRecord() {
+    }
+
+    public TimeRecord(String subjectName, String timeLen, String startTime, String endTime) {
+        this.subjectName = subjectName;
+        this.timeLen = timeLen;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
 
     public long getId() {
         return id;
@@ -26,11 +46,11 @@ public class TimeRecord {
         this.id = id;
     }
 
-    public int getTimeLen() {
+    public String getTimeLen() {
         return timeLen;
     }
 
-    public void setTimeLen(int timeLen) {
+    public void setTimeLen(String timeLen) {
         this.timeLen = timeLen;
     }
 
