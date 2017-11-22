@@ -42,7 +42,7 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
  * Created by root on 17-7-19.
  * 收入
  */
-@ContentView(R.layout.income_fragment)
+@ContentView(R.layout.fragment_income)
 public class InComeFragment extends Fragment {
 
     @ViewInject(R.id.fbl_in_normal)
