@@ -11,6 +11,7 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.jimo.mycost.MyApp;
+import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.Subject;
 import com.jimo.mycost.model.TimeRecord;
@@ -100,7 +101,7 @@ public class TimeCostActivity extends AppCompatActivity {
         String timeLen = timer.getText().toString();
         JimoUtil.mySnackbar(tv_select_subject, timeLen);
         DbManager db = MyApp.dbManager;
-        TimeRecord timeRecord = new TimeRecord(subjectName, timeLen, startTime, JimoUtil.getDateTimeNow());
+        TimeRecord timeRecord = new TimeRecord(subjectName, timeLen, startTime, JimoUtil.getDateTimeNow(), MyConst.SYNC_TYPE_INSERT);
         try {
             db.save(timeRecord);
             timer.setBase(SystemClock.elapsedRealtime());
@@ -145,12 +146,13 @@ public class TimeCostActivity extends AppCompatActivity {
 
     private void saveOneSubject(String subjectName, String endDate) {
         DbManager dbManager = MyApp.dbManager;
-        Subject subject = new Subject(subjectName, endDate);
+        Subject subject = new Subject(subjectName, endDate, MyConst.SYNC_TYPE_INSERT);
         try {
             dbManager.save(subject);
             loadSubject();
             JimoUtil.mySnackbar(tv_select_subject, "保存成功");
         } catch (DbException e) {
+            e.printStackTrace();
             JimoUtil.mySnackbar(tv_select_subject, "存储主题错误");
         }
     }

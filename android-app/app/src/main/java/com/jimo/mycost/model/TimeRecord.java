@@ -19,15 +19,26 @@ public class TimeRecord {
     private String startTime;
     @Column(name = "end_time")
     private String endTime;
+    @Column(name = "sync_type", property = "default 1")
+    private int syncType;//0代表已同步，1,2,3代表增删改
 
     public TimeRecord() {
     }
 
-    public TimeRecord(String subjectName, String timeLen, String startTime, String endTime) {
+    public TimeRecord(String subjectName, String timeLen, String startTime, String endTime, int syncType) {
         this.subjectName = subjectName;
         this.timeLen = timeLen;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.syncType = syncType;
+    }
+
+    public int getSyncType() {
+        return syncType;
+    }
+
+    public void setSyncType(int syncType) {
+        this.syncType = syncType;
     }
 
     public String getSubjectName() {
