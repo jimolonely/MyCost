@@ -1,5 +1,6 @@
 package com.jimo.mycost.ui;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -177,7 +178,17 @@ public class TimeCostActivity extends AppCompatActivity {
         if (isStop) {
             this.finish();
         } else {
-            JimoUtil.mySnackbar(tv_select_subject, "请先停止计时才能退出");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("警告");
+            builder.setMessage("确定放弃这次计时吗？");
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    TimeCostActivity.this.finish();
+                }
+            });
+            builder.create().show();
+//            JimoUtil.mySnackbar(tv_select_subject, "请先停止计时才能退出");
         }
     }
 }
