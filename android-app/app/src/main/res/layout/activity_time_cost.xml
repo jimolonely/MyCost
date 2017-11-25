@@ -79,4 +79,10 @@
         android:text="开始计时"
         android:textColor="@color/icons"
         android:textSize="18sp" />
+
+    <ListView
+        android:id="@+id/lv_time_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"></ListView>
 </LinearLayout>

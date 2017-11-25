@@ -60,7 +60,7 @@ public class DayCostItemAdapter extends BaseAdapter {
         if (item.getItemType() == MyConst.ITEM_TYPE1) {
             ViewHolder1 holder = null;
             if (view == null) {
-                view = inflater.inflate(R.layout.day_cost_item, null);
+                view = inflater.inflate(R.layout.item_day_cost_item, null);
                 holder = new ViewHolder1();
                 holder.tv_money = (TextView) view.findViewById(R.id.tv_money);
                 holder.tv_type = (TextView) view.findViewById(R.id.tv_type);
@@ -73,7 +73,7 @@ public class DayCostItemAdapter extends BaseAdapter {
         } else {
             ViewHolder2 holder2 = null;
             if (view == null) {
-                view = inflater.inflate(R.layout.day_cost_title, null);
+                view = inflater.inflate(R.layout.item_day_cost_title, null);
                 holder2 = new ViewHolder2();
                 holder2.tv_date = (TextView) view.findViewById(R.id.tv_date);
                 view.setTag(holder2);
