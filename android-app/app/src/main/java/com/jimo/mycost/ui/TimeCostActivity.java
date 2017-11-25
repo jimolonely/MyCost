@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jimo.mycost.MyApp;
@@ -18,6 +19,7 @@ import com.jimo.mycost.model.Subject;
 import com.jimo.mycost.model.TimeRecord;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.AddSubjectDialog;
+import com.jimo.mycost.view.DayTimeItemAdapter;
 import com.jimo.mycost.view.ItemDayTime;
 import com.jimo.mycost.view.SelectSubjectDialog;
 
@@ -39,10 +41,14 @@ public class TimeCostActivity extends AppCompatActivity {
     private Chronometer timer;
     @ViewInject(R.id.tv_choose_subject)
     private TextView tv_select_subject;
+    @ViewInject(R.id.lv_time_day)
+    private ListView lv_day_cost;
 
     private boolean isStop = true;//控制开始结束
     private String[] subjects;
     private String startTime;
+    private DayTimeItemAdapter dayTimeItemAdapter;
+    private List<ItemDayTime> itemDayTimes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,9 @@ public class TimeCostActivity extends AppCompatActivity {
     }
 
     private void init() {
+        itemDayTimes = new ArrayList<>();
+        dayTimeItemAdapter = new DayTimeItemAdapter(itemDayTimes, this);
+        lv_day_cost.setAdapter(dayTimeItemAdapter);
         loadSubject();
         loadTimeDayRecord();
     }
@@ -65,20 +74,11 @@ public class TimeCostActivity extends AppCompatActivity {
         try {
             List<TimeRecord> timeRecords = db.selector(TimeRecord.class).where("start_time", ">",
                     JimoUtil.getDateBefore(-1)).findAll();
-            List<ItemDayTime> itemDayTimes = getTimeDayItems(timeRecords);
-            renderDayTimeList(itemDayTimes);
+            getTimeDayItems(timeRecords);
+            dayTimeItemAdapter.notifyDataSetChanged();
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_select_subject, "加载每日时间出错");
         }
-    }
-
-    /**
-     * 渲染数据
-     *
-     * @param itemDayTimes
-     */
-    private void renderDayTimeList(List<ItemDayTime> itemDayTimes) {
-
     }
 
     /**
@@ -87,7 +87,8 @@ public class TimeCostActivity extends AppCompatActivity {
      * @param timeRecords
      * @return
      */
-    private List<ItemDayTime> getTimeDayItems(List<TimeRecord> timeRecords) {
+    private void getTimeDayItems(List<TimeRecord> timeRecords) {
+        itemDayTimes.clear();
         Map<String, String> map = new HashMap<>();
         for (TimeRecord timeRecord : timeRecords) {
             String subjectName = timeRecord.getSubjectName();
@@ -97,11 +98,9 @@ public class TimeCostActivity extends AppCompatActivity {
                 map.put(subjectName, timeRecord.getTimeLen());
             }
         }
-        List<ItemDayTime> re = new ArrayList<>();
         for (String key : map.keySet()) {
-            re.add(new ItemDayTime(key, map.get(key)));
+            itemDayTimes.add(new ItemDayTime(key, map.get(key)));
         }
-        return re;
     }
 
     private void loadSubject() {
