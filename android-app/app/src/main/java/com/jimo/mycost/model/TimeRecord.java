@@ -9,7 +9,7 @@ import org.xutils.db.annotation.Table;
  */
 @Table(name = "time_record")
 public class TimeRecord {
-    @Column(name = "id", isId = true, autoGen = true, property = "NOT NULL")
+    @Column(name = "id", isId = true, property = "NOT NULL")
     private long id;
     @Column(name = "subject_name")
     private String subjectName;

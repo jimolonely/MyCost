@@ -2,9 +2,9 @@ package com.jimo.mycost.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,17 +18,19 @@ import com.jimo.mycost.model.Subject;
 import com.jimo.mycost.model.TimeRecord;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.AddSubjectDialog;
+import com.jimo.mycost.view.ItemDayTime;
 import com.jimo.mycost.view.SelectSubjectDialog;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ContentView(R.layout.activity_time_cost)
 public class TimeCostActivity extends AppCompatActivity {
@@ -52,6 +54,54 @@ public class TimeCostActivity extends AppCompatActivity {
 
     private void init() {
         loadSubject();
+        loadTimeDayRecord();
+    }
+
+    /**
+     * 加载每天花的时间列表
+     */
+    private void loadTimeDayRecord() {
+        DbManager db = MyApp.dbManager;
+        try {
+            List<TimeRecord> timeRecords = db.selector(TimeRecord.class).where("start_time", ">",
+                    JimoUtil.getDateBefore(-1)).findAll();
+            List<ItemDayTime> itemDayTimes = getTimeDayItems(timeRecords);
+            renderDayTimeList(itemDayTimes);
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_select_subject, "加载每日时间出错");
+        }
+    }
+
+    /**
+     * 渲染数据
+     *
+     * @param itemDayTimes
+     */
+    private void renderDayTimeList(List<ItemDayTime> itemDayTimes) {
+
+    }
+
+    /**
+     * 重构数据为listview显示的数据,本来可以用sql聚类完成，但这里框架限制了
+     *
+     * @param timeRecords
+     * @return
+     */
+    private List<ItemDayTime> getTimeDayItems(List<TimeRecord> timeRecords) {
+        Map<String, String> map = new HashMap<>();
+        for (TimeRecord timeRecord : timeRecords) {
+            String subjectName = timeRecord.getSubjectName();
+            if (map.containsKey(subjectName)) {
+                map.put(subjectName, JimoUtil.addTwoTime(map.get(subjectName), timeRecord.getTimeLen()));
+            } else {
+                map.put(subjectName, timeRecord.getTimeLen());
+            }
+        }
+        List<ItemDayTime> re = new ArrayList<>();
+        for (String key : map.keySet()) {
+            re.add(new ItemDayTime(key, map.get(key)));
+        }
+        return re;
     }
 
     private void loadSubject() {

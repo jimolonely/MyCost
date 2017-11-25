@@ -4,14 +4,14 @@ package com.jimo.mycost.view;
  * Created by root on 17-7-22.
  */
 
-public class DayCostItem {
+public class ItemDayCost {
     private String date;
     private int itemType;
     private String type;//cost type
     private String money;
     private Long id;
 
-    public DayCostItem(String date, int itemType, String type, String money, Long id) {
+    public ItemDayCost(String date, int itemType, String type, String money, Long id) {
         this.date = date;
         this.itemType = itemType;
         this.type = type;

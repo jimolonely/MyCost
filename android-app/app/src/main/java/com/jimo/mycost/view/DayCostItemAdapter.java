@@ -19,14 +19,12 @@ import java.util.List;
 
 public class DayCostItemAdapter extends BaseAdapter {
 
-    private List<DayCostItem> items;
+    private List<ItemDayCost> items;
     private LayoutInflater inflater;
-    private Context context;
 
-    public DayCostItemAdapter(List<DayCostItem> items, Context context) {
+    public DayCostItemAdapter(List<ItemDayCost> items, Context context) {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
-        this.context = context;
     }
 
     @Override
@@ -56,9 +54,9 @@ public class DayCostItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        DayCostItem item = items.get(i);
+        ItemDayCost item = items.get(i);
         if (item.getItemType() == MyConst.ITEM_TYPE1) {
-            ViewHolder1 holder = null;
+            ViewHolder1 holder;
             if (view == null) {
                 view = inflater.inflate(R.layout.item_day_cost_item, null);
                 holder = new ViewHolder1();
@@ -71,7 +69,7 @@ public class DayCostItemAdapter extends BaseAdapter {
             holder.tv_money.setText(item.getMoney());
             holder.tv_type.setText(item.getType());
         } else {
-            ViewHolder2 holder2 = null;
+            ViewHolder2 holder2;
             if (view == null) {
                 view = inflater.inflate(R.layout.item_day_cost_title, null);
                 holder2 = new ViewHolder2();

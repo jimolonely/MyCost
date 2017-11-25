@@ -18,7 +18,7 @@ import com.jimo.mycost.ui.AddCostActivity;
 import com.jimo.mycost.ui.DataStatisticActivity;
 import com.jimo.mycost.ui.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
-import com.jimo.mycost.view.DayCostItem;
+import com.jimo.mycost.view.ItemDayCost;
 import com.jimo.mycost.view.DayCostItemAdapter;
 
 import org.xutils.DbManager;
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     @ViewInject(R.id.tv_month_income)
     TextView tv_income;
 
-    private List<DayCostItem> dayCostItems;
+    private List<ItemDayCost> dayCostItems;
     private DayCostItemAdapter dayCostItemAdapter;
 
     @Override
@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
         listViewCost.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                DayCostItem dayCostTitle = dayCostItems.get(i);
+//                ItemDayCost dayCostTitle = dayCostItems.get(i);
                 //TODO 显示item
             }
         });
@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
         listViewCost.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                final DayCostItem item = dayCostItems.get(i);
+                final ItemDayCost item = dayCostItems.get(i);
                 if (item.getItemType() == MyConst.ITEM_TYPE2) {
                     JimoUtil.mySnackbar(tv_income, "这个不可以删哦");
                     return true;
@@ -179,12 +179,12 @@ public class MainActivity extends Activity {
         for (CostInComeRecord c : costInComeRecords) {
             if (!dates.contains(c.getDate())) {
                 dates.add(c.getDate());
-                dayCostItems.add(new DayCostItem(c.getDate(), MyConst.ITEM_TYPE2,
+                dayCostItems.add(new ItemDayCost(c.getDate(), MyConst.ITEM_TYPE2,
                         c.getTypeName(), String.valueOf(c.getMoney()), c.getId()));
                 for (CostInComeRecord tc : costInComeRecords) {
                     String d = tc.getDate();
                     if (d != null && d.equals(c.getDate())) {
-                        dayCostItems.add(new DayCostItem(tc.getDate(), MyConst.ITEM_TYPE1,
+                        dayCostItems.add(new ItemDayCost(tc.getDate(), MyConst.ITEM_TYPE1,
                                 tc.getTypeName() + "  " + tc.getRemark(), String.valueOf(tc.getMoney()), tc.getId()));
                     }
                 }
