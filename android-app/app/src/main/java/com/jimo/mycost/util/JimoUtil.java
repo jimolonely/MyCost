@@ -77,16 +77,20 @@ public class JimoUtil {
         int maxLen = t1.length > t2.length ? t1.length : t2.length;
         int minLen = t1.length > t2.length ? t2.length : t1.length;
         String re = "";
-        int i;
-        for (i = 0; i < minLen; i++) {
-            re += ":" + (Integer.parseInt(t1[i]) + Integer.parseInt(t2[i]));
+        int carry = 0;//满60分钟或秒需要进位
+        for (int i = minLen - 1; i >= 0; i--) {
+            int t = Integer.parseInt(t1[i]) + Integer.parseInt(t2[i]) + carry;
+            carry = t / 60;
+            t = t % 60;
+            re = t + ":" + re;
         }
         if (minLen == maxLen) {
-            return re.substring(1, re.length());
+            return re.substring(0, re.length() - 1);
         } else if (t1.length == minLen) {
-            return t2[i] + re;
+            re = t2[maxLen - 1] + ":" + re;
         } else {
-            return t1[i] + re;
+            re = t1[maxLen - 1] + ":" + re;
         }
+        return re.substring(0, re.length() - 1);
     }
 }
