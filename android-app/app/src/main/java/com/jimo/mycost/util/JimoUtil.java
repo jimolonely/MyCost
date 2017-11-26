@@ -84,7 +84,7 @@ public class JimoUtil {
             int t = Integer.parseInt(t1[i]) + Integer.parseInt(t2[i]) + carry;
             carry = t / 60;
             t %= 60;
-            re[t1.length - i - 1] = t / 10 == 0 ? "0" + t : t + "";
+            re[i] = t / 10 == 0 ? "0" + t : t + "";
         }
         return TextUtils.join(":", re);
     }

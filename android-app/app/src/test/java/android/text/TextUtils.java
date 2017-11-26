@@ -8,8 +8,8 @@ package android.text;
 public class TextUtils {
     public static String join(CharSequence delimiter, Object[] tokens) {
         StringBuilder sb = new StringBuilder();
-        for (int i = tokens.length - 1; i >= 0; i--) {
-            sb.append(delimiter).append(tokens[i]);
+        for (Object token : tokens) {
+            sb.append(delimiter).append(token);
         }
         return sb.substring(1);
     }

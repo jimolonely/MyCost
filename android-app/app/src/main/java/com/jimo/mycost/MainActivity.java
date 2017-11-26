@@ -220,8 +220,8 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         //刷新列表
-        queryData();
-        dayCostItemAdapter.notifyDataSetChanged();
+//        queryData();
+//        dayCostItemAdapter.notifyDataSetChanged();
     }
 
     /**
