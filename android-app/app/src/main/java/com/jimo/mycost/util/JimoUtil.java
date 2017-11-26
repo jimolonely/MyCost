@@ -1,6 +1,8 @@
 package com.jimo.mycost.util;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.view.View;
 
 import java.text.ParseException;
@@ -72,25 +74,32 @@ public class JimoUtil {
      * @return
      */
     public static String addTwoTime(String time, String time2) {
+        time = concat(time);
+        time2 = concat(time2);
         String[] t1 = time.split(":");
         String[] t2 = time2.split(":");
-        int maxLen = t1.length > t2.length ? t1.length : t2.length;
-        int minLen = t1.length > t2.length ? t2.length : t1.length;
-        String re = "";
-        int carry = 0;//满60分钟或秒需要进位
-        for (int i = minLen - 1; i >= 0; i--) {
+        int carry = 0;
+        String[] re = new String[t1.length];
+        for (int i = t1.length - 1; i >= 0; i--) {
             int t = Integer.parseInt(t1[i]) + Integer.parseInt(t2[i]) + carry;
             carry = t / 60;
-            t = t % 60;
-            re = t + ":" + re;
+            t %= 60;
+            re[t1.length - i - 1] = t / 10 == 0 ? "0" + t : t + "";
         }
-        if (minLen == maxLen) {
-            return re.substring(0, re.length() - 1);
-        } else if (t1.length == minLen) {
-            re = t2[maxLen - 1] + ":" + re;
-        } else {
-            re = t1[maxLen - 1] + ":" + re;
+        return TextUtils.join(":", re);
+    }
+
+    /**
+     * 补齐为 00:00:00 这种格式
+     *
+     * @param time2
+     * @return
+     */
+    @NonNull
+    private static String concat(String time2) {
+        if (time2.length() == 5) {
+            time2 = "00:" + time2;
         }
-        return re.substring(0, re.length() - 1);
+        return time2;
     }
 }

@@ -73,7 +73,7 @@ public class TimeCostActivity extends AppCompatActivity {
         DbManager db = MyApp.dbManager;
         try {
             List<TimeRecord> timeRecords = db.selector(TimeRecord.class).where("start_time", ">",
-                    JimoUtil.getDateBefore(-1)).findAll();
+                    JimoUtil.getDateBefore(0)).findAll();
             getTimeDayItems(timeRecords);
             dayTimeItemAdapter.notifyDataSetChanged();
         } catch (DbException e) {
@@ -156,6 +156,7 @@ public class TimeCostActivity extends AppCompatActivity {
             db.save(timeRecord);
             timer.setBase(SystemClock.elapsedRealtime());
             JimoUtil.mySnackbar(tv_select_subject, "保存成功");
+            loadTimeDayRecord();//重新加载时间
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_select_subject, "保存时间出错");
         }
