@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/icons"
     tools:context="com.jimo.mycost.MainActivity">
 
     <RelativeLayout
@@ -72,7 +71,7 @@
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@color/divider"
+                android:background="@color/icons"
                 android:textSize="20sp" />
 
             <TextView
@@ -94,14 +93,14 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_down"
         android:layout_below="@+id/ll_center"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <com.jimo.mycost.view.MyCostView
             android:id="@+id/lv_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/divider"
-            android:dividerHeight="1dp"></com.jimo.mycost.view.MyCostView>
+            android:divider="@color/divider_light"
+            android:dividerHeight="1dp" />
     </ScrollView>
 
 
