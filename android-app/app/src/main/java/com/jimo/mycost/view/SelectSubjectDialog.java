@@ -17,20 +17,28 @@ public class SelectSubjectDialog extends DialogFragment {
 
     private String[] items;
 
+    private DialogInterface.OnClickListener onOkClickListener;
+    private DialogInterface.OnClickListener onDeleteClickListener;
     private DialogInterface.OnClickListener onClickListener;
 
-    public void show(String title, String[] items, DialogInterface.OnClickListener onClickListener,
+    public void show(String title, String[] items,
+                     DialogInterface.OnClickListener onClickListener,
+                     DialogInterface.OnClickListener onOkClickListener,
+                     DialogInterface.OnClickListener onDeleteClickListener,
                      FragmentManager fragmentManager) {
         this.title = title;
         this.items = items;
         this.onClickListener = onClickListener;
+        this.onOkClickListener = onOkClickListener;
+        this.onDeleteClickListener = onDeleteClickListener;
         show(fragmentManager, "Jimo Dialog Tag");
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title).setItems(items, onClickListener);
+        builder.setTitle(title).setSingleChoiceItems(items, 0, onClickListener).
+                setPositiveButton("OK", onOkClickListener).setNegativeButton("删除", onDeleteClickListener);
         return builder.create();
     }
 }

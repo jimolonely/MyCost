@@ -24,6 +24,7 @@ import com.jimo.mycost.view.ItemDayTime;
 import com.jimo.mycost.view.SelectSubjectDialog;
 
 import org.xutils.DbManager;
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -104,6 +105,7 @@ public class TimeCostActivity extends AppCompatActivity {
     }
 
     private void loadSubject() {
+        subjects = null;
         DbManager db = MyApp.dbManager;
         try {
             List<Subject> sbs = db.selector(Subject.class).findAll();
@@ -167,16 +169,50 @@ public class TimeCostActivity extends AppCompatActivity {
      *
      * @param view
      */
+    private int indexOfSubject;
+
     public void selectSubject(View view) {
         SelectSubjectDialog selectSubjectDialog = new SelectSubjectDialog();
         String title = "选择主题";
         final String[] items = subjects;
-        selectSubjectDialog.show(title, items, new DialogInterface.OnClickListener() {
+        selectSubjectDialog.show(title, items,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        indexOfSubject = i;
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        tv_select_subject.setText(items[indexOfSubject]);
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        doDeleteSubject(items[indexOfSubject]);
+                    }
+                }, getFragmentManager());
+    }
+
+    private void doDeleteSubject(final String subjectName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("确定删除吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                tv_select_subject.setText(items[i]);
+                DbManager db = MyApp.dbManager;
+                WhereBuilder whereBuilder = WhereBuilder.b();
+                whereBuilder.and("subject_name", "=", subjectName);
+                try {
+                    db.delete(Subject.class, whereBuilder);
+                    JimoUtil.mySnackbar(tv_select_subject, "删除[" + subjectName + "]成功");
+                    loadSubject();
+                } catch (DbException e) {
+                    JimoUtil.mySnackbar(tv_select_subject, "删除[" + subjectName + "]失败");
+                }
             }
-        }, getFragmentManager());
+        }).create().show();
     }
 
     /**
