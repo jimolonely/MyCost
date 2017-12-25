@@ -75,8 +75,10 @@ public class TimeCostActivity extends AppCompatActivity {
         try {
             List<TimeRecord> timeRecords = db.selector(TimeRecord.class).where("start_time", ">",
                     JimoUtil.getDateBefore(0)).findAll();
-            getTimeDayItems(timeRecords);
-            dayTimeItemAdapter.notifyDataSetChanged();
+            if (timeRecords != null) {
+                getTimeDayItems(timeRecords);
+                dayTimeItemAdapter.notifyDataSetChanged();
+            }
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_select_subject, "加载每日时间出错");
         }
