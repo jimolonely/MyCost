@@ -53,6 +53,8 @@ public class MainActivity extends Activity {
     private List<ItemDayCost> dayCostItems;
     private DayCostItemAdapter dayCostItemAdapter;
 
+    final int SHOW_LIMIT = 15;//主页面显示的记录条数
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +133,7 @@ public class MainActivity extends Activity {
         //查存每条记录
         try {
             List<CostInComeRecord> costInComeRecords =
-                    db.selector(CostInComeRecord.class).orderBy("c_date", true).limit(10).findAll();
+                    db.selector(CostInComeRecord.class).orderBy("c_date", true).limit(SHOW_LIMIT).findAll();
             fillTitles(costInComeRecords);
         } catch (DbException e) {
             e.printStackTrace();

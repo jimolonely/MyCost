@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-compat-25.3.1.aar/1e3e10f614bfbe418a63a30fa8431d17/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/19/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/flexbox-0.3.0.aar/1354385c068512ae9d8e246073a3fb69/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="ba231e2bee93e277cb36080cc5281d4ecfa2bf2d">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/design-24.2.1.aar/fdaa51bb2f710613acc96e92baf950f9/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-24.2.1.aar/6cf6b0ccc225844e6ffd3f03ec772b5a/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/16/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-core-utils-24.2.1.aar/4179faaf8c5872e3da3e17b99b2132bd/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/14/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-core-utils-24.2.1.aar/4179faaf8c5872e3da3e17b99b2132bd/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/15/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-media-compat-24.2.1.aar/ca205bc2f4d087afa39f5ef754f5a313/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/12/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-25.3.1.aar/ffeb4272906bfb9b480f6579c36a607e/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/c6c90185330c089943ddc2e3deb9c5ce/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.21/4dc148b3edc0d58c1bdb9e4835c187c488986e05/fastjson-1.2.21.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="4dc148b3edc0d58c1bdb9e4835c187c488986e05">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/5/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-v4-24.2.1.aar/a9888d828e873c66f072d40186a7298b/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/xutils-3.5.0.aar/3e15aa16658706965932ea599fada99f/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c70d3d4cb2d0b16c435c716fa169cb506929269b">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-24.2.1.aar/ce94e22071d7cacda474ee9fc3e588b9/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/17/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-core-ui-25.3.1.aar/c4c73fa7dd053c830f5c21e0b76445f5/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/18/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-fragment-24.2.1.aar/c661ca9959da36897f3f485e244c405a/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/11/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-media-compat-24.2.1.aar/ca205bc2f4d087afa39f5ef754f5a313/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/13/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/appcompat-v7-24.2.1.aar/6d381cbfbf3d8ffc62d3d346d57bc63a/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/7/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/.gradle/caches/transforms-1/files-1.1/support-fragment-24.2.1.aar/c661ca9959da36897f3f485e244c405a/jars/classes.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/10/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/jimo/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jumboMode="false"
+        min-sdk-version="21"
+        optimize="true"
+        revision="26.0.2"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="/home/jimo/workspace/Git/MyCost/android-app/app/build/intermediates/transforms/preDex/release/20/classes.dex" />
+    </item>
+
+</items>
