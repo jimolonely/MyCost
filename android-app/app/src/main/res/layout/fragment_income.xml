@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:gravity="right|center_vertical"
+        android:gravity="end|center_vertical"
         android:text="正常收入"
         android:textColor="@color/primary_text"
         android:textSize="18sp" />
@@ -23,7 +23,7 @@
         app:alignContent="stretch"
         app:alignItems="stretch"
         app:flexWrap="wrap"
-        app:justifyContent="flex_end"></com.google.android.flexbox.FlexboxLayout>
+        app:justifyContent="flex_end" />
 
     <TextView
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                     android:hint="点击选日期"
                     android:text=""
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="15sp"></TextView>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="日期"
-                    android:textSize="15sp"></TextView>
+                    android:textSize="15sp" />
 
 
             </LinearLayout>
@@ -86,7 +86,7 @@
                     android:hint="请选择"
                     android:text=""
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="15sp"></TextView>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
                     android:hint="任命比"
                     android:inputType="numberDecimal"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="15sp"></EditText>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,11 +141,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="4"
-                    android:gravity="center|right"
+                    android:gravity="center|end"
                     android:hint="备注内容"
                     android:inputType="text"
                     android:textColor="@color/primary_light"
-                    android:textSize="15sp"></EditText>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
