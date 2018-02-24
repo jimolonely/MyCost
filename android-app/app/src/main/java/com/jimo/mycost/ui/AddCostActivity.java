@@ -50,9 +50,11 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
 
     private void initViews() {
         titles.add("支出");
+        titles.add("身体数据");
         titles.add("收入");
 
         fragments.add(new CostFragment());
+        fragments.add(new BodyDataFragment());
         fragments.add(new InComeFragment());
 
         adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
