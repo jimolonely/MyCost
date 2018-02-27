@@ -7,9 +7,9 @@ import org.xutils.db.annotation.Table;
  * Created by root on 17-7-20.
  * 单条支出收入记录
  */
-@Table(name = "cost_income_record", onCreated = "")
+@Table(name = "cost_income_record")
 public class CostInComeRecord {
-    @Column(name = "id", isId = true, autoGen = true, property = "NOT NULL")
+    @Column(name = "id", isId = true, property = "NOT NULL")
     private long id;
     @Column(name = "in_out")
     private Integer inOut;//是收入还是支出，0为支出
