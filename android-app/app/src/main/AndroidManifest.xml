@@ -7,7 +7,6 @@
 
     <application
         android:name=".MyApp"
-        android:allowBackup="true"
         android:icon="@android:drawable/ic_lock_idle_alarm"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -25,7 +24,7 @@
             android:name=".ui.AddCostActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.DataStatisticActivity" />
-        <activity android:name=".ui.TimeCostActivity"></activity>
+        <activity android:name=".ui.TimeCostActivity" />
     </application>
 
 </manifest>
