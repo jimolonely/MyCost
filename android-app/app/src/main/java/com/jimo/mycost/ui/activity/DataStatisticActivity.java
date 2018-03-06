@@ -1,15 +1,17 @@
-package com.jimo.mycost.ui;
+package com.jimo.mycost.ui.activity;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.jimo.mycost.R;
+import com.jimo.mycost.ui.fragment.BodyDataShowFragment;
+import com.jimo.mycost.ui.fragment.CostShowFragment;
+import com.jimo.mycost.ui.fragment.InComeShowFragment;
+import com.jimo.mycost.util.MyFragmentAdapter;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -19,8 +21,8 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-@ContentView(R.layout.activity_add_cost)
-public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+@ContentView(R.layout.activity_data_statistic)
+public class DataStatisticActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     @ViewInject(R.id.vp_content)
     ViewPager viewPager;
@@ -32,20 +34,12 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
 
     private List<String> titles = new ArrayList<>();//tab页的标题
 
-    MyFragmentAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         x.view().inject(this);
 
         initViews();
-    }
-
-    @Event(R.id.ib_back)
-    private void back(View view) {
-        this.finish();
     }
 
     private void initViews() {
@@ -53,11 +47,11 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
         titles.add("身体数据");
         titles.add("收入");
 
-        fragments.add(new CostFragment());
-        fragments.add(new BodyDataFragment());
-        fragments.add(new InComeFragment());
+        fragments.add(new CostShowFragment());
+        fragments.add(new BodyDataShowFragment());
+        fragments.add(new InComeShowFragment());
 
-        adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
+        MyFragmentAdapter adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
@@ -66,6 +60,17 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
         tabLayout.setupWithViewPager(viewPager);
 //        tabLayout.setTabsFromPagerAdapter(adapter);
     }
+
+    /**
+     * 返回
+     *
+     * @param view
+     */
+    @Event(R.id.ib_back)
+    private void back(View view) {
+        this.finish();
+    }
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -80,32 +85,5 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
-
-    private class MyFragmentAdapter extends FragmentPagerAdapter {
-
-        private List<String> mTitles;
-        private List<Fragment> mFragments;
-
-        public MyFragmentAdapter(FragmentManager fm, List<Fragment> mFragments, List<String> mTitles) {
-            super(fm);
-            this.mFragments = mFragments;
-            this.mTitles = mTitles;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitles.get(position);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
     }
 }

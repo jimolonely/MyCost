@@ -1,4 +1,4 @@
-package com.jimo.mycost.ui;
+package com.jimo.mycost.ui.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

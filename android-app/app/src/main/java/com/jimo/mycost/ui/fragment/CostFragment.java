@@ -1,4 +1,4 @@
-package com.jimo.mycost.ui;
+package com.jimo.mycost.ui.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -40,28 +40,41 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
 
 /**
  * Created by root on 17-7-19.
- * 收入
+ * 支出
  */
-@ContentView(R.layout.fragment_income)
-public class InComeFragment extends Fragment {
+@ContentView(R.layout.fragment_cost)
+public class CostFragment extends Fragment {
 
-    @ViewInject(R.id.fbl_in_normal)
-    FlexboxLayout fl_normal;
+    @ViewInject(R.id.fbl_food)
+    FlexboxLayout fl_food;
 
-    @ViewInject(R.id.input_date1)
+    @ViewInject(R.id.fbl_transport)
+    FlexboxLayout fl_transport;
+
+    @ViewInject(R.id.fbl_study)
+    FlexboxLayout fl_study;
+
+    @ViewInject(R.id.fbl_life)
+    FlexboxLayout fl_life;
+
+    @ViewInject(R.id.input_date)
     TextView input_date;
 
-    @ViewInject(R.id.input_type1)
+    @ViewInject(R.id.input_type)
     TextView input_type;
 
-    @ViewInject(R.id.input_money1)
+    @ViewInject(R.id.input_money)
     EditText input_money;
 
-    @ViewInject(R.id.input_remark1)
-    EditText input_remark;
+    @ViewInject(R.id.input_remark)
+    EditText input_remark;//备注
 
-    private List<String> normalInComes = new ArrayList<>(Arrays.asList("工资", "兼职", "红包", "投资", "奖金", "补贴", "礼金", "其他"));
-
+    private List<String> foodTitles = new ArrayList<>(Arrays.asList("早餐", "午餐", "晚餐", "零食", "其他"));
+    private List<String> transportTitles = new ArrayList<>(Arrays.asList(
+            "地铁", "公交", "共享单车", "滴滴", "的士", "火车", "飞机", "其他"));
+    private List<String> studyTitles = new ArrayList<>(Arrays.asList("买书", "文具", "付费课程", "其他"));
+    private List<String> lifeTitles = new ArrayList<>(Arrays.asList("健康",
+            "服饰", "居家", "娱乐", "人情", "旅游", "通讯", "其他"));
     //存储输入的值
     private String date;
     private String type;
@@ -79,13 +92,29 @@ public class InComeFragment extends Fragment {
         initData();
 
         return view;
+
     }
 
     private void initData() {
-        //normal
-        for (String s : normalInComes) {
-            TextView tv = getTextView(s, new NormalOnClickListener());
-            fl_normal.addView(tv);
+        //food
+        for (String s : foodTitles) {
+            TextView tv = getTextView(s, new FoodOnClickListener());
+            fl_food.addView(tv);
+        }
+
+        //transport
+        for (String s : transportTitles) {
+            fl_transport.addView(getTextView(s, new TransportClickListener()));
+        }
+
+        //study
+        for (String s : studyTitles) {
+            fl_study.addView(getTextView(s, new StudyClickListener()));
+        }
+
+        //life
+        for (String s : lifeTitles) {
+            fl_life.addView(getTextView(s, new LifeClickListener()));
         }
     }
 
@@ -106,7 +135,7 @@ public class InComeFragment extends Fragment {
      *
      * @param view
      */
-    @Event(R.id.btn_finish1)
+    @Event(R.id.btn_finish)
     private void finishClick(View view) {
         if (checkInput(view)) {
             try {
@@ -131,6 +160,7 @@ public class InComeFragment extends Fragment {
         input_remark.setText("");
     }
 
+
     /**
      * 存本地数据库
      */
@@ -141,7 +171,7 @@ public class InComeFragment extends Fragment {
         switch (modifyType) {
             case MyConst.SYNC_TYPE_INSERT:
                 String userName = MyConst.getUserName(getContext());
-                CostInComeRecord cost = new CostInComeRecord(MyConst.IN_COME, money,
+                CostInComeRecord cost = new CostInComeRecord(MyConst.COST, money,
                         remark, date, type, userName, MyConst.SYNC_TYPE_INSERT);
                 //TODO 事务
                 try {
@@ -151,9 +181,9 @@ public class InComeFragment extends Fragment {
                     int year = getYear(date);
                     MonthCost monthCost = db.selector(MonthCost.class).
                             where("month", "=", month).and("year", "=", year).
-                            and("user_name", "=", userName).and("in_out", "=", MyConst.IN_COME).findFirst();
+                            and("user_name", "=", userName).and("in_out", "=", MyConst.COST).findFirst();
                     if (monthCost == null) {
-                        monthCost = new MonthCost(year, month, money, MyConst.IN_COME, MyConst.SYNC_TYPE_INSERT, userName);
+                        monthCost = new MonthCost(year, month, money, MyConst.COST, MyConst.SYNC_TYPE_INSERT, userName);
                         db.save(monthCost);
                     } else {
                         monthCost.setSyncType(MyConst.SYNC_TYPE_UPDATE);
@@ -191,8 +221,9 @@ public class InComeFragment extends Fragment {
         return true;
     }
 
-    @Event(R.id.input_date1)
+    @Event(R.id.input_date)
     private void dateClick(View view) {
+        //TODO 重构
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -200,6 +231,7 @@ public class InComeFragment extends Fragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                //为了按日期排序，当9月9号时应该写成09-09,而不是9-9
                 if (i1 < 9) {
                     date = i + "-0" + (i1 + 1);
                 } else {
@@ -216,16 +248,55 @@ public class InComeFragment extends Fragment {
         datePickerDialog.show();
     }
 
-    private class NormalOnClickListener implements View.OnClickListener {
+    private class FoodOnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
 
             if (view instanceof TextView) {
                 TextView tv = (TextView) view;
-                type = "正常 " + String.valueOf(tv.getText());
+                type = "餐饮 " + String.valueOf(tv.getText());
                 input_type.setText(type);
             }
         }
     }
+
+    private class TransportClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                type = "交通 " + String.valueOf(tv.getText());
+                input_type.setText(type);
+            }
+        }
+    }
+
+    private class StudyClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                type = "学习 " + String.valueOf(tv.getText());
+                input_type.setText(type);
+            }
+        }
+    }
+
+    private class LifeClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view instanceof TextView) {
+                TextView tv = (TextView) view;
+                type = "生活 " + String.valueOf(tv.getText());
+                input_type.setText(type);
+            }
+        }
+    }
+
+    //在从主页面点击一条数据进来时确定是修改
+
 }

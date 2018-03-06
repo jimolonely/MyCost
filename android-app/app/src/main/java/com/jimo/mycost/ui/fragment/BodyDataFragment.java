@@ -1,4 +1,4 @@
-package com.jimo.mycost.ui;
+package com.jimo.mycost.ui.fragment;
 
 
 import android.app.DatePickerDialog;

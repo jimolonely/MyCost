@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.AddCostActivity"
+            android:name=".ui.activity.AddCostActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.DataStatisticActivity" />
-        <activity android:name=".ui.TimeCostActivity" />
+        <activity android:name=".ui.activity.DataStatisticActivity" />
+        <activity android:name=".ui.activity.TimeCostActivity" />
     </application>
 
 </manifest>

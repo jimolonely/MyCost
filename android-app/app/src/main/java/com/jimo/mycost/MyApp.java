@@ -26,7 +26,7 @@ public class MyApp extends Application {
         daoConfig = new DbManager.DaoConfig()
                 .setDbName("mycost.db")
                 // 不设置dbDir时, 默认存储在app的私有目录.
-//            .setDbDir(new File("/mnt/sdcard"))
+//                .setDbDir(new File("/mnt/sdcard"))
                 .setDbVersion(2)
                 .setDbOpenListener(new DbManager.DbOpenListener() {
                     @Override
