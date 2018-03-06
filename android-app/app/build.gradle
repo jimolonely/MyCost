@@ -37,6 +37,8 @@ dependencies {
     //    compile 'com.android.support:design:23.3.0'
     compile 'com.google.android:flexbox:0.3.0'
     compile 'com.alibaba:fastjson:1.2.21'
+    //图表库必备
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 /*
 Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
