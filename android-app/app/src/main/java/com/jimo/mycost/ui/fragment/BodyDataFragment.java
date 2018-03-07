@@ -31,6 +31,9 @@ import org.xutils.x;
 
 import java.util.Calendar;
 
+import static com.jimo.mycost.MyConst.bodyData;
+import static com.jimo.mycost.MyConst.bodyDataUnit;
+
 /**
  * Created by jimo on 18-2-24.
  * 记录身体数据
@@ -47,8 +50,6 @@ public class BodyDataFragment extends Fragment {
     @ViewInject(R.id.tv_unit)
     TextView tv_unit;
 
-    private String[] bodyData = {"体重", "胸围", "腰围"};
-    private String[] dataUnit = {"kg", "cm", "cm"};//数据的单位
     private ArrayAdapter<String> adapter;
     private String bodyPart;
     private String date;
@@ -63,12 +64,13 @@ public class BodyDataFragment extends Fragment {
 
     private void initData() {
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, bodyData);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_body.setAdapter(adapter);
         sp_body.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 bodyPart = adapter.getItem(i);
-                tv_unit.setText(dataUnit[i]);
+                tv_unit.setText(bodyDataUnit[i]);
             }
 
             @Override

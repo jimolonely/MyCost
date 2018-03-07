@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="body data" />
+        android:orientation="horizontal">
+        <!--控制健康的项目,比如身高,体脂等-->
+        <Spinner
+            android:id="@+id/sp_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+        <!--控制频率,如一周的,一月的-->
+        <Spinner
+            android:id="@+id/sp_freq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
+        <ImageButton
+            android:id="@+id/ib_last"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@mipmap/left" />
+
+        <ImageButton
+            android:id="@+id/ib_next"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@mipmap/right" />
+
+        <ImageButton
+            android:id="@+id/ib_add_one"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@mipmap/add_full" />
+
+        <ImageButton
+            android:id="@+id/ib_minus_one"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@mipmap/minus" />
+
+    </LinearLayout>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"

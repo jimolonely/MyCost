@@ -102,4 +102,17 @@ public class JimoUtil {
         }
         return time2;
     }
+
+    /**
+     * 取得一年中的第几周
+     *
+     * @param date
+     * @return
+     */
+    public static int getWeekOfYear(Date date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTime(date);
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
 }

@@ -21,6 +21,10 @@ public class MyConst {
 
     public static final String UPLOAD_URL = "http://mycost.ngrok.cc/upload";
 
+    public static String[] bodyData = {"体重", "胸围", "腰围"};
+    public static String[] bodyDataUnit = {"kg", "cm", "cm"};//数据的单位
+
+
     //获取用户名
     public static String getUserName(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
