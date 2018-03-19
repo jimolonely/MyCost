@@ -67,8 +67,8 @@ public class BodyDataShowFragment extends Fragment {
 
     private void initViews() {
         final String[] frequence = {"周", "月", "年"};
-        adapterProject = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, bodyData);
-        adapterFreq = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, frequence);
+        adapterProject = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, bodyData);
+        adapterFreq = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, frequence);
         sp_project.setAdapter(adapterProject);
         sp_freq.setAdapter(adapterFreq);
         sp_project.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -126,7 +126,7 @@ public class BodyDataShowFragment extends Fragment {
                     and("date", "<=", lastDate).findAll();
 
         } catch (DbException e) {
-            JimoUtil.mySnackbar(sp_freq, "加载数据出错");
+            JimoUtil.mySnackbar(sp_freq, "加载身体数据出错");
             e.printStackTrace();
         }
     }
