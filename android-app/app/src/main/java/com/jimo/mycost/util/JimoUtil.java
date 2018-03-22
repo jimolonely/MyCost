@@ -110,12 +110,30 @@ public class JimoUtil {
     }
 
     /**
+     * 初始化当前计数
+     *
+     * @param freq
+     * @return
+     */
+    public static int getCurrCount(String freq) {
+        switch (freq) {
+            case "月":
+                return getMonthOfYear(0, 1);
+            case "年":
+                return getOffsetYear(0);
+            case "周":
+            default:
+                return getWeekOfYear(0, 1);
+        }
+    }
+
+    /**
      * 取得一年中的第几周
      *
      * @param offset
      * @return
      */
-    private static int getWeekOfYear(int currCount, int offset) {
+    public static int getWeekOfYear(int currCount, int offset) {
         if (currCount + offset <= 0) {
             return 52;
         } else if (currCount + offset > 12) {

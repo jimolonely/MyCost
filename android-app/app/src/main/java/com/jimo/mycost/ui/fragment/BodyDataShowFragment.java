@@ -4,6 +4,7 @@ package com.jimo.mycost.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,8 +54,8 @@ public class BodyDataShowFragment extends Fragment {
     private ArrayAdapter<String> adapterProject;
     private ArrayAdapter<String> adapterFreq;
 
-    private String project;//选择的项目
-    private String freq;//选择的频率
+    private String project = bodyData[0];//选择的项目
+    private String freq = "周";//选择的频率
     private int currCount;//当前选中的频率下的时间,比如如果是月.则记录月份
     private RangeDate rangeDate;
 
@@ -76,8 +77,6 @@ public class BodyDataShowFragment extends Fragment {
         sp_project.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //如果项目改变了需要把当前计数置为0
-                currCount = bodyData[position].equals(project) ? currCount : 0;
                 project = bodyData[position];
                 reloadChart();
             }
@@ -90,6 +89,8 @@ public class BodyDataShowFragment extends Fragment {
         sp_freq.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //如果频率改变了需要把当前计数置为0
+                currCount = frequency[position].equals(freq) ? currCount : 0;
                 freq = frequency[position];
                 reloadChart();
             }
@@ -108,6 +109,8 @@ public class BodyDataShowFragment extends Fragment {
      * 3. 绘图
      */
     private void reloadChart() {
+        //1.
+        updateChoice(0);
         //2.
         loadDataFromDB();
         //3.
@@ -124,7 +127,8 @@ public class BodyDataShowFragment extends Fragment {
             final List<BodyData> bodyData = dbManager.selector(BodyData.class).
                     where("body_part", "=", project).and("date", ">=", rangeDate.getBeginDate()).
                     and("date", "<=", rangeDate.getEndDate()).findAll();
-
+            Log.i("data", freq + " " + project + " " + currCount);
+            JimoUtil.mySnackbar(sp_freq, "数据条数" + bodyData.size());
         } catch (DbException e) {
             JimoUtil.mySnackbar(sp_freq, "加载身体数据出错");
             e.printStackTrace();
@@ -137,6 +141,11 @@ public class BodyDataShowFragment extends Fragment {
      * 2. 否则确定当前currDate
      */
     private void updateChoice(int offset) {
+        if (currCount > 0) {
+            currCount += offset;
+        } else {
+            currCount = JimoUtil.getCurrCount(freq);
+        }
         rangeDate = JimoUtil.getChoiceDateRange(freq, currCount, offset);
     }
 
