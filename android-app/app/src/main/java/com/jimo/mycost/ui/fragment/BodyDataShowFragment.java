@@ -59,12 +59,13 @@ public class BodyDataShowFragment extends Fragment {
     private int currCount;//当前选中的频率下的时间,比如如果是月.则记录月份
     private RangeDate rangeDate;
 
+    private List<Entry> entries;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = x.view().inject(this, inflater, container);
         initViews();
-        initData();
         return view;
     }
 
@@ -118,7 +119,20 @@ public class BodyDataShowFragment extends Fragment {
     }
 
     private void drawChart() {
-        //TODO
+        final XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        chart.getDescription().setText("寂寞的第" + currCount + freq + project + "记录");
+
+        if (entries.size() > 0) {
+            final LineDataSet lineDataSet = new LineDataSet(entries, currCount + freq);
+            LineData lineData = new LineData(lineDataSet);
+            chart.setData(lineData);
+            chart.invalidate();
+        } else {
+            chart.clear();
+        }
     }
 
     private void loadDataFromDB() {
@@ -128,7 +142,14 @@ public class BodyDataShowFragment extends Fragment {
                     where("body_part", "=", project).and("date", ">=", rangeDate.getBeginDate()).
                     and("date", "<=", rangeDate.getEndDate()).findAll();
             Log.i("data", freq + " " + project + " " + currCount);
-            JimoUtil.mySnackbar(sp_freq, "数据条数" + bodyData.size());
+//            JimoUtil.mySnackbar(sp_freq, "数据条数" + bodyData.size());
+
+            //给画图准备数据
+            entries = new ArrayList<>();
+            int i = 0;
+            for (BodyData data : bodyData) {
+                entries.add(new Entry(i++, data.getValue(), data.getDate()));
+            }
         } catch (DbException e) {
             JimoUtil.mySnackbar(sp_freq, "加载身体数据出错");
             e.printStackTrace();
@@ -172,33 +193,4 @@ public class BodyDataShowFragment extends Fragment {
         updateChoice(-1);
         reloadChart();
     }
-
-    private void initData() {
-        List<Entry> entries = new ArrayList<>();
-        final String[] x = new String[30];
-        for (int i = 0; i < 30; i++) {
-            entries.add(new Entry(i, i));
-            x[i] = i + "个";
-        }
-        final LineDataSet lineDataSet = new LineDataSet(entries, "3月");
-//        lineDataSet.setColor();
-        final LineData data = new LineData(lineDataSet);
-        chart.setData(data);
-
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return x[(int) value];
-            }
-        };
-        final XAxis xAxis = chart.getXAxis();
-        xAxis.setValueFormatter(formatter);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawGridLines(false);
-
-        chart.invalidate();
-    }
-
 }
