@@ -21,16 +21,17 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.BodyData;
+import com.jimo.mycost.model.RangeDate;
 import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.jimo.mycost.MyConst.bodyData;
@@ -54,7 +55,8 @@ public class BodyDataShowFragment extends Fragment {
 
     private String project;//选择的项目
     private String freq;//选择的频率
-    private int currDate;//当前选中的频率下的时间,比如如果是月.则记录月份
+    private int currCount;//当前选中的频率下的时间,比如如果是月.则记录月份
+    private RangeDate rangeDate;
 
     @Nullable
     @Override
@@ -66,14 +68,16 @@ public class BodyDataShowFragment extends Fragment {
     }
 
     private void initViews() {
-        final String[] frequence = {"周", "月", "年"};
+        final String[] frequency = {"周", "月", "年"};
         adapterProject = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, bodyData);
-        adapterFreq = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, frequence);
+        adapterFreq = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, frequency);
         sp_project.setAdapter(adapterProject);
         sp_freq.setAdapter(adapterFreq);
         sp_project.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //如果项目改变了需要把当前计数置为0
+                currCount = bodyData[position].equals(project) ? currCount : 0;
                 project = bodyData[position];
                 reloadChart();
             }
@@ -86,7 +90,7 @@ public class BodyDataShowFragment extends Fragment {
         sp_freq.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                freq = frequence[position];
+                freq = frequency[position];
                 reloadChart();
             }
 
@@ -100,30 +104,26 @@ public class BodyDataShowFragment extends Fragment {
     /**
      * 当选择变化时重新加载图表
      * 步骤分为:
-     * 1. 得到选择
      * 2. 去数据库查数据
      * 3. 绘图
      */
     private void reloadChart() {
-        //TODO
-        //1.
-//        getChoice();
         //2.
-//        loadDataFromDB();
+        loadDataFromDB();
         //3.
         drawChart();
     }
 
     private void drawChart() {
-
+        //TODO
     }
 
-    private void loadDataFromDB(String beginDate, String lastDate) {
+    private void loadDataFromDB() {
         final DbManager dbManager = MyApp.dbManager;
         try {
             final List<BodyData> bodyData = dbManager.selector(BodyData.class).
-                    where("body_part", "=", project).and("date", ">=", beginDate).
-                    and("date", "<=", lastDate).findAll();
+                    where("body_part", "=", project).and("date", ">=", rangeDate.getBeginDate()).
+                    and("date", "<=", rangeDate.getEndDate()).findAll();
 
         } catch (DbException e) {
             JimoUtil.mySnackbar(sp_freq, "加载身体数据出错");
@@ -136,16 +136,32 @@ public class BodyDataShowFragment extends Fragment {
      * 1. 如果currDate被更新过(上一个或下一个),则无需更新
      * 2. 否则确定当前currDate
      */
-    private void getChoice() {
-        switch (freq) {
-            case "周":
-                currDate = JimoUtil.getWeekOfYear(new Date());
-                break;
-            case "月":
-                break;
-            case "年":
-                break;
-        }
+    private void updateChoice(int offset) {
+        rangeDate = JimoUtil.getChoiceDateRange(freq, currCount, offset);
+    }
+
+    /**
+     * 显示下一周期
+     * 重置日期
+     * 重新渲染
+     *
+     * @param view
+     */
+    @Event(R.id.ib_next)
+    private void ibNextClick(View view) {
+        updateChoice(1);
+        reloadChart();
+    }
+
+    /**
+     * 显示上一周期
+     *
+     * @param view
+     */
+    @Event(R.id.ib_last)
+    private void ibLastClick(View view) {
+        updateChoice(-1);
+        reloadChart();
     }
 
     private void initData() {

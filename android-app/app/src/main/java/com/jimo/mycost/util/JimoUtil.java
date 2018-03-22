@@ -5,6 +5,8 @@ import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.jimo.mycost.model.RangeDate;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,6 +45,10 @@ public class JimoUtil {
     public static String getDateTimeNow() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(new Date());
+    }
+
+    public static String formatDate(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     /**
@@ -106,13 +112,100 @@ public class JimoUtil {
     /**
      * 取得一年中的第几周
      *
-     * @param date
+     * @param offset
      * @return
      */
-    public static int getWeekOfYear(Date date) {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.setTime(date);
-        return calendar.get(Calendar.WEEK_OF_YEAR);
+    private static int getWeekOfYear(int currCount, int offset) {
+        if (currCount + offset <= 0) {
+            return 52;
+        } else if (currCount + offset > 12) {
+            return 1;
+        }
+        if (currCount > 0) {
+            return currCount + offset;
+        } else {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.setTime(new Date());
+            return calendar.get(Calendar.WEEK_OF_YEAR) + offset;
+        }
+    }
+
+    private static int getMonthOfYear(int currCount, int offset) {
+        if (currCount + offset <= 0) {
+            return 12;
+        } else if (currCount + offset > 12) {
+            return 1;
+        }
+        if (currCount > 0) {
+            return currCount + offset;
+        } else {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            return calendar.get(Calendar.MONTH) + offset;
+        }
+    }
+
+    public static RangeDate getChoiceDateRange(String freq, int currCount, int offset) {
+        RangeDate rangeDate;
+        int count;
+        switch (freq) {
+            case "月":
+                count = getMonthOfYear(currCount, offset);
+                rangeDate = new RangeDate(getFirstDayOfMonth(count), getLastDayOfMonth(count));
+                break;
+            case "年":
+                count = getOffsetYear(offset);
+                rangeDate = new RangeDate(count + "-01-01", count + "-12-31");
+                break;
+            case "周":
+            default:
+                count = getWeekOfYear(currCount, offset);
+                rangeDate = new RangeDate(getDayOfWeek(getOffsetYear(0), count, 0),
+                        getDayOfWeek(getOffsetYear(0), count, 1));
+        }
+        return rangeDate;
+    }
+
+    private static int getOffsetYear(int offset) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        return c.get(Calendar.YEAR) + offset;
+    }
+
+    /**
+     * 取得周的偏移日期字符串
+     *
+     * @param year
+     * @param week
+     * @param offset 仅仅为了复用代码
+     * @return
+     */
+    private static String getDayOfWeek(int year, int week, int offset) {
+        Calendar c = Calendar.getInstance();
+
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.WEEK_OF_YEAR, week + offset);
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+
+        return formatDate(c.getTime());
+    }
+
+    public static String getFirstDayOfMonth(int month) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, month - 1);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        return formatDate(c.getTime());
+    }
+
+    public static String getLastDayOfMonth(int month) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, 0);
+        return formatDate(c.getTime());
     }
 }
