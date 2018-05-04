@@ -11,6 +11,7 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.ui.fragment.BodyDataFragment;
 import com.jimo.mycost.ui.fragment.CostFragment;
 import com.jimo.mycost.ui.fragment.InComeFragment;
+import com.jimo.mycost.ui.fragment.LifeFragment;
 import com.jimo.mycost.util.MyFragmentAdapter;
 
 import org.xutils.view.annotation.ContentView;
@@ -53,10 +54,12 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
     private void initViews() {
         titles.add("支出");
         titles.add("身体数据");
+        titles.add("人生啊");
         titles.add("收入");
 
         fragments.add(new CostFragment());
         fragments.add(new BodyDataFragment());
+        fragments.add(new LifeFragment());
         fragments.add(new InComeFragment());
 
         adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
