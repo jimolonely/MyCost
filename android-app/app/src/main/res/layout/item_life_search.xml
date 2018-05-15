@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_life_search"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/android_up" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_life_search_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="标题: 西游记" />
+
+        <TextView
+            android:id="@+id/tv_life_search_actor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="人物: 孙悟空" />
+
+        <TextView
+            android:id="@+id/tv_life_search_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简介: 姚晶这位当红女影星英年去世，身后的遗产竟没有人想要。生前人们迷幻于她的美丽、财富及豪门夫家，然而有谁知道她内心的苦闷与悲凉，正是这外表的灿烂和内心的寂寞组成了她丰富的人生。\n\n漫漫人生，直义何在……" />
+    </LinearLayout>
+</LinearLayout>

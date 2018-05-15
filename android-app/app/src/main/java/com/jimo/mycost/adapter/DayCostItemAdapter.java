@@ -1,4 +1,4 @@
-package com.jimo.mycost.view;
+package com.jimo.mycost.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

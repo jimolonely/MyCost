@@ -1,4 +1,4 @@
-package com.jimo.mycost.view;
+package com.jimo.mycost.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -18,8 +18,8 @@ import com.jimo.mycost.ui.activity.AddCostActivity;
 import com.jimo.mycost.ui.activity.DataStatisticActivity;
 import com.jimo.mycost.ui.activity.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
-import com.jimo.mycost.view.ItemDayCost;
-import com.jimo.mycost.view.DayCostItemAdapter;
+import com.jimo.mycost.adapter.ItemDayCost;
+import com.jimo.mycost.adapter.DayCostItemAdapter;
 
 import org.xutils.DbManager;
 import org.xutils.common.Callback;

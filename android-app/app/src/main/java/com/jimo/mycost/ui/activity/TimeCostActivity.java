@@ -18,10 +18,10 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.model.Subject;
 import com.jimo.mycost.model.TimeRecord;
 import com.jimo.mycost.util.JimoUtil;
-import com.jimo.mycost.view.AddSubjectDialog;
-import com.jimo.mycost.view.DayTimeItemAdapter;
-import com.jimo.mycost.view.ItemDayTime;
-import com.jimo.mycost.view.SelectSubjectDialog;
+import com.jimo.mycost.ui.dialog.AddSubjectDialog;
+import com.jimo.mycost.adapter.DayTimeItemAdapter;
+import com.jimo.mycost.adapter.ItemDayTime;
+import com.jimo.mycost.ui.dialog.SelectSubjectDialog;
 
 import org.xutils.DbManager;
 import org.xutils.db.sqlite.WhereBuilder;

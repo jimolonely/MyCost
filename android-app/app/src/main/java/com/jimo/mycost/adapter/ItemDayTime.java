@@ -1,4 +1,4 @@
-package com.jimo.mycost.view;
+package com.jimo.mycost.adapter;
 
 /**
  * Created by jimo on 17-11-25.
