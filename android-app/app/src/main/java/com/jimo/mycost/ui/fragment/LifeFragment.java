@@ -26,4 +26,11 @@ public class LifeFragment extends Fragment {
     private void initData() {
 
     }
+
+
+    /**
+     * https://api.douban.com/v2/book/search?q=寂寞&start=20
+     * https://api.douban.com/v2/movie/search?q=西游记
+     */
+
 }
