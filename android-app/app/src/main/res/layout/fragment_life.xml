@@ -147,6 +147,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/tv_temp5"
                 android:hint=""
+                android:inputType="textMultiLine"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp" />
 
@@ -226,8 +227,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/tv_temp8"
-                android:numStars="10"
-                android:rating="6"
+                android:numStars="5"
+                android:rating="3"
                 android:stepSize="0.5" />
 
         </RelativeLayout>

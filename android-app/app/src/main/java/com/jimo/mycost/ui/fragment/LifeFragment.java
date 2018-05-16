@@ -75,6 +75,10 @@ public class LifeFragment extends Fragment {
 
             }
         });
+
+        rb_score.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            //rating
+        });
     }
 
 
@@ -102,4 +106,6 @@ public class LifeFragment extends Fragment {
     public interface SearchDataHandle {
         void getData(ItemLifeSearchResult result);
     }
+
+
 }
