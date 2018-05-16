@@ -14,19 +14,24 @@ import com.jimo.mycost.R;
 import org.xutils.common.Callback;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResultAdapter.ItemViewHolder> {
 
     private final LayoutInflater inflater;
     private final Context context;
-    private final List<ItemLifeSearchResult> data;
+    private List<ItemLifeSearchResult> data;
 
 
-    public LifeSearchResultAdapter(Context context, List<ItemLifeSearchResult> data) {
+    public LifeSearchResultAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
-        this.data = data;
+        this.data = new ArrayList<>();
+    }
+
+    public List<ItemLifeSearchResult> getData() {
+        return this.data;
     }
 
     @Override
@@ -72,7 +77,7 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
         private ImageView imageView;
         private TextView tv_title;
 
-        public ItemViewHolder(View itemView) {
+        ItemViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_life_search);
             tv_title = itemView.findViewById(R.id.tv_life_search_title);

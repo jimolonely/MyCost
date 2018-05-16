@@ -9,14 +9,23 @@ import java.util.Date;
 public class LifeRecord {
     @Column(name = "id", isId = true, property = "NOT NULL")
     private long id;
-    @Column(name = "name")
+    @Column(name = "name") //名字
     private String name;
     @Column(name = "theme")
     private String theme;//主题类型,比如电影,书籍
     @Column(name = "type")
     private String type;//对应主题的类型,比如电影有科幻,爱情等,书籍有文学,科学等
+    @Column(name = "creators")
+    private String creators;//书的作者或电影导演
+    @Column(name = "pubdate")
+    private String pubdate;//上映时间
+    @Column(name = "remark")
+    private String remark;//其他备注,书籍的页数,出版社,梗概,电影的演员
+    @Column(name = "rating")
+    private String rating;//豆瓣评分 7.5/10
+
     @Column(name = "score")
-    private int score;//评分
+    private int score;//我的评分
     @Column(name = "comment")
     private String comment;//评论
     @Column(name = "mood")

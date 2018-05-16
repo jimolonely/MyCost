@@ -16,4 +16,12 @@ public class ItemLifeSearchResult {
     public String getTitle() {
         return title;
     }
+
+    @Override
+    public String toString() {
+        return "ItemLifeSearchResult{" +
+                "imgUrl='" + imgUrl + '\'' +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

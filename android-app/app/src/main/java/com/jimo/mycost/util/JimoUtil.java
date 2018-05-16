@@ -1,9 +1,11 @@
 package com.jimo.mycost.util;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jimo.mycost.model.RangeDate;
 
@@ -20,6 +22,10 @@ public class JimoUtil {
 
     public static void mySnackbar(View view, String msg) {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public static void myToast(Context context,String msg) {
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
     }
 
 

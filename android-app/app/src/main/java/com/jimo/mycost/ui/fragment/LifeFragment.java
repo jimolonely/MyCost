@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jimo.mycost.R;
+import com.jimo.mycost.ui.dialog.LifeSearchDialog;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.x;
 
 @ContentView(R.layout.fragment_life)
@@ -33,4 +35,9 @@ public class LifeFragment extends Fragment {
      * https://api.douban.com/v2/movie/search?q=西游记
      */
 
+    @Event(R.id.btn_life_finish)
+    private void submit(View view) {
+        final LifeSearchDialog dialog = new LifeSearchDialog(getContext(), "西游记");
+        dialog.show();
+    }
 }

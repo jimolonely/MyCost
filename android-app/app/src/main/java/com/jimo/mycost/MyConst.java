@@ -24,7 +24,7 @@ public class MyConst {
     public static String[] bodyData = {"体重", "胸围", "腰围"};
     public static String[] bodyDataUnit = {"kg", "cm", "cm"};//数据的单位
 
-    public static String DOUBAN_MOVIE_API = "https://api.douban.com/v2/book/search";
+    public static String DOUBAN_BOOK_API = "https://api.douban.com/v2/book/search";
 
     //获取用户名
     public static String getUserName(Context context) {
