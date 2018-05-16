@@ -22,15 +22,269 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="项目"
+                android:text="主题"
                 android:textSize="15sp" />
 
             <Spinner
-                android:id="@+id/sp_body"
+                android:id="@+id/sp_life_theme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="名字"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp1"
+                android:layout_toStartOf="@+id/btn_life_search"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btn_life_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:padding="5dp"
+                android:text="搜索"
+                android:textColor="@color/icons" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="类型"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp3"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="作者"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_creator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp4"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="备注"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_remark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp5"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="上映时间"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_pubdate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp6"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="豆瓣评分"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_rating"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp7"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="我的评分"
+                android:textSize="15sp" />
+
+            <RatingBar
+                android:id="@+id/rb_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/tv_temp8"
+                android:numStars="10"
+                android:rating="6"
+                android:stepSize="0.5" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp9"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="我的评论"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp9"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_temp10"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="所花时长"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/input_life_spend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tv_temp10"
+                android:hint=""
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,16 +298,16 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="日期"
+                android:text="看的时间"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/input_date"
+                android:id="@+id/input_life_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:gravity="center|start"
-                android:hint="点击选日期"
+                android:hint="点击选时间"
                 android:text=""
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp" />
@@ -65,36 +319,16 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/tv_temp"
+                android:id="@+id/tv_temp2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="数据"
+                android:text="图片补充"
                 android:textSize="15sp" />
 
-            <EditText
-                android:id="@+id/input_body"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_toEndOf="@+id/tv_temp"
-                android:layout_toStartOf="@+id/tv_unit"
-                android:gravity="start|center"
-                android:hint="测量结果"
-                android:inputType="numberDecimal"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/tv_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:gravity="center"
-                android:text="cm"
-                android:textSize="12sp" />
         </RelativeLayout>
 
         <Button

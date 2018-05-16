@@ -22,12 +22,17 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
     private final LayoutInflater inflater;
     private final Context context;
     private List<ItemLifeSearchResult> data;
+    private OnClickCallback callback;
 
+    public interface OnClickCallback {
+        void getData(ItemLifeSearchResult result);
+    }
 
-    public LifeSearchResultAdapter(Context context) {
+    public LifeSearchResultAdapter(Context context, OnClickCallback callback) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = new ArrayList<>();
+        this.callback = callback;
     }
 
     public List<ItemLifeSearchResult> getData() {
@@ -43,6 +48,8 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         final ItemLifeSearchResult result = data.get(position);
         holder.tv_title.setText(result.getTitle());
+        holder.tv_actor.setText(result.getCreators());
+        holder.tv_sumary.setText(result.getRemark());
 
         x.image().loadDrawable(result.getImgUrl(), null, new Callback.CommonCallback<Drawable>() {
             @Override
@@ -65,6 +72,12 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
 
             }
         });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.getData(result);
+            }
+        });
     }
 
     @Override
@@ -76,11 +89,15 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
 
         private ImageView imageView;
         private TextView tv_title;
+        private TextView tv_sumary;
+        private TextView tv_actor;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_life_search);
             tv_title = itemView.findViewById(R.id.tv_life_search_title);
+            tv_sumary = itemView.findViewById(R.id.tv_life_search_summary);
+            tv_actor = itemView.findViewById(R.id.tv_life_search_actor);
         }
     }
 }

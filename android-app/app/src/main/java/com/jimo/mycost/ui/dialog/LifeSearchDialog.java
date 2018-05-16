@@ -20,6 +20,7 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.adapter.ItemLifeSearchResult;
 import com.jimo.mycost.adapter.LifeSearchResultAdapter;
+import com.jimo.mycost.ui.fragment.LifeFragment;
 import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.common.Callback;
@@ -30,13 +31,14 @@ public class LifeSearchDialog extends Dialog {
 
     private Context context;
     private String keyword;//搜索关键字
+    private String theme;//主题
     private DataCallback callback;
+    private LifeFragment.SearchDataHandle upCallback;
 
     private int start = 0;
     private final int TYPE_MORE = 0;
     private final int TYPE_REFRESH = 1;
 
-    private RecyclerView recyclerView;
     private EasyRefreshLayout easyRefreshLayout;
     private LifeSearchResultAdapter adapter;
 
@@ -44,11 +46,13 @@ public class LifeSearchDialog extends Dialog {
         void onDataSelect();
     }
 
-    public LifeSearchDialog(@NonNull Context context, String keyword) {
+    public LifeSearchDialog(@NonNull Context context, String keyword, String theme, LifeFragment.SearchDataHandle callback) {
         super(context);
         this.context = context;
         this.keyword = keyword;
-        this.adapter = new LifeSearchResultAdapter(context);
+        this.theme = theme;
+        this.adapter = new LifeSearchResultAdapter(context, new MyCallback());
+        this.upCallback = callback;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class LifeSearchDialog extends Dialog {
         final View view = inflater.inflate(R.layout.dialog_life_search, null);
 
         easyRefreshLayout = view.findViewById(R.id.easylayout);
-        recyclerView = view.findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         TextView tvKey = view.findViewById(R.id.tv_life_search_keyword);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
@@ -88,8 +92,87 @@ public class LifeSearchDialog extends Dialog {
 
     }
 
+    private class MyCallback implements LifeSearchResultAdapter.OnClickCallback {
+
+        @Override
+        public void getData(ItemLifeSearchResult result) {
+            Log.i("item", result.toString());
+            upCallback.getData(result);
+            LifeSearchDialog.this.dismiss();
+        }
+    }
+
     private void loadSearchData(int type) {
-        final RequestParams params = new RequestParams(MyConst.DOUBAN_BOOK_API);
+        if (LifeFragment.THEME_BOOK.equals(theme)) {
+            loadData(type, MyConst.DOUBAN_BOOK_API, result -> {
+                JSONObject obj = JSON.parseObject(result);
+                final JSONArray books = obj.getJSONArray("books");
+                if (books == null) {
+                    return;
+                }
+                int len = books.size();
+                for (int i = 0; i < len; i++) {
+                    JSONObject book = (JSONObject) books.get(i);
+                    final JSONArray tags = book.getJSONArray("tags");
+                    StringBuilder types = new StringBuilder("类型:");
+                    for (int j = 0; j < tags.size(); j++) {
+                        types.append(" ").append(((JSONObject) tags.get(j)).getString("name"));
+                    }
+                    String creators = (String) book.getJSONArray("author").stream().
+                            reduce("人物:", (pre, post) -> pre + " " + post);
+                    final JSONObject jr = book.getJSONObject("rating");
+                    final String rating = jr.getString("average") + "/" + jr.getString("max")
+                            + "/" + jr.getString("numRaters");
+                    String remark = book.getString("pages") + "页;出版商:" + book.getString("publisher")
+                            + ";\n简介:" + book.getString("summary");
+                    adapter.getData().add(new ItemLifeSearchResult(
+                            book.getJSONObject("images").getString("small"), book.getString("title")
+                            , types.toString(), creators, book.getString("pubdate"), remark, rating));
+                }
+                start += len;
+            });
+        } else if (LifeFragment.THEME_MOVIE.equals(theme)) {
+            loadData(type, MyConst.DOUBAN_MOVIE_API, result -> {
+                JSONObject obj = JSON.parseObject(result);
+                final JSONArray movies = obj.getJSONArray("subjects");
+                if (movies == null) {
+                    return;
+                }
+                int len = movies.size();
+                for (int i = 0; i < len; i++) {
+                    JSONObject movie = (JSONObject) movies.get(i);
+                    String types = (String) movie.getJSONArray("genres").stream().
+                            reduce("类型:", (pre, post) -> pre + " " + post);
+                    final JSONArray directors = movie.getJSONArray("directors");
+                    StringBuilder creators = new StringBuilder("导演:");
+                    for (int j = 0; j < directors.size(); j++) {
+                        creators.append(" ").append(((JSONObject) directors.get(j)).getString("name"));
+                    }
+                    final JSONArray casts = movie.getJSONArray("casts");
+                    StringBuilder remark = new StringBuilder("主演:");
+                    for (int j = 0; j < casts.size(); j++) {
+                        remark.append(" ").append(((JSONObject) casts.get(j)).getString("name"));
+                    }
+                    final JSONObject jr = movie.getJSONObject("rating");
+                    final String rating = jr.getString("average") + "/" + jr.getString("max")
+                            + "/" + jr.getString("stars");
+                    adapter.getData().add(new ItemLifeSearchResult(movie.getJSONObject("images")
+                            .getString("small"), movie.getString("title"), types
+                            , creators.toString(), movie.getString("year"),
+                            remark.toString(), rating
+                    ));
+                }
+                start += len;
+            });
+        }
+    }
+
+    private interface HandleJSONData {
+        void callback(String result);
+    }
+
+    private void loadData(int type, String api, HandleJSONData handle) {
+        final RequestParams params = new RequestParams(api);
         params.addQueryStringParameter("q", keyword);
         if (type == TYPE_REFRESH) {
             //如果是刷新,则从0开始
@@ -105,17 +188,7 @@ public class LifeSearchDialog extends Dialog {
                 if (result != null) {
                     cacheResult = result;
                 }
-                JSONObject obj = JSON.parseObject(cacheResult);
-                final JSONArray books = obj.getJSONArray("books");
-                int len = books.size();
-                for (int i = 0; i < len; i++) {
-                    JSONObject book = (JSONObject) books.get(i);
-//                    Log.i("book", book.toJSONString());
-                    adapter.getData().add(new ItemLifeSearchResult(book.getJSONObject("images")
-                            .getString("small"), book.getString("title")));
-                }
-                start += len;
-
+                handle.callback(cacheResult);
                 Log.i("data-in", adapter.getData().size() + "");
                 adapter.notifyDataSetChanged();
                 easyRefreshLayout.refreshComplete();
