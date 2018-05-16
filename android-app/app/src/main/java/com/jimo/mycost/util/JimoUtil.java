@@ -9,6 +9,11 @@ import android.widget.Toast;
 
 import com.jimo.mycost.model.RangeDate;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,8 +29,8 @@ public class JimoUtil {
         Snackbar.make(view, msg, Snackbar.LENGTH_SHORT).show();
     }
 
-    public static void myToast(Context context,String msg) {
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+    public static void myToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -231,5 +236,32 @@ public class JimoUtil {
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, 0);
         return formatDate(c.getTime());
+    }
+
+
+    public static boolean fileCopy(String oldPath, String newPathDir, String fileName) {
+        final File oldFile = new File(oldPath);
+        if (!oldFile.exists()) {
+            return false;
+        }
+        final File newFileDir = new File(newPathDir);
+        if (!newFileDir.exists()) {
+            newFileDir.mkdirs();
+        }
+        final File newFile = new File(newPathDir + "/" + fileName);
+        try {
+            final FileInputStream inputStream = new FileInputStream(oldFile);
+            final FileOutputStream outputStream = new FileOutputStream(newFile);
+            final byte[] batch = new byte[1024];
+            while (inputStream.read(batch) != -1) {
+                outputStream.write(batch);
+            }
+            inputStream.close();
+            outputStream.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

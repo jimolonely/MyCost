@@ -29,6 +29,13 @@ public class MyConst {
 
     public static String[] themeData = {"电影", "书籍"};
 
+    public static final String IMG_TYPE_COST = "cost";
+    public static final String IMG_TYPE_INCOME = "income";
+    public static final String IMG_TYPE_LIFE = "life";
+
+
+    public static final String IMG_SAVE_PATH = "MyCost/images";
+
     //获取用户名
     public static String getUserName(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);

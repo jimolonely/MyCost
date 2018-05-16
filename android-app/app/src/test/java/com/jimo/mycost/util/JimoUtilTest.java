@@ -38,4 +38,9 @@ public class JimoUtilTest {
         System.out.println(JimoUtil.getChoiceDateRange("月", 1, 0));
         System.out.println(JimoUtil.getChoiceDateRange("年", 1, 0));
     }
+
+    @Test
+    public void testFileCopy() {
+        JimoUtil.fileCopy("/home/jimo/图片/me.jpg", "/home/jimo/workspace/hehe", "me.jpg");
+    }
 }

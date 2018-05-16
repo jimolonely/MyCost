@@ -25,6 +25,17 @@ public class ImageRecord {
     @Column(name = "user_name")
     private String userName;
 
+    public ImageRecord(long parentId, String type, String imgPath) {
+        this.parentId = parentId;
+        this.type = type;
+        this.imgPath = imgPath;
+        this.recordTime = new Date();
+        this.userName = "jimo";
+    }
+
+    public ImageRecord() {
+    }
+
     public long getId() {
         return id;
     }

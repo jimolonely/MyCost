@@ -140,6 +140,6 @@
             android:layout_height="1dp"
             android:background="@color/divider" />
 
-        <include layout="@layout/input_cost" />
+        <include layout="@layout/common_input_cost" />
     </LinearLayout>
 </ScrollView>

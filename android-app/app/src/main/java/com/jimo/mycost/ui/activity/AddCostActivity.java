@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.jimo.mycost.R;
@@ -13,6 +14,7 @@ import com.jimo.mycost.ui.fragment.CostFragment;
 import com.jimo.mycost.ui.fragment.InComeFragment;
 import com.jimo.mycost.ui.fragment.LifeFragment;
 import com.jimo.mycost.util.MyFragmentAdapter;
+import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -85,5 +87,13 @@ public class AddCostActivity extends AppCompatActivity implements ViewPager.OnPa
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PictureFileUtils.deleteCacheDirFile(this);
+//        PictureFileUtils.deleteExternalCacheDirFile(this);
+        Log.i("destory-activity", "已清除缓存");
     }
 }
