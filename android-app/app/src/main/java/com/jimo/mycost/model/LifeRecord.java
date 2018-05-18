@@ -25,13 +25,13 @@ public class LifeRecord {
     private String rating;//豆瓣评分 7.5/10
 
     @Column(name = "score")
-    private int score;//我的评分
+    private float score;//我的评分
     @Column(name = "comment")
     private String comment;//评论
     @Column(name = "mood")
     private String mood;//看完的心情
     @Column(name = "spend_time")
-    private int spendTime;//花的时间,转成秒
+    private String spendTime;//花的时间
     @Column(name = "time")
     private String time;//看的时间
     @Column(name = "record_time")
@@ -39,11 +39,16 @@ public class LifeRecord {
     @Column(name = "user_name")
     private String userName;
 
-    public LifeRecord(String name, String theme, String type, int score,
-                      String comment, String mood, int spendTime, String time) {
+    public LifeRecord(String name, String theme, String type, String creators, String pubdate,
+                      String remark, String rating, float score, String comment,
+                      String mood, String spendTime, String time) {
         this.name = name;
         this.theme = theme;
         this.type = type;
+        this.creators = creators;
+        this.pubdate = pubdate;
+        this.remark = remark;
+        this.rating = rating;
         this.score = score;
         this.comment = comment;
         this.mood = mood;
@@ -51,6 +56,9 @@ public class LifeRecord {
         this.time = time;
         this.recordTime = new Date();
         this.userName = "jimo";
+    }
+
+    public LifeRecord() {
     }
 
     public long getId() {
@@ -69,7 +77,7 @@ public class LifeRecord {
         return type;
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
@@ -81,7 +89,7 @@ public class LifeRecord {
         return mood;
     }
 
-    public int getSpendTime() {
+    public String getSpendTime() {
         return spendTime;
     }
 

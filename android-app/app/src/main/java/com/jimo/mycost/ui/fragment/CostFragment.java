@@ -86,9 +86,6 @@ public class CostFragment extends Fragment {
     @ViewInject(R.id.input_remark)
     EditText input_remark;//备注
 
-    @ViewInject(R.id.iv_select_img)
-    ImageView iv_select_img;
-
     @ViewInject(R.id.rcv_images)
     RecyclerView rcv_imgs;
 
@@ -265,6 +262,7 @@ public class CostFragment extends Fragment {
     /**
      * 检查输入
      */
+    //TODO 重构checkInput为公共方法
     private boolean checkInput(View view) {
         if (TextUtils.isEmpty(date)) {
             Snackbar.make(view, "选择日期", Snackbar.LENGTH_SHORT).show();
