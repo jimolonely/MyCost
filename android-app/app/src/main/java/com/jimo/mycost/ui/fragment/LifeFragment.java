@@ -20,11 +20,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.jimo.mycost.MyApp;
+import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.adapter.ItemLifeSearchResult;
 import com.jimo.mycost.adapter.SelectImgAdapter;
 import com.jimo.mycost.model.LifeRecord;
 import com.jimo.mycost.ui.dialog.LifeSearchDialog;
+import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -32,11 +35,15 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
+import org.xutils.DbManager;
+import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -72,6 +79,8 @@ public class LifeFragment extends Fragment {
     private EditText edt_spend;
     @ViewInject(R.id.input_life_mood)
     private EditText edt_mood;
+    @ViewInject(R.id.input_life_date)
+    private TextView tv_date;
 
     private ArrayAdapter<String> adapter;
     private String theme = THEME_MOVIE;
@@ -83,7 +92,6 @@ public class LifeFragment extends Fragment {
     private List<String> imgPath = new ArrayList<>();
 
     private float myScore = 6;
-    private int hour, minute;
     private String watchTime;
 
     @Nullable
@@ -135,6 +143,33 @@ public class LifeFragment extends Fragment {
                 edt_rating.setText(result.getRating());
                 edt_remark.setText(result.getRemark());
                 edt_type.setText(result.getType());
+                //把封面加入图片列表
+                x.image().loadFile(result.getImgUrl(), null, new Callback.CacheCallback<File>() {
+                    @Override
+                    public boolean onCache(File result) {
+                        Log.i("cache-img-path", result.getAbsolutePath() + "/" + result.getName());
+                        imgPath.add(result.getAbsolutePath());
+                        adapterForSelectImg.setData(imgPath);
+                        adapterForSelectImg.notifyDataSetChanged();
+                        return true;
+                    }
+
+                    @Override
+                    public void onSuccess(File result) {
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                    }
+
+                    @Override
+                    public void onFinished() {
+                    }
+                });
             });
             dialog.show();
         }
@@ -153,21 +188,33 @@ public class LifeFragment extends Fragment {
                     String.valueOf(edt_rating.getText()), myScore, String.valueOf(edt_comment.getText()), String.valueOf(edt_mood.getText()),
                     String.valueOf(edt_spend.getText()), watchTime);
             //image store
-
-            //store to db
+            final DbManager db = MyApp.dbManager;
+            try {
+                db.save(lifeRecord);
+                final long parentId = db.selector(LifeRecord.class).orderBy("id", true).findFirst().getId();
+                JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_LIFE);
+                FuckUtil.clearInput(() -> {
+                    tv_date.setText("点击选择时间");
+                    imgPath.clear();
+                    adapterForSelectImg.setData(imgPath);
+                    adapterForSelectImg.notifyDataSetChanged();
+                }, edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood);
+            } catch (DbException e) {
+                e.printStackTrace();
+                JimoUtil.myToast(getContext(), "error: " + e.getMessage());
+            }
         }
     }
 
     @Event(R.id.input_life_date)
     private void chooseTime(View view) {
-        TextView tv_date = (TextView) view;
         final Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute1 = c.get(Calendar.MINUTE);
         new TimePickerDialog(getContext(), (view1, hourOfDay, minute) -> {
             watchTime = hourOfDay + ":" + minute;
             tv_date.setText(watchTime);
-        }, hour, minute, true).show();
+        }, hour, minute1, true).show();
     }
 
     private boolean checkInput(EditText... edts) {

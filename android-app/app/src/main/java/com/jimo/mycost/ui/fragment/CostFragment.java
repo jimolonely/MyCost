@@ -215,25 +215,8 @@ public class CostFragment extends Fragment {
 
                     //存储后获得id,用于关联图片
                     db.save(cost);
-                    final CostInComeRecord newest = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst();
-                    final long parentId = newest.getId();
-                    final String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                    final String dir = Paths.get(MyConst.IMG_SAVE_PATH, MyConst.IMG_TYPE_COST, year + "", month + "").toString();
-                    for (String p : imgPath) {
-                        //构造图片地址
-                        final String fileName = p.substring(p.lastIndexOf('/') + 1);
-                        String path = dir + "/" + fileName;
-                        //需要绝对路径来复制图片
-                        String absPath = Paths.get(rootPath, dir).toString();
-                        final boolean ok = JimoUtil.fileCopy(p, absPath, fileName);
-                        Log.i("path", absPath);
-                        if (ok) {
-                            final ImageRecord imageRecord = new ImageRecord(parentId, MyConst.IMG_TYPE_COST, path);
-                            db.save(imageRecord);
-                        } else {
-                            JimoUtil.mySnackbar(view, "存储图片失败");
-                        }
-                    }
+                    final long parentId = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst().getId();
+                    JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_COST, month, year);
 
                     //更新月记录
                     MonthCost monthCost = db.selector(MonthCost.class).

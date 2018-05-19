@@ -1,23 +1,32 @@
 package com.jimo.mycost.util;
 
 import android.content.Context;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jimo.mycost.MyConst;
+import com.jimo.mycost.model.ImageRecord;
 import com.jimo.mycost.model.RangeDate;
+
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by root on 17-7-25.
@@ -263,5 +272,36 @@ public class JimoUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+
+    //重载实现默认参数
+    public static void storeImg(Context context, List<String> imgPath, DbManager db, long parentId, String imgType) throws DbException {
+        storeImg(context, imgPath, db, parentId, imgType, 0, 0);
+    }
+
+    public static void storeImg(Context context, List<String> imgPath, DbManager db, long parentId, String imgType, int month, int year) throws DbException {
+        if (month == 0 && year == 0) {
+            final Calendar c = Calendar.getInstance();
+            month = c.get(Calendar.MONTH);
+            year = c.get(Calendar.YEAR);
+        }
+        final String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        final String dir = Paths.get(MyConst.IMG_SAVE_PATH, imgType, year + "", month + "").toString();
+        for (String p : imgPath) {
+            //构造图片地址
+            final String fileName = p.substring(p.lastIndexOf('/') + 1);
+            String path = dir + "/" + fileName;
+            //需要绝对路径来复制图片
+            String absPath = Paths.get(rootPath, dir).toString();
+            final boolean ok = JimoUtil.fileCopy(p, absPath, fileName);
+            Log.i("path", absPath);
+            if (ok) {
+                final ImageRecord imageRecord = new ImageRecord(parentId, imgType, path);
+                db.save(imageRecord);
+            } else {
+                JimoUtil.myToast(context, "存储图片失败");
+            }
+        }
     }
 }
