@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.BodyData;
+import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.DbManager;
@@ -82,29 +83,7 @@ public class BodyDataFragment extends Fragment {
 
     @Event(R.id.input_date)
     private void dateClick(View view) {
-        //TODO 重构
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                //为了按日期排序，当9月9号时应该写成09-09,而不是9-9
-                if (i1 < 9) {
-                    date = i + "-0" + (i1 + 1);
-                } else {
-                    date = i + "-" + (i1 + 1);
-                }
-                if (i2 < 10) {
-                    date += "-0" + i2;
-                } else {
-                    date += "-" + i2;
-                }
-                tv_date.setText(date);
-            }
-        }, year, month, day);
-        datePickerDialog.show();
+        FuckUtil.showDateSelectDialog(getContext(), (date) -> tv_date.setText(String.valueOf(date)));
     }
 
     @Event(R.id.btn_finish)

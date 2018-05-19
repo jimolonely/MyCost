@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
@@ -57,29 +56,29 @@ public class LifeFragment extends Fragment {
     public static final String THEME_MOVIE = "电影";
     public static final String THEME_BOOK = "书籍";
 
-    @ViewInject(R.id.sp_life_theme)
+    @ViewInject(R.id.sp_theme_life)
     private Spinner sp_theme;
-    @ViewInject(R.id.input_life_name)
+    @ViewInject(R.id.input_name_life)
     private EditText edt_name;
-    @ViewInject(R.id.input_life_type)
+    @ViewInject(R.id.input_type_life)
     private EditText edt_type;
-    @ViewInject(R.id.input_life_creator)
+    @ViewInject(R.id.input_creator_life)
     private EditText edt_author;
-    @ViewInject(R.id.input_life_remark)
+    @ViewInject(R.id.input_remark_life)
     private EditText edt_remark;
-    @ViewInject(R.id.input_life_pubdate)
+    @ViewInject(R.id.input_pubdate_life)
     private EditText edt_pubdate;
-    @ViewInject(R.id.input_life_rating)
+    @ViewInject(R.id.input_rating_life)
     private EditText edt_rating;
-    @ViewInject(R.id.rb_life_score)
+    @ViewInject(R.id.rb_score_life)
     private RatingBar rb_score;
-    @ViewInject(R.id.input_life_comment)
+    @ViewInject(R.id.input_comment_life)
     private EditText edt_comment;
-    @ViewInject(R.id.input_life_spend)
+    @ViewInject(R.id.input_spend_life)
     private EditText edt_spend;
-    @ViewInject(R.id.input_life_mood)
+    @ViewInject(R.id.input_mood_life)
     private EditText edt_mood;
-    @ViewInject(R.id.input_life_date)
+    @ViewInject(R.id.input_time_life)
     private TextView tv_date;
 
     private ArrayAdapter<String> adapter;
@@ -132,7 +131,7 @@ public class LifeFragment extends Fragment {
      * https://api.douban.com/v2/movie/search?q=西游记
      */
 
-    @Event(R.id.btn_life_search)
+    @Event(R.id.btn_search_life)
     private void openSearch(View view) {
         String keyword = String.valueOf(edt_name.getText());
         if (!TextUtils.isEmpty(keyword)) {
@@ -179,7 +178,7 @@ public class LifeFragment extends Fragment {
         void getData(ItemLifeSearchResult result);
     }
 
-    @Event(R.id.btn_life_finish)
+    @Event(R.id.btn_submit_life)
     private void submit(View view) {
         if (checkInput(edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood)) {
             //
@@ -193,7 +192,7 @@ public class LifeFragment extends Fragment {
                 db.save(lifeRecord);
                 final long parentId = db.selector(LifeRecord.class).orderBy("id", true).findFirst().getId();
                 JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_LIFE);
-                FuckUtil.clearInput(() -> {
+                FuckUtil.clearInput((obj) -> {
                     tv_date.setText("点击选择时间");
                     imgPath.clear();
                     adapterForSelectImg.setData(imgPath);
@@ -206,7 +205,7 @@ public class LifeFragment extends Fragment {
         }
     }
 
-    @Event(R.id.input_life_date)
+    @Event(R.id.input_time_life)
     private void chooseTime(View view) {
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);

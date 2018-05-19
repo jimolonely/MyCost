@@ -22,7 +22,7 @@
 
 
         <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/fbl_food"
+            android:id="@+id/fbl_food_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:alignContent="stretch"
@@ -81,7 +81,7 @@
 
 
         <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/fbl_transport"
+            android:id="@+id/fbl_transport_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:alignContent="stretch"
@@ -104,7 +104,7 @@
 
 
         <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/fbl_study"
+            android:id="@+id/fbl_study_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:alignContent="stretch"
@@ -127,7 +127,7 @@
 
 
         <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/fbl_life"
+            android:id="@+id/fbl_life_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:alignContent="stretch"

@@ -283,7 +283,7 @@ public class JimoUtil {
     public static void storeImg(Context context, List<String> imgPath, DbManager db, long parentId, String imgType, int month, int year) throws DbException {
         if (month == 0 && year == 0) {
             final Calendar c = Calendar.getInstance();
-            month = c.get(Calendar.MONTH);
+            month = c.get(Calendar.MONTH) + 1;
             year = c.get(Calendar.YEAR);
         }
         final String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();

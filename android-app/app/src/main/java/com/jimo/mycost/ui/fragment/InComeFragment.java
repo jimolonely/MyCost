@@ -21,6 +21,7 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.model.CostInComeRecord;
 import com.jimo.mycost.model.MonthCost;
+import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.DbManager;
@@ -45,19 +46,19 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
 @ContentView(R.layout.fragment_income)
 public class InComeFragment extends Fragment {
 
-    @ViewInject(R.id.fbl_in_normal)
+    @ViewInject(R.id.fbl_normal_income)
     FlexboxLayout fl_normal;
 
-    @ViewInject(R.id.input_date1)
+    @ViewInject(R.id.input_date_income)
     TextView input_date;
 
-    @ViewInject(R.id.input_type1)
+    @ViewInject(R.id.input_type_income)
     TextView input_type;
 
-    @ViewInject(R.id.input_money1)
+    @ViewInject(R.id.input_money_income)
     EditText input_money;
 
-    @ViewInject(R.id.input_remark1)
+    @ViewInject(R.id.input_remark_income)
     EditText input_remark;
 
     private List<String> normalInComes = new ArrayList<>(Arrays.asList("工资", "兼职", "红包", "投资", "奖金", "补贴", "礼金", "其他"));
@@ -106,7 +107,7 @@ public class InComeFragment extends Fragment {
      *
      * @param view
      */
-    @Event(R.id.btn_finish1)
+    @Event(R.id.btn_finish_income)
     private void finishClick(View view) {
         if (checkInput(view)) {
             try {
@@ -191,29 +192,9 @@ public class InComeFragment extends Fragment {
         return true;
     }
 
-    @Event(R.id.input_date1)
+    @Event(R.id.input_date_income)
     private void dateClick(View view) {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                if (i1 < 9) {
-                    date = i + "-0" + (i1 + 1);
-                } else {
-                    date = i + "-" + (i1 + 1);
-                }
-                if (i2 < 10) {
-                    date += "-0" + i2;
-                } else {
-                    date += "-" + i2;
-                }
-                input_date.setText(date);
-            }
-        }, year, month, day);
-        datePickerDialog.show();
+        FuckUtil.showDateSelectDialog(getContext(), (date) -> input_date.setText(String.valueOf(date)));
     }
 
     private class NormalOnClickListener implements View.OnClickListener {

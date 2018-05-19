@@ -26,7 +26,7 @@
                 android:textSize="15sp" />
 
             <Spinner
-                android:id="@+id/sp_life_theme"
+                android:id="@+id/sp_theme_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:spinnerMode="dropdown" />
@@ -48,18 +48,18 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_name"
+                android:id="@+id/input_name_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/tv_temp1"
-                android:layout_toStartOf="@+id/btn_life_search"
+                android:layout_toStartOf="@+id/btn_search_life"
                 android:hint=""
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp" />
 
             <Button
-                android:id="@+id/btn_life_search"
+                android:id="@+id/btn_search_life"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -87,7 +87,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_type"
+                android:id="@+id/input_type_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -114,7 +114,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_creator"
+                android:id="@+id/input_creator_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -141,7 +141,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_remark"
+                android:id="@+id/input_remark_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -169,7 +169,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_pubdate"
+                android:id="@+id/input_pubdate_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -196,7 +196,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_rating"
+                android:id="@+id/input_rating_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -223,7 +223,7 @@
                 android:textSize="15sp" />
 
             <RatingBar
-                android:id="@+id/rb_life_score"
+                android:id="@+id/rb_score_life"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/tv_temp8"
@@ -248,7 +248,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_comment"
+                android:id="@+id/input_comment_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -275,7 +275,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_mood"
+                android:id="@+id/input_mood_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -302,7 +302,7 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:id="@+id/input_life_spend"
+                android:id="@+id/input_spend_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
@@ -329,7 +329,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/input_life_date"
+                android:id="@+id/input_time_life"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -363,7 +363,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/btn_life_finish"
+            android:id="@+id/btn_submit_life"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

@@ -74,47 +74,38 @@ public class MainActivity extends Activity {
         listViewCost.setAdapter(dayCostItemAdapter);
 
         //当点击item时需跳转到新页面展示
-        listViewCost.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        listViewCost.setOnItemClickListener((adapterView, view, i, l) -> {
 //                ItemDayCost dayCostTitle = dayCostItems.get(i);
-                //TODO 显示item
-            }
+            //TODO 显示item
         });
 
         //长按时提示删除
-        listViewCost.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                final ItemDayCost item = dayCostItems.get(i);
-                if (item.getItemType() == MyConst.ITEM_TYPE2) {
-                    JimoUtil.mySnackbar(tv_income, "这个不可以删哦");
-                    return true;
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("删除");
-                builder.setMessage("确定删除吗?");
-                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        DbManager db = MyApp.dbManager;
-                        WhereBuilder wb = WhereBuilder.b();
-                        wb.and("id", "=", item.getId());
-                        try {
-                            db.delete(CostInComeRecord.class, wb);
-                            queryData();
-                            dayCostItemAdapter.notifyDataSetChanged();
-                            JimoUtil.mySnackbar(view, "删除成功");
-                        } catch (DbException e) {
-                            JimoUtil.mySnackbar(view, "删除失败");
-                            e.printStackTrace();
-                        }
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.create().show();
+        listViewCost.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            final ItemDayCost item = dayCostItems.get(i);
+            if (item.getItemType() == MyConst.ITEM_TYPE2) {
+                JimoUtil.mySnackbar(tv_income, "这个不可以删哦");
                 return true;
             }
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("删除");
+            builder.setMessage("确定删除吗?");
+            builder.setPositiveButton("ok", (dialogInterface, i1) -> {
+                DbManager db = MyApp.dbManager;
+                WhereBuilder wb = WhereBuilder.b();
+                wb.and("id", "=", item.getId());
+                try {
+                    db.delete(CostInComeRecord.class, wb);
+                    queryData();
+                    dayCostItemAdapter.notifyDataSetChanged();
+                    JimoUtil.mySnackbar(view, "删除成功");
+                } catch (DbException e) {
+                    JimoUtil.mySnackbar(view, "删除失败");
+                    e.printStackTrace();
+                }
+                dialogInterface.dismiss();
+            });
+            builder.create().show();
+            return true;
         });
     }
 
@@ -250,13 +241,10 @@ public class MainActivity extends Activity {
         builder.setTitle("上传数据");
         builder.setMessage("是否上传?");
         final View v = view;
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //传输数据
-                uploadData(v);
-                dialogInterface.dismiss();
-            }
+        builder.setPositiveButton("ok", (dialogInterface, i) -> {
+            //传输数据
+            uploadData(v);
+            dialogInterface.dismiss();
         });
         builder.create().show();
     }
@@ -266,12 +254,7 @@ public class MainActivity extends Activity {
         builder.setTitle("上传中...");
         builder.setMessage("正在上传数据...");
         builder.setCancelable(false);
-        builder.setPositiveButton("后台", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        builder.setPositiveButton("后台", (dialogInterface, i) -> dialogInterface.dismiss());
         final AlertDialog dialog = builder.create();
         dialog.show();
 

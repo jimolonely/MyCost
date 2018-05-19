@@ -1,15 +1,11 @@
 package com.jimo.mycost.ui.fragment;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
@@ -29,8 +24,8 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.adapter.SelectImgAdapter;
 import com.jimo.mycost.model.CostInComeRecord;
-import com.jimo.mycost.model.ImageRecord;
 import com.jimo.mycost.model.MonthCost;
+import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -45,7 +40,6 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -62,16 +56,16 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
 @ContentView(R.layout.fragment_cost)
 public class CostFragment extends Fragment {
 
-    @ViewInject(R.id.fbl_food)
+    @ViewInject(R.id.fbl_food_cost)
     FlexboxLayout fl_food;
 
-    @ViewInject(R.id.fbl_transport)
+    @ViewInject(R.id.fbl_transport_cost)
     FlexboxLayout fl_transport;
 
-    @ViewInject(R.id.fbl_study)
+    @ViewInject(R.id.fbl_study_cost)
     FlexboxLayout fl_study;
 
-    @ViewInject(R.id.fbl_life)
+    @ViewInject(R.id.fbl_life_cost)
     FlexboxLayout fl_life;
 
     @ViewInject(R.id.input_date)
@@ -205,9 +199,8 @@ public class CostFragment extends Fragment {
                 String userName = MyConst.getUserName(getContext());
                 CostInComeRecord cost = new CostInComeRecord(MyConst.COST, money,
                         remark, date, type, userName, MyConst.SYNC_TYPE_INSERT);
-                //TODO 存储图片,目录结构按 type/year/month/file
+                //存储图片,目录结构按 type/year/month/file
                 // /storage/emulated/0/Android/data/com.jimo.mycost/cache/luban_disk_cache/1526471417309704.jpg
-
                 //TODO 事务
                 try {
                     int month = getMonth(date);
@@ -264,27 +257,9 @@ public class CostFragment extends Fragment {
 
     @Event(R.id.input_date)
     private void dateClick(View view) {
-        //TODO 重构
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, year1, month1, dayOfMonth) -> {
-            //为了按日期排序，当9月9号时应该写成09-09,而不是9-9
-            if (month1 < 9) {
-                date = year1 + "-0" + (month1 + 1);
-            } else {
-                date = year1 + "-" + (month1 + 1);
-            }
-            if (dayOfMonth < 10) {
-                date += "-0" + dayOfMonth;
-            } else {
-                date += "-" + dayOfMonth;
-            }
-            input_date.setText(date);
-        }, year, month, day);
-        datePickerDialog.show();
+        FuckUtil.showDateSelectDialog(getContext(), (date) -> input_date.setText(String.valueOf(date)));
     }
+
 
     private class FoodOnClickListener implements View.OnClickListener {
 
