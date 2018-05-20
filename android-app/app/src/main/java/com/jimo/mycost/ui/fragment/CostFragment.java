@@ -1,6 +1,5 @@
 package com.jimo.mycost.ui.fragment;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,7 +41,6 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -69,16 +67,16 @@ public class CostFragment extends Fragment {
     FlexboxLayout fl_life;
 
     @ViewInject(R.id.input_date)
-    TextView input_date;
+    TextView tv_input_date;
 
     @ViewInject(R.id.input_type)
-    TextView input_type;
+    TextView tv_input_type;
 
     @ViewInject(R.id.input_money)
-    EditText input_money;
+    EditText edt_input_money;
 
     @ViewInject(R.id.input_remark)
-    EditText input_remark;//备注
+    EditText edt_input_remark;//备注
 
     @ViewInject(R.id.rcv_images)
     RecyclerView rcv_imgs;
@@ -92,15 +90,9 @@ public class CostFragment extends Fragment {
     private List<String> studyTitles = new ArrayList<>(Arrays.asList("买书", "文具", "付费课程", "其他"));
     private List<String> lifeTitles = new ArrayList<>(Arrays.asList("健康",
             "服饰", "居家", "娱乐", "人情", "旅游", "通讯", "其他"));
-    //存储输入的值
-    private String date;
-    private String type;
-    private float money;
-    private String remark;
 
     //同步类型。默认是插入
     private int modifyType = MyConst.SYNC_TYPE_INSERT;
-
 
     @Nullable
     @Override
@@ -115,30 +107,27 @@ public class CostFragment extends Fragment {
     }
 
     private void initData() {
-        //food
-        for (String s : foodTitles) {
-            TextView tv = getTextView(s, new FoodOnClickListener());
-            fl_food.addView(tv);
-        }
-
-        //transport
-        for (String s : transportTitles) {
-            fl_transport.addView(getTextView(s, new TransportClickListener()));
-        }
-
-        //study
-        for (String s : studyTitles) {
-            fl_study.addView(getTextView(s, new StudyClickListener()));
-        }
-
-        //life
-        for (String s : lifeTitles) {
-            fl_life.addView(getTextView(s, new LifeClickListener()));
-        }
+        registClickListener(foodTitles, "餐饮", fl_food);
+        registClickListener(transportTitles, "交通", fl_transport);
+        registClickListener(studyTitles, "学习", fl_study);
+        registClickListener(lifeTitles, "生活", fl_life);
 
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapterForSelectImg = new SelectImgAdapter(getContext(), imgPath);
         rcv_imgs.setAdapter(adapterForSelectImg);
+    }
+
+    private void registClickListener(List<String> title, String type, FlexboxLayout flex) {
+        for (String s : title) {
+            TextView tvv = getTextView(s, (view) -> {
+                if (view instanceof TextView) {
+                    TextView tv = (TextView) view;
+                    final String text = type + " " + String.valueOf(tv.getText());
+                    tv_input_type.setText(text);
+                }
+            });
+            flex.addView(tvv);
+        }
     }
 
     @NonNull
@@ -160,154 +149,58 @@ public class CostFragment extends Fragment {
      */
     @Event(R.id.btn_finish)
     private void finishClick(View view) {
-        if (checkInput(view)) {
-            try {
-                money = Float.parseFloat(String.valueOf(input_money.getText()));
-                remark = String.valueOf(input_remark.getText());
-            } catch (Exception e) {
-                Snackbar.make(view, "error", Snackbar.LENGTH_SHORT).show();
-                return;
-            }
-            if (localStore(view)) {
-                clearInput();
-                JimoUtil.mySnackbar(view, "保存成功");
-            }
-        }
-    }
+        if (FuckUtil.checkInput(getContext(), tv_input_date, tv_input_type, edt_input_money)) {
+            DbManager db = MyApp.dbManager;
 
-    //清空输入框
-    private void clearInput() {
-        input_date.setText("");
-        input_type.setText("");
-        input_money.setText("");
-        input_remark.setText("");
-        imgPath.clear();
-        adapterForSelectImg.setData(imgPath);
-        adapterForSelectImg.notifyDataSetChanged();
-    }
+            switch (modifyType) {
+                case MyConst.SYNC_TYPE_INSERT:
+                    String userName = MyConst.getUserName(getContext());
+                    final String date = String.valueOf(tv_input_date.getText());
+                    final float money = Float.parseFloat(String.valueOf(edt_input_money.getText()));
+                    CostInComeRecord cost = new CostInComeRecord(MyConst.COST, money,
+                            String.valueOf(edt_input_remark.getText()), date,
+                            String.valueOf(tv_input_type.getText()), userName, MyConst.SYNC_TYPE_INSERT);
+                    //存储图片,目录结构按 type/year/month/file
+                    // /storage/emulated/0/Android/data/com.jimo.mycost/cache/luban_disk_cache/1526471417309704.jpg
+                    //TODO 事务
+                    try {
+                        int month = getMonth(date);
+                        int year = getYear(date);
 
+                        //存储后获得id,用于关联图片
+                        db.save(cost);
+                        final long parentId = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst().getId();
+                        JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_COST, month, year);
 
-    /**
-     * 存本地数据库
-     */
-    private boolean localStore(View view) {
-
-        DbManager db = MyApp.dbManager;
-
-        switch (modifyType) {
-            case MyConst.SYNC_TYPE_INSERT:
-                String userName = MyConst.getUserName(getContext());
-                CostInComeRecord cost = new CostInComeRecord(MyConst.COST, money,
-                        remark, date, type, userName, MyConst.SYNC_TYPE_INSERT);
-                //存储图片,目录结构按 type/year/month/file
-                // /storage/emulated/0/Android/data/com.jimo.mycost/cache/luban_disk_cache/1526471417309704.jpg
-                //TODO 事务
-                try {
-                    int month = getMonth(date);
-                    int year = getYear(date);
-
-                    //存储后获得id,用于关联图片
-                    db.save(cost);
-                    final long parentId = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst().getId();
-                    JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_COST, month, year);
-
-                    //更新月记录
-                    MonthCost monthCost = db.selector(MonthCost.class).
-                            where("month", "=", month).and("year", "=", year).
-                            and("user_name", "=", userName).and("in_out", "=", MyConst.COST).findFirst();
-                    if (monthCost == null) {
-                        monthCost = new MonthCost(year, month, money, MyConst.COST, MyConst.SYNC_TYPE_INSERT, userName);
-                        db.save(monthCost);
-                    } else {
-                        monthCost.setSyncType(MyConst.SYNC_TYPE_UPDATE);
-                        monthCost.setMoney(monthCost.getMoney() + money);
-                        db.update(monthCost, "money", "sync_type");
+                        //更新月记录
+                        MonthCost monthCost = db.selector(MonthCost.class).
+                                where("month", "=", month).and("year", "=", year).
+                                and("user_name", "=", userName).and("in_out", "=", MyConst.COST).findFirst();
+                        if (monthCost == null) {
+                            monthCost = new MonthCost(year, month, money, MyConst.COST, MyConst.SYNC_TYPE_INSERT, userName);
+                            db.save(monthCost);
+                        } else {
+                            monthCost.setSyncType(MyConst.SYNC_TYPE_UPDATE);
+                            monthCost.setMoney(monthCost.getMoney() + money);
+                            db.update(monthCost, "money", "sync_type");
+                        }
+                        FuckUtil.clearInput((obj) -> {
+                            imgPath.clear();
+                            adapterForSelectImg.setData(imgPath);
+                            adapterForSelectImg.notifyDataSetChanged();
+                        }, tv_input_date, tv_input_type, edt_input_money, edt_input_remark);
+                        JimoUtil.mySnackbar(view, "保存成功");
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                        JimoUtil.mySnackbar(view, "error: " + e.getMessage());
                     }
-                    return true;
-                } catch (DbException e) {
-                    e.printStackTrace();
-                    JimoUtil.mySnackbar(view, "error local store");
-                    return false;
-                }
+            }
         }
-
-        return false;
-    }
-
-
-    /**
-     * 检查输入
-     */
-    //TODO 重构checkInput为公共方法
-    private boolean checkInput(View view) {
-        if (TextUtils.isEmpty(date)) {
-            Snackbar.make(view, "选择日期", Snackbar.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(type)) {
-            Snackbar.make(view, "选择用途", Snackbar.LENGTH_SHORT).show();
-            return false;
-        }
-        if (TextUtils.isEmpty(String.valueOf(money))) {
-            Snackbar.make(view, "输入金额", Snackbar.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
     }
 
     @Event(R.id.input_date)
     private void dateClick(View view) {
-        FuckUtil.showDateSelectDialog(getContext(), (date) -> input_date.setText(String.valueOf(date)));
-    }
-
-
-    private class FoodOnClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-
-            if (view instanceof TextView) {
-                TextView tv = (TextView) view;
-                type = "餐饮 " + String.valueOf(tv.getText());
-                input_type.setText(type);
-            }
-        }
-    }
-
-    private class TransportClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            if (view instanceof TextView) {
-                TextView tv = (TextView) view;
-                type = "交通 " + String.valueOf(tv.getText());
-                input_type.setText(type);
-            }
-        }
-    }
-
-    private class StudyClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            if (view instanceof TextView) {
-                TextView tv = (TextView) view;
-                type = "学习 " + String.valueOf(tv.getText());
-                input_type.setText(type);
-            }
-        }
-    }
-
-    private class LifeClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            if (view instanceof TextView) {
-                TextView tv = (TextView) view;
-                type = "生活 " + String.valueOf(tv.getText());
-                input_type.setText(type);
-            }
-        }
+        FuckUtil.showDateSelectDialog(getContext(), (date) -> tv_input_date.setText(String.valueOf(date)));
     }
 
     //在从主页面点击一条数据进来时确定是修改

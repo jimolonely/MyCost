@@ -180,8 +180,7 @@ public class LifeFragment extends Fragment {
 
     @Event(R.id.btn_submit_life)
     private void submit(View view) {
-        if (checkInput(edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood)) {
-            //
+        if (FuckUtil.checkInput(getContext(), edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood, tv_date)) {
             final LifeRecord lifeRecord = new LifeRecord(String.valueOf(edt_name.getText()), theme, String.valueOf(edt_type.getText()),
                     String.valueOf(edt_author.getText()), String.valueOf(edt_pubdate.getText()), String.valueOf(edt_remark.getText()),
                     String.valueOf(edt_rating.getText()), myScore, String.valueOf(edt_comment.getText()), String.valueOf(edt_mood.getText()),
@@ -198,6 +197,7 @@ public class LifeFragment extends Fragment {
                     adapterForSelectImg.setData(imgPath);
                     adapterForSelectImg.notifyDataSetChanged();
                 }, edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood);
+                JimoUtil.mySnackbar(view, "保存成功");
             } catch (DbException e) {
                 e.printStackTrace();
                 JimoUtil.myToast(getContext(), "error: " + e.getMessage());
@@ -214,16 +214,6 @@ public class LifeFragment extends Fragment {
             watchTime = hourOfDay + ":" + minute;
             tv_date.setText(watchTime);
         }, hour, minute1, true).show();
-    }
-
-    private boolean checkInput(EditText... edts) {
-        for (EditText edt : edts) {
-            if (TextUtils.isEmpty(edt.getText())) {
-                JimoUtil.myToast(getContext(), "不能为空");
-                return false;
-            }
-        }
-        return true;
     }
 
 

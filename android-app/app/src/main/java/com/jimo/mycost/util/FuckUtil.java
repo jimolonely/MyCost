@@ -2,7 +2,10 @@ package com.jimo.mycost.util;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -13,16 +16,47 @@ public class FuckUtil {
 
     //TODO 重构其他地方
 
-    /**
-     * @param callback 用来清理其他输入
-     * @param edts
-     */
-    public static void clearInput(MyCallback.CommonCallback callback, EditText... edts) {
-        for (EditText edt : edts) {
-            edt.setText("");
+    //    public static void clearInput(MyCallback.CommonCallback callback, EditText... edts) {
+//        for (EditText edt : edts) {
+//            edt.setText("");
+//        }
+//        callback.doSomething(null);
+//    }
+//
+//    public static void clearInput(MyCallback.CommonCallback callback, TextView... tvs) {
+//        for (TextView tv : tvs) {
+//            tv.setText("");
+//        }
+//        callback.doSomething(null);
+//    }
+    public static void clearInput(MyCallback.CommonCallback callback, View... views) {
+        for (View v : views) {
+            ((TextView) v).setText("");//因为EditView是TextView的 子类,所以两个都兼容了
         }
         callback.doSomething(null);
     }
+
+
+    public static boolean checkInput(Context context, View... views) {
+        for (View v : views) {
+            if (TextUtils.isEmpty(((TextView) v).getText())) {
+                JimoUtil.myToast(context, "不能为空");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+//    public static boolean checkInput(Context context, TextView... tvs) {
+//        for (TextView tv : tvs) {
+//            if (TextUtils.isEmpty(tv.getText())) {
+//                JimoUtil.myToast(context, "不能为空");
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     /**
      * 弹出选择日期的对话框
