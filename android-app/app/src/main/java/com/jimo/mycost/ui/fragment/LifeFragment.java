@@ -88,7 +88,6 @@ public class LifeFragment extends Fragment {
     RecyclerView rcv_imgs;
 
     private SelectImgAdapter adapterForSelectImg;
-    private List<String> imgPath = new ArrayList<>();
 
     private float myScore = 6;
     private String watchTime;
@@ -121,7 +120,7 @@ public class LifeFragment extends Fragment {
         });
 
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        adapterForSelectImg = new SelectImgAdapter(getContext(), imgPath);
+        adapterForSelectImg = new SelectImgAdapter(getContext());
         rcv_imgs.setAdapter(adapterForSelectImg);
     }
 
@@ -147,8 +146,7 @@ public class LifeFragment extends Fragment {
                     @Override
                     public boolean onCache(File result) {
                         Log.i("cache-img-path", result.getAbsolutePath() + "/" + result.getName());
-                        imgPath.add(result.getAbsolutePath());
-                        adapterForSelectImg.setData(imgPath);
+                        adapterForSelectImg.getData().add(result.getAbsolutePath());
                         adapterForSelectImg.notifyDataSetChanged();
                         return true;
                     }
@@ -190,12 +188,10 @@ public class LifeFragment extends Fragment {
             try {
                 db.save(lifeRecord);
                 final long parentId = db.selector(LifeRecord.class).orderBy("id", true).findFirst().getId();
-                JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_LIFE);
+                JimoUtil.storeImg(getContext(), adapterForSelectImg.getData(), db, parentId, MyConst.IMG_TYPE_LIFE);
                 FuckUtil.clearInput((obj) -> {
                     tv_date.setText("点击选择时间");
-                    imgPath.clear();
-                    adapterForSelectImg.setData(imgPath);
-                    adapterForSelectImg.notifyDataSetChanged();
+                    adapterForSelectImg.clear();
                 }, edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood);
                 JimoUtil.mySnackbar(view, "保存成功");
             } catch (DbException e) {
@@ -235,13 +231,12 @@ public class LifeFragment extends Fragment {
                     for (LocalMedia m : media) {
                         if (m.isCompressed()) {
                             Log.i("path-compress", m.getCompressPath());
-                            imgPath.add(m.getCompressPath());
+                            adapterForSelectImg.getData().add(m.getCompressPath());
                         } else {
                             Log.i("path", m.getPath());
-                            imgPath.add(m.getPath());
+                            adapterForSelectImg.getData().add(m.getPath());
                         }
                     }
-                    adapterForSelectImg.setData(imgPath);
                     adapterForSelectImg.notifyDataSetChanged();
                     break;
             }

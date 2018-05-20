@@ -15,5 +15,4 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@mipmap/add" />
-    <!--TODO 加一个删除所有图片的按钮-->
 </LinearLayout>

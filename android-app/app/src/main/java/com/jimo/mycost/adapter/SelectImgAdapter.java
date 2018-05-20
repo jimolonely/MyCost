@@ -11,6 +11,7 @@ import com.jimo.mycost.R;
 
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectImgAdapter extends RecyclerView.Adapter<SelectImgAdapter.ImgViewHolder> {
@@ -20,10 +21,10 @@ public class SelectImgAdapter extends RecyclerView.Adapter<SelectImgAdapter.ImgV
     private LayoutInflater inflater;
     private List<String> path;
 
-    public SelectImgAdapter(Context context, List<String> path) {
+    public SelectImgAdapter(Context context) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.path = path;
+        this.path = new ArrayList<>();
     }
 
     @Override
@@ -34,6 +35,11 @@ public class SelectImgAdapter extends RecyclerView.Adapter<SelectImgAdapter.ImgV
     @Override
     public void onBindViewHolder(ImgViewHolder holder, int position) {
         x.image().bind(holder.imageView, path.get(position));
+        holder.imageView.setOnLongClickListener(v -> {
+            path.remove(position);
+            SelectImgAdapter.this.notifyDataSetChanged();
+            return false;
+        });
     }
 
     @Override
@@ -43,6 +49,15 @@ public class SelectImgAdapter extends RecyclerView.Adapter<SelectImgAdapter.ImgV
 
     public void setData(List<String> data) {
         this.path = data;
+    }
+
+    public List<String> getData() {
+        return path;
+    }
+
+    public void clear() {
+        path.clear();
+        this.notifyDataSetChanged();
     }
 
     class ImgViewHolder extends RecyclerView.ViewHolder {

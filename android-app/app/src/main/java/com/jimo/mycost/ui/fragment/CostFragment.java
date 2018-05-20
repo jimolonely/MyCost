@@ -68,7 +68,7 @@ public class CostFragment extends Fragment {
 
     @ViewInject(R.id.input_date)
     TextView tv_input_date;
-
+    
     @ViewInject(R.id.input_type)
     TextView tv_input_type;
 
@@ -82,7 +82,6 @@ public class CostFragment extends Fragment {
     RecyclerView rcv_imgs;
 
     private SelectImgAdapter adapterForSelectImg;
-    private List<String> imgPath = new ArrayList<>();
 
     private List<String> foodTitles = new ArrayList<>(Arrays.asList("早餐", "午餐", "晚餐", "零食", "其他"));
     private List<String> transportTitles = new ArrayList<>(Arrays.asList(
@@ -113,7 +112,7 @@ public class CostFragment extends Fragment {
         registClickListener(lifeTitles, "生活", fl_life);
 
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        adapterForSelectImg = new SelectImgAdapter(getContext(), imgPath);
+        adapterForSelectImg = new SelectImgAdapter(getContext());
         rcv_imgs.setAdapter(adapterForSelectImg);
     }
 
@@ -170,7 +169,7 @@ public class CostFragment extends Fragment {
                         //存储后获得id,用于关联图片
                         db.save(cost);
                         final long parentId = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst().getId();
-                        JimoUtil.storeImg(getContext(), imgPath, db, parentId, MyConst.IMG_TYPE_COST, month, year);
+                        JimoUtil.storeImg(getContext(), adapterForSelectImg.getData(), db, parentId, MyConst.IMG_TYPE_COST, month, year);
 
                         //更新月记录
                         MonthCost monthCost = db.selector(MonthCost.class).
@@ -185,9 +184,7 @@ public class CostFragment extends Fragment {
                             db.update(monthCost, "money", "sync_type");
                         }
                         FuckUtil.clearInput((obj) -> {
-                            imgPath.clear();
-                            adapterForSelectImg.setData(imgPath);
-                            adapterForSelectImg.notifyDataSetChanged();
+                            adapterForSelectImg.clear();
                         }, tv_input_date, tv_input_type, edt_input_money, edt_input_remark);
                         JimoUtil.mySnackbar(view, "保存成功");
                     } catch (DbException e) {
@@ -213,7 +210,6 @@ public class CostFragment extends Fragment {
                 .compress(true).isCamera(true).forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -225,13 +221,12 @@ public class CostFragment extends Fragment {
                     for (LocalMedia m : media) {
                         if (m.isCompressed()) {
                             Log.i("path-compress", m.getCompressPath());
-                            imgPath.add(m.getCompressPath());
+                            adapterForSelectImg.getData().add(m.getCompressPath());
                         } else {
                             Log.i("path", m.getPath());
-                            imgPath.add(m.getPath());
+                            adapterForSelectImg.getData().add(m.getPath());
                         }
                     }
-                    adapterForSelectImg.setData(imgPath);
                     adapterForSelectImg.notifyDataSetChanged();
                     break;
             }
