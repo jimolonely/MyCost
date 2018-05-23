@@ -1,17 +1,16 @@
 package com.jimo.mycost;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.jimo.mycost.adapter.RecyclerViewTempImgAdapter;
 import com.jimo.mycost.model.CostInComeRecord;
 import com.jimo.mycost.model.MonthCost;
 import com.jimo.mycost.ui.activity.AddCostActivity;
@@ -60,16 +59,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
 
-        initRecordData();
-
         initViews();
-
     }
 
     /**
      * 更新ListView
      */
     private void initViews() {
+        dayCostItems = new ArrayList<>();
         dayCostItemAdapter = new DayCostItemAdapter(dayCostItems, this);
         listViewCost.setAdapter(dayCostItemAdapter);
 
@@ -95,8 +92,7 @@ public class MainActivity extends Activity {
                 wb.and("id", "=", item.getId());
                 try {
                     db.delete(CostInComeRecord.class, wb);
-                    queryData();
-                    dayCostItemAdapter.notifyDataSetChanged();
+                    refresh();
                     JimoUtil.mySnackbar(view, "删除成功");
                 } catch (DbException e) {
                     JimoUtil.mySnackbar(view, "删除失败");
@@ -107,13 +103,11 @@ public class MainActivity extends Activity {
             builder.create().show();
             return true;
         });
+        dayCostItemAdapter.notifyDataSetChanged();
+
+        refresh();
     }
 
-
-    private void initRecordData() {
-        dayCostItems = new ArrayList<>();
-        queryData();
-    }
 
     /**
      * 从数据库查出记录存在List里
@@ -125,7 +119,7 @@ public class MainActivity extends Activity {
         try {
             List<CostInComeRecord> costInComeRecords =
                     db.selector(CostInComeRecord.class).orderBy("c_date", true).limit(SHOW_LIMIT).findAll();
-            fillTitles(costInComeRecords);
+            fillTitles(costInComeRecords, db);
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -163,8 +157,9 @@ public class MainActivity extends Activity {
      * //TODO 待优化
      *
      * @param costInComeRecords
+     * @param db
      */
-    private void fillTitles(List<CostInComeRecord> costInComeRecords) {
+    private void fillTitles(List<CostInComeRecord> costInComeRecords, DbManager db) throws DbException {
         if (costInComeRecords == null) {
             return;
         }
@@ -172,13 +167,13 @@ public class MainActivity extends Activity {
         for (CostInComeRecord c : costInComeRecords) {
             if (!dates.contains(c.getDate())) {
                 dates.add(c.getDate());
-                dayCostItems.add(new ItemDayCost(c.getDate(), MyConst.ITEM_TYPE2,
-                        c.getTypeName(), String.valueOf(c.getMoney()), c.getId()));
+                dayCostItems.add(new ItemDayCost(c.getDate(), MyConst.ITEM_TYPE2));
                 for (CostInComeRecord tc : costInComeRecords) {
                     String d = tc.getDate();
                     if (d != null && d.equals(c.getDate())) {
+                        final RecyclerViewTempImgAdapter adapter = new RecyclerViewTempImgAdapter(this, tc.getImagePaths(db));
                         dayCostItems.add(new ItemDayCost(tc.getDate(), MyConst.ITEM_TYPE1,
-                                tc.getTypeName() + "  " + tc.getRemark(), String.valueOf(tc.getMoney()), tc.getId()));
+                                tc.getTypeName(), String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId(), adapter));
                     }
                 }
             }
@@ -225,9 +220,13 @@ public class MainActivity extends Activity {
     @Event(R.id.ib_refresh)
     private void ibRefreshClick(View view) {
         //刷新列表
+        refresh();
+        JimoUtil.mySnackbar(view, "已刷新");
+    }
+
+    private void refresh() {
         queryData();
         dayCostItemAdapter.notifyDataSetChanged();
-        JimoUtil.mySnackbar(view, "已刷新");
     }
 
     /**

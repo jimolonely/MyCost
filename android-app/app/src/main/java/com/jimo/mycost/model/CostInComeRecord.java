@@ -1,7 +1,17 @@
 package com.jimo.mycost.model;
 
+import android.os.Environment;
+
+import com.jimo.mycost.adapter.RcyclerViewTempImgItem;
+
+import org.xutils.DbManager;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
+import org.xutils.ex.DbException;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by root on 17-7-20.
@@ -25,6 +35,16 @@ public class CostInComeRecord {
     private String userName;
     @Column(name = "sync_type")
     private int syncType;//0代表已同步，1,2,3代表增删改
+
+    public List<RcyclerViewTempImgItem> getImagePaths(DbManager db) throws DbException {
+        final List<ImageRecord> records = db.selector(ImageRecord.class).where("parent_id", "=", this.id).findAll();
+        List<RcyclerViewTempImgItem> items = new ArrayList<>();
+        for (ImageRecord i : records) {
+            final String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + i.getImgPath();
+            items.add(new RcyclerViewTempImgItem(path));
+        }
+        return items;
+    }
 
     public CostInComeRecord() {
     }

@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jimo.mycost.R;
-
-import org.xutils.common.Callback;
-import org.xutils.x;
+import com.jimo.mycost.util.FuckUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.List;
 public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResultAdapter.ItemViewHolder> {
 
     private final LayoutInflater inflater;
-    private final Context context;
     private List<ItemLifeSearchResult> data;
     private OnClickCallback callback;
 
@@ -29,7 +26,6 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
     }
 
     public LifeSearchResultAdapter(Context context, OnClickCallback callback) {
-        this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = new ArrayList<>();
         this.callback = callback;
@@ -51,33 +47,9 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
         holder.tv_actor.setText(result.getCreators());
         holder.tv_sumary.setText(result.getRemark());
 
-        x.image().loadDrawable(result.getImgUrl(), null, new Callback.CommonCallback<Drawable>() {
-            @Override
-            public void onSuccess(Drawable result) {
-                holder.imageView.setImageDrawable(result);
-            }
+        FuckUtil.loadImg(result.getImgUrl(), (drawable) -> holder.imageView.setImageDrawable((Drawable) drawable));
 
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-//                holder.imageView.setImageDrawable();
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.getData(result);
-            }
-        });
+        holder.imageView.setOnClickListener(v -> callback.getData(result));
     }
 
     @Override

@@ -9,14 +9,24 @@ public class ItemDayCost {
     private int itemType;
     private String type;//cost type
     private String money;
+    private String remark;
     private Long id;
 
-    public ItemDayCost(String date, int itemType, String type, String money, Long id) {
+    private RecyclerViewTempImgAdapter adapter;
+
+    public ItemDayCost(String date, int itemType, String type, String money, String remark, Long id, RecyclerViewTempImgAdapter adapter) {
         this.date = date;
         this.itemType = itemType;
         this.type = type;
         this.money = money;
+        this.remark = remark;
         this.id = id;
+        this.adapter = adapter;
+    }
+
+    public ItemDayCost(String date, int itemType) {
+        this.date = date;
+        this.itemType = itemType;
     }
 
     public Long getId() {
@@ -54,6 +64,18 @@ public class ItemDayCost {
     public String getType() {
 
         return type;
+    }
+
+    public RecyclerViewTempImgAdapter getAdapter() {
+        return adapter;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public void setType(String type) {

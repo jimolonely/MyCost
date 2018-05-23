@@ -2,11 +2,18 @@ package com.jimo.mycost.util;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.xutils.common.Callback;
+import org.xutils.image.ImageOptions;
+import org.xutils.x;
+
+import java.io.File;
 import java.util.Calendar;
 
 /**
@@ -85,5 +92,41 @@ public class FuckUtil {
             callback.doSomething(date);
         }, year, month, day);
         datePickerDialog.show();
+    }
+
+
+    /**
+     * 把图片加载封装了
+     *
+     * @param imgPath
+     * @param callback
+     */
+    public static void loadImg(String imgPath, MyCallback.CommonCallback callback) {
+        ImageOptions imageOptions = new ImageOptions.Builder().setFadeIn(true)
+                .setCrop(true).setSize(100, 100) //设置大小
+                .build();
+        x.image().loadDrawable(imgPath, imageOptions, new Callback.CommonCallback<Drawable>() {
+
+            @Override
+            public void onSuccess(Drawable result) {
+                Log.i("Fuck-loadImg", result.toString());
+                callback.doSomething(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 }
