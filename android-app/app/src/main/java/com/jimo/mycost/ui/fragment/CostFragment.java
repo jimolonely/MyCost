@@ -68,7 +68,7 @@ public class CostFragment extends Fragment {
 
     @ViewInject(R.id.input_date)
     TextView tv_input_date;
-    
+
     @ViewInject(R.id.input_type)
     TextView tv_input_type;
 
