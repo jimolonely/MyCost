@@ -17,9 +17,11 @@ import java.util.List;
 public class RecyclerViewTempImgAdapter extends RecyclerView.Adapter<RecyclerViewTempImgAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<RcyclerViewTempImgItem> items;
+    private List<RecyclerViewTempImgItem> items;
+    private Context context;
 
-    public RecyclerViewTempImgAdapter(Context context, List<RcyclerViewTempImgItem> items) {
+    public RecyclerViewTempImgAdapter(Context context, List<RecyclerViewTempImgItem> items) {
+        this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.items = items;
     }
@@ -31,7 +33,7 @@ public class RecyclerViewTempImgAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final RcyclerViewTempImgItem item = items.get(position);
+        final RecyclerViewTempImgItem item = items.get(position);
         FuckUtil.loadImg(item.getImgPath(), (drawable) -> holder.imageView.setImageDrawable((Drawable) drawable));
         holder.imageView.setOnClickListener((v) -> {
             //TODO 点击图片放大
