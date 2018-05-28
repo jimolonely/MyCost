@@ -23,9 +23,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".func.main.AddCostActivity"
+            android:name=".func.main.CostActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".func.main.DataStatisticActivity" />
+        <activity android:name=".func.main.BodyActivity" />
         <activity android:name=".func.time.TimeCostActivity" />
     </application>
 

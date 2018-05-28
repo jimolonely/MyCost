@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.cost.add;
+package com.jimo.mycost.func.cost;
 
 import android.content.Intent;
 import android.os.Bundle;

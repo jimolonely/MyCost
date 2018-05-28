@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.cost.show;
+package com.jimo.mycost.func.cost;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
-import com.jimo.mycost.func.cost.show.CostDayItem;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.ImageRecord;
 import com.jimo.mycost.util.JimoUtil;

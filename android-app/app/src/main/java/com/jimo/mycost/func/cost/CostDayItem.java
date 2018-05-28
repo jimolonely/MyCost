@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.cost.show;
+package com.jimo.mycost.func.cost;
 
 /**
  * Created by root on 17-7-22.

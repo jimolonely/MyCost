@@ -2,7 +2,7 @@ package com.jimo.mycost.data.model;
 
 import android.os.Environment;
 
-import com.jimo.mycost.func.cost.show.RecyclerViewTempImgItem;
+import com.jimo.mycost.func.cost.RecyclerViewTempImgItem;
 
 import org.xutils.DbManager;
 import org.xutils.db.annotation.Column;

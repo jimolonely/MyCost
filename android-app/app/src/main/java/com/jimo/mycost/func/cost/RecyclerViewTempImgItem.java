@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.cost.show;
+package com.jimo.mycost.func.cost;
 
 public class RecyclerViewTempImgItem {
     private String imgPath;

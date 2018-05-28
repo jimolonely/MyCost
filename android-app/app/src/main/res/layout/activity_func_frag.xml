@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.jimo.mycost.func.main.AddCostActivity">
+    tools:context="com.jimo.mycost.func.main.CostActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,11 +20,12 @@
             android:background="@mipmap/back" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="掐死我吧"
+            android:text="标题"
             android:textColor="@color/icons"
             android:textSize="25sp" />
 

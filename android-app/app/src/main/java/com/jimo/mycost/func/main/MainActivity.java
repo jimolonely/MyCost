@@ -6,18 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
-import com.jimo.mycost.func.cost.show.CostDayItem;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
-import com.jimo.mycost.func.cost.show.CostDayItemAdapter;
-import com.jimo.mycost.func.cost.show.RecyclerViewTempImgAdapter;
 import com.jimo.mycost.func.time.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
 
@@ -31,17 +27,12 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends Activity {
 
-    @ViewInject(R.id.lv_cost)
-    ListView listViewCost;
     @ViewInject(R.id.tv_month_total)
     TextView tv_total;
     @ViewInject(R.id.tv_month_cost)
@@ -49,10 +40,6 @@ public class MainActivity extends Activity {
     @ViewInject(R.id.tv_month_income)
     TextView tv_income;
 
-    private List<CostDayItem> dayCostItems;
-    private CostDayItemAdapter costDayItemAdapter;
-
-    final int SHOW_LIMIT = 15;//主页面显示的记录条数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,38 +50,16 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * 更新ListView
      */
     private void initViews() {
-        dayCostItems = new ArrayList<>();
-        costDayItemAdapter = new CostDayItemAdapter(dayCostItems, this);
-        listViewCost.setAdapter(costDayItemAdapter);
-
-        //当点击item时需跳转到新页面展示
-        listViewCost.setOnItemClickListener((adapterView, view, i, l) -> {
-//                CostDayItem dayCostTitle = dayCostItems.get(i);
-            //TODO 显示item
-        });
-
         refresh();
     }
-
 
     /**
      * 从数据库查出记录存在List里
      */
     private void queryData() {
-        dayCostItems.clear();
         DbManager db = MyApp.dbManager;
-        //查存每条记录
-        try {
-            List<CostInComeRecord> costInComeRecords =
-                    db.selector(CostInComeRecord.class).orderBy("c_date", true).limit(SHOW_LIMIT).findAll();
-            fillTitles(costInComeRecords, db);
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-
         //查询月记录
         int month = getMonth();
         int year = getYear();
@@ -123,40 +88,13 @@ public class MainActivity extends Activity {
         }
     }
 
-    /**
-     * 解析数据构造double ListView的数据
-     * //TODO 待优化
-     *
-     * @param costInComeRecords
-     * @param db
-     */
-    private void fillTitles(List<CostInComeRecord> costInComeRecords, DbManager db) throws DbException {
-        if (costInComeRecords == null) {
-            return;
-        }
-        Set<String> dates = new HashSet<>();
-        for (CostInComeRecord c : costInComeRecords) {
-            if (!dates.contains(c.getDate())) {
-                dates.add(c.getDate());
-                dayCostItems.add(new CostDayItem(c.getDate(), MyConst.ITEM_TYPE2));
-                for (CostInComeRecord tc : costInComeRecords) {
-                    String d = tc.getDate();
-                    if (d != null && d.equals(c.getDate())) {
-                        final RecyclerViewTempImgAdapter adapter = new RecyclerViewTempImgAdapter(this, tc.getImagePaths(db));
-                        dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE1,
-                                tc.getTypeName(), String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId(), adapter));
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * 点击跳转页面
      */
     @Event(R.id.ib_add)
     private void ibAddClick(View v) {
-        Intent intent = new Intent(this, AddCostActivity.class);
+        Intent intent = new Intent(this, CostActivity.class);
         startActivity(intent);
     }
 
@@ -171,7 +109,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void ibStatisticClick(View v) {
-        Intent intent = new Intent(this, DataStatisticActivity.class);
+        Intent intent = new Intent(this, BodyActivity.class);
         startActivity(intent);
     }
 
@@ -197,7 +135,6 @@ public class MainActivity extends Activity {
 
     private void refresh() {
         queryData();
-        costDayItemAdapter.notifyDataSetChanged();
     }
 
     /**

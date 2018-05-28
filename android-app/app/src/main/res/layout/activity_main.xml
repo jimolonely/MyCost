@@ -88,19 +88,7 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/rl_down"
-        android:layout_below="@+id/ll_center"
-        android:padding="5dp">
 
-        <com.jimo.mycost.view.MyCostView
-            android:id="@+id/lv_cost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerHeight="1dp" />
-    </ScrollView>
 
 
     <RelativeLayout
