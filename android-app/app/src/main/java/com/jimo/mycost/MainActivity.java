@@ -76,35 +76,6 @@ public class MainActivity extends Activity {
             //TODO 显示item
         });
 
-        //长按时提示删除
-        listViewCost.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            final ItemDayCost item = dayCostItems.get(i);
-            if (item.getItemType() == MyConst.ITEM_TYPE2) {
-                JimoUtil.mySnackbar(tv_income, "这个不可以删哦");
-                return true;
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("删除");
-            builder.setMessage("确定删除吗?");
-            builder.setPositiveButton("ok", (dialogInterface, i1) -> {
-                DbManager db = MyApp.dbManager;
-                WhereBuilder wb = WhereBuilder.b();
-                wb.and("id", "=", item.getId());
-                try {
-                    db.delete(CostInComeRecord.class, wb);
-                    refresh();
-                    JimoUtil.mySnackbar(view, "删除成功");
-                } catch (DbException e) {
-                    JimoUtil.mySnackbar(view, "删除失败");
-                    e.printStackTrace();
-                }
-                dialogInterface.dismiss();
-            });
-            builder.create().show();
-            return true;
-        });
-        dayCostItemAdapter.notifyDataSetChanged();
-
         refresh();
     }
 

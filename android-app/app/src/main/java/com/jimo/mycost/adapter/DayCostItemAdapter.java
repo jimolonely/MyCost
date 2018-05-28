@@ -1,6 +1,7 @@
 package com.jimo.mycost.adapter;
 
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.jimo.mycost.MainActivity;
+import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.model.CostInComeRecord;
+import com.jimo.mycost.model.ImageRecord;
+import com.jimo.mycost.util.JimoUtil;
+
+import org.xutils.DbManager;
+import org.xutils.db.sqlite.WhereBuilder;
+import org.xutils.ex.DbException;
 
 import java.util.List;
 
@@ -77,8 +87,15 @@ public class DayCostItemAdapter extends BaseAdapter {
             holder.tv_remark.setText(item.getRemark());
             final RecyclerView rcv = holder.rcv_temp_img;
             rcv.setLayoutManager(new GridLayoutManager(context, 3));
+            rcv.getRecycledViewPool().setMaxRecycledViews(0, 20);
             rcv.setAdapter(item.getAdapter());
             item.getAdapter().notifyDataSetChanged();
+
+            holder.tv_type.setOnLongClickListener(v -> {
+                        deleteItem(v, item.getId(), i);
+                        return true;
+                    }
+            );
         } else {
             ViewHolder2 holder2;
             if (view == null) {
@@ -103,5 +120,30 @@ public class DayCostItemAdapter extends BaseAdapter {
 
     private class ViewHolder2 {
         private TextView tv_date;
+    }
+
+    private void deleteItem(View view, long id, int i) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("删除");
+        builder.setMessage("确定删除吗?");
+        builder.setPositiveButton("ok", (dialogInterface, i1) -> {
+            DbManager db = MyApp.dbManager;
+            WhereBuilder wb = WhereBuilder.b();
+            wb.and("id", "=", id);
+            final WhereBuilder wb2 = WhereBuilder.b();
+            wb2.and("parent_id", "=", id);
+            try {
+                db.delete(CostInComeRecord.class, wb);
+                db.delete(ImageRecord.class, wb2);
+                JimoUtil.mySnackbar(view, "删除成功");
+                items.remove(i);
+                this.notifyDataSetChanged();
+            } catch (DbException e) {
+                JimoUtil.mySnackbar(view, "删除失败");
+                e.printStackTrace();
+            }
+            dialogInterface.dismiss();
+        });
+        builder.create().show();
     }
 }
