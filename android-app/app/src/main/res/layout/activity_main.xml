@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jimo.mycost.MainActivity">
+    tools:context="com.jimo.mycost.func.main.MainActivity">
 
     <RelativeLayout
         android:id="@+id/rl_up"
@@ -95,7 +95,7 @@
         android:layout_below="@+id/ll_center"
         android:padding="5dp">
 
-        <com.jimo.mycost.ui.view.MyCostView
+        <com.jimo.mycost.view.MyCostView
             android:id="@+id/lv_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".func.main.MainActivity">
 
             <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar" -->
             <intent-filter>
@@ -23,10 +23,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.AddCostActivity"
+            android:name=".func.main.AddCostActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.activity.DataStatisticActivity" />
-        <activity android:name=".ui.activity.TimeCostActivity" />
+        <activity android:name=".func.main.DataStatisticActivity" />
+        <activity android:name=".func.time.TimeCostActivity" />
     </application>
 
 </manifest>
