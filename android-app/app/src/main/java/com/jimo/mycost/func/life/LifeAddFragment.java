@@ -47,7 +47,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.MyConst.themeData;
 
-@ContentView(R.layout.fragment_life)
+@ContentView(R.layout.fragment_life_add)
 public class LifeAddFragment extends Fragment {
 
     public static final String THEME_MOVIE = "电影";

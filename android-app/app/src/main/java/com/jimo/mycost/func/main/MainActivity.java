@@ -14,6 +14,7 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
+import com.jimo.mycost.func.cost.CostAddFragment;
 import com.jimo.mycost.func.time.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
 
@@ -92,10 +93,9 @@ public class MainActivity extends Activity {
     /**
      * 点击跳转页面
      */
-    @Event(R.id.ib_add)
-    private void ibAddClick(View v) {
-        Intent intent = new Intent(this, CostActivity.class);
-        startActivity(intent);
+    public void ibAddClick(View v) {
+//        Intent intent = new Intent(this, CostAddFragment.class);
+//        startActivity(intent);
     }
 
     public void ibTimerClick(View view) {
@@ -109,8 +109,7 @@ public class MainActivity extends Activity {
      * @param v
      */
     public void ibStatisticClick(View v) {
-        Intent intent = new Intent(this, BodyActivity.class);
-        startActivity(intent);
+        JimoUtil.myToast(this, "待实现~~");
     }
 
     @Override
@@ -215,5 +214,17 @@ public class MainActivity extends Activity {
 
     public int getYear() {
         return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public void clickToCost(View view) {
+        startActivity(new Intent(this, CostActivity.class));
+    }
+
+    public void clickToInCome(View view) {
+        startActivity(new Intent(this, InComeActivity.class));
+    }
+
+    public void clickToLife(View view) {
+        startActivity(new Intent(this, LifeActivity.class));
     }
 }

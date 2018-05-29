@@ -19,9 +19,9 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
-import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
+import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 import com.luck.picture.lib.PictureSelector;
@@ -49,7 +49,8 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
  * Created by root on 17-7-19.
  * 支出
  */
-@ContentView(R.layout.fragment_cost)
+//TODO 重构Cost和InComeAdd这些重复代码
+@ContentView(R.layout.fragment_cost_add)
 public class CostAddFragment extends Fragment {
 
     @ViewInject(R.id.fbl_food_cost)
