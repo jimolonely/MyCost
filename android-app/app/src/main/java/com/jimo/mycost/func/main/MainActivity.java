@@ -228,4 +228,8 @@ public class MainActivity extends Activity {
     public void clickToLife(View view) {
         startActivity(new Intent(this, LifeActivity.class));
     }
+
+    public void clickToFriend(View view) {
+        startActivity(new Intent(this, FriendActivity.class));
+    }
 }

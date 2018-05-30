@@ -1,12 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:padding="5dp">-->
+
+<!--<com.jimo.mycost.view.MyCostView--><!--android:id="@+id/lv_cost"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:dividerHeight="1dp" />--><!--</ScrollView>-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp">
+    android:orientation="vertical">
 
-    <com.jimo.mycost.view.MyCostView
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="refresh" />
+
+    <ListView
         android:id="@+id/lv_cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="1dp" />
-</ScrollView>
+</LinearLayout>
