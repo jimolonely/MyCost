@@ -14,6 +14,7 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
+import com.jimo.mycost.func.cost.CostAddActivity;
 import com.jimo.mycost.func.cost.CostAddFragment;
 import com.jimo.mycost.func.time.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
@@ -94,8 +95,8 @@ public class MainActivity extends Activity {
      * 点击跳转页面
      */
     public void ibAddClick(View v) {
-//        Intent intent = new Intent(this, CostAddFragment.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, CostAddActivity.class);
+        startActivity(intent);
     }
 
     public void ibTimerClick(View view) {

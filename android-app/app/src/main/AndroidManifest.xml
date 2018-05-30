@@ -29,6 +29,10 @@
         <activity android:name=".func.main.InComeActivity" />
         <activity android:name=".func.main.LifeActivity" />
         <activity android:name=".func.time.TimeCostActivity" />
+        <activity
+            android:name=".func.cost.CostAddActivity"
+            android:label="@string/title_activity_cost_add"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
