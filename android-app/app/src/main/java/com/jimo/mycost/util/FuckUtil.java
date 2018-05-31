@@ -3,11 +3,15 @@ package com.jimo.mycost.util;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.jimo.mycost.R;
 
 import org.xutils.common.Callback;
 import org.xutils.image.ImageOptions;
@@ -128,5 +132,17 @@ public class FuckUtil {
 
             }
         });
+    }
+
+    @NonNull
+    public static TextView getTextView(Context context, String s, View.OnClickListener listener) {
+        TextView tv = new TextView(context);
+        tv.setText(s);
+        tv.setTextSize(18);
+        tv.setGravity(Gravity.CENTER);
+        tv.setPadding(10, 5, 10, 5);
+        tv.setOnClickListener(listener);
+        tv.setTextColor(context.getResources().getColor(R.color.secondary_text));
+        return tv;
     }
 }

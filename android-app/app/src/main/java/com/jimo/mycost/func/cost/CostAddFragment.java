@@ -128,6 +128,7 @@ public class CostAddFragment extends Fragment {
         }
     }
 
+    //TODO 替代
     @NonNull
     private TextView getTextView(String s, View.OnClickListener listener) {
         TextView tv = new TextView(getContext());

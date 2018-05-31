@@ -32,6 +32,7 @@ public class MyConst {
     public static final String IMG_TYPE_COST = "cost";
     public static final String IMG_TYPE_INCOME = "income";
     public static final String IMG_TYPE_LIFE = "life";
+    public static final String IMG_TYPE_FRIEND_THING = "friend_thing";
 
 
     public static final String IMG_SAVE_PATH = "MyCost/images";
