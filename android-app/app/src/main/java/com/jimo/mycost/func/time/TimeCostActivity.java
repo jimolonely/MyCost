@@ -174,41 +174,24 @@ public class TimeCostActivity extends AppCompatActivity {
         String title = "选择主题";
         final String[] items = subjects;
         selectSubjectDialog.show(title, items,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        indexOfSubject = i;
-                    }
-                },
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        tv_select_subject.setText(items[indexOfSubject]);
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        doDeleteSubject(items[indexOfSubject]);
-                    }
-                }, getFragmentManager());
+                (dialogInterface, i) -> indexOfSubject = i,
+                (dialogInterface, i) -> tv_select_subject.setText(items[indexOfSubject]),
+                (dialogInterface, i) -> doDeleteSubject(items[indexOfSubject]), getFragmentManager());
     }
 
     private void doDeleteSubject(final String subjectName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("确定删除吗？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                DbManager db = MyApp.dbManager;
-                WhereBuilder whereBuilder = WhereBuilder.b();
-                whereBuilder.and("subject_name", "=", subjectName);
-                try {
-                    db.delete(Subject.class, whereBuilder);
-                    JimoUtil.mySnackbar(tv_select_subject, "删除[" + subjectName + "]成功");
-                    loadSubject();
-                } catch (DbException e) {
-                    JimoUtil.mySnackbar(tv_select_subject, "删除[" + subjectName + "]失败");
-                }
+        builder.setPositiveButton("确定", (dialogInterface, i) -> {
+            DbManager db = MyApp.dbManager;
+            WhereBuilder whereBuilder = WhereBuilder.b();
+            whereBuilder.and("subject_name", "=", subjectName);
+            try {
+                db.delete(Subject.class, whereBuilder);
+                JimoUtil.mySnackbar(tv_select_subject, "删除[" + subjectName + "]成功");
+                loadSubject();
+            } catch (DbException e) {
+                JimoUtil.mySnackbar(tv_select_subject, "删除[" + subjectName + "]失败");
             }
         }).create().show();
     }
@@ -221,12 +204,7 @@ public class TimeCostActivity extends AppCompatActivity {
     public void addSubject(View view) {
         //添加完成后重新加载主题
         AddSubjectDialog addSubjectDialog = new AddSubjectDialog();
-        addSubjectDialog.show(getFragmentManager(), new AddSubjectDialog.Callback() {
-            @Override
-            public void onOk(String subjectName, String endDate) {
-                saveOneSubject(subjectName, endDate);
-            }
-        });
+        addSubjectDialog.show(getFragmentManager(), this::saveOneSubject);
     }
 
     private void saveOneSubject(String subjectName, String endDate) {

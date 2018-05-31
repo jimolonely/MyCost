@@ -3,6 +3,7 @@ package com.jimo.mycost.func.friend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.data.model.Friend;
 import com.jimo.mycost.data.model.FriendThing;
 import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
@@ -31,8 +33,10 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
+import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
+@ContentView(R.layout.fragment_friend_add)
 public class FriendAddFragment extends Fragment {
 
     @ViewInject(R.id.fbl_friend_show)
@@ -62,9 +67,9 @@ public class FriendAddFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_friend_add, container, false);
+        final View view = x.view().inject(this, inflater, container);
 
         initViews();
 
@@ -73,19 +78,36 @@ public class FriendAddFragment extends Fragment {
 
     private List<String> loadFriendNames() {
         List<String> names = new ArrayList<>();
-        //TODO
+        final DbManager db = MyApp.dbManager;
+        try {
+            final List<Friend> friends = db.selector(Friend.class).findAll();
+            if (friends != null) {
+                friends.forEach((f) -> names.add(f.getName()));
+            }
+        } catch (DbException e) {
+            e.printStackTrace();
+            JimoUtil.myToast(getContext(), "find friend error: " + e.getMessage());
+        }
         return names;
     }
 
     private void initViews() {
-        final List<String> names = loadFriendNames();
-        ArrayAdapter<String> adapterForSearch = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_dropdown_item_1line, names);
-        act_search.setAdapter(adapterForSearch);
-        registClickListener(names, fl_names);
+        reloadNames();
 
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapterForSelectImg = new SelectImgAdapter(getContext());
         rcv_imgs.setAdapter(adapterForSelectImg);
+    }
+
+    /**
+     * 更新名字
+     */
+    private void reloadNames() {
+        final List<String> names = loadFriendNames();
+        ArrayAdapter<String> adapterForSearch = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_dropdown_item_1line, names);
+        act_search.setAdapter(adapterForSearch);
+        fl_names.removeAllViewsInLayout();
+        registClickListener(names, fl_names);
     }
 
     private void registClickListener(List<String> strs, FlexboxLayout flex) {
@@ -101,7 +123,8 @@ public class FriendAddFragment extends Fragment {
         }
     }
 
-    public void submit(View view) {
+    @Event(R.id.btn_add_thing)
+    private void submit(View view) {
         if (FuckUtil.checkInput(getContext(), tv_date, tv_name, edt_thing)) {
             DbManager db = MyApp.dbManager;
             final String date = String.valueOf(tv_date.getText());
@@ -152,6 +175,16 @@ public class FriendAddFragment extends Fragment {
                     break;
             }
         }
+    }
+
+    /**
+     * 弹出对话框添加一个朋友
+     *
+     * @param view
+     */
+    @Event(R.id.ib_add_friend)
+    private void addFriend(View view) {
+        new FriendAddDialog().show(Objects.requireNonNull(getActivity()).getFragmentManager(), (obj) -> reloadNames());
     }
 
     @Override

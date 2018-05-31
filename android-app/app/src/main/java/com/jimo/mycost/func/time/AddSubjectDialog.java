@@ -1,22 +1,18 @@
 package com.jimo.mycost.func.time;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jimo.mycost.R;
+import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
-
-import java.util.Calendar;
 
 /**
  * Created by jimo on 17-11-21.
@@ -41,32 +37,10 @@ public class AddSubjectDialog extends DialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_add_subject, null);
         final TextView tvDate = view.findViewById(R.id.tv_select_date);
-        tvDate.setOnClickListener(view1 -> {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            final int day = calendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (datePicker, i, i1, i2) -> {
-                //TODO 重构
-                String date;
-                //为了按日期排序，当9月9号时应该写成09-09,而不是9-9
-                if (i1 < 9) {
-                    date = i + "-0" + (i1 + 1);
-                } else {
-                    date = i + "-" + (i1 + 1);
-                }
-                if (i2 < 10) {
-                    date += "-0" + i2;
-                } else {
-                    date += "-" + i2;
-                }
-                tvDate.setText(date);
-            }, year, month, day);
-            datePickerDialog.show();
-        });
+        tvDate.setOnClickListener(view1 -> FuckUtil.showDateSelectDialog(getContext(), (date) -> tvDate.setText((CharSequence) date)));
         builder.setView(view).setPositiveButton("确定", (dialogInterface, i) -> {
             String endDate = tvDate.getText().toString();
-            EditText name = (EditText) view.findViewById(R.id.edt_subject_name);
+            EditText name = view.findViewById(R.id.edt_subject_name);
             String subjectName = name.getText().toString();
             if ("".equals(subjectName)) {
                 JimoUtil.mySnackbar(tvDate, "参数不正确");
