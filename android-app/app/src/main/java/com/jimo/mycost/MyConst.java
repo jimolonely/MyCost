@@ -16,8 +16,9 @@ public class MyConst {
     public static final int IN_COME = 1;
     public static final int COST = 0;
 
-    public static final int ITEM_TYPE1 = 0;
-    public static final int ITEM_TYPE2 = 1;
+    public static final int ITEM_TYPE_TITLE = 0;
+    public static final int ITEM_TYPE_WITH_PHOTO = 1;
+    public static final int ITEM_TYPE_NO_PHOTO = 2;//没有图片
 
     public static final String UPLOAD_URL = "http://mycost.ngrok.cc/upload";
 

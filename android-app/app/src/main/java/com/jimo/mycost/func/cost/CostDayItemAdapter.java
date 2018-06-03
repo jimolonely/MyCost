@@ -34,7 +34,7 @@ public class CostDayItemAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context context;
 
-    public CostDayItemAdapter(List<CostDayItem> items, Context context) {
+    CostDayItemAdapter(List<CostDayItem> items, Context context) {
         this.items = items;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -62,16 +62,17 @@ public class CostDayItemAdapter extends BaseAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        //TODO 最好把ITEM_TYPE变成一个enum,这样改变之后才不会忘记改这个个数
+        return 3;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         CostDayItem item = items.get(i);
-        if (item.getItemType() == MyConst.ITEM_TYPE1) {
+        if (item.getItemType() == MyConst.ITEM_TYPE_WITH_PHOTO) {
             ViewHolder1 holder;
             if (view == null) {
-                view = inflater.inflate(R.layout.item_cost_day_cost_item, null);
+                view = inflater.inflate(R.layout.item_cost_day_cost_with_photo_item, null);
                 holder = new ViewHolder1();
                 holder.tv_money = view.findViewById(R.id.tv_money);
                 holder.tv_type = view.findViewById(R.id.tv_type);
@@ -95,7 +96,28 @@ public class CostDayItemAdapter extends BaseAdapter {
                         return true;
                     }
             );
-        } else {
+        } else if (item.getItemType() == MyConst.ITEM_TYPE_NO_PHOTO) {
+            ViewHolder0 holder;
+            if (view == null) {
+                view = inflater.inflate(R.layout.item_cost_day_cost_no_photo_item, null);
+                holder = new ViewHolder0();
+                holder.tv_money = view.findViewById(R.id.tv_money);
+                holder.tv_type = view.findViewById(R.id.tv_type);
+                holder.tv_remark = view.findViewById(R.id.tv_remark);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder0) view.getTag();
+            }
+            holder.tv_money.setText(item.getMoney());
+            holder.tv_type.setText(item.getType());
+            holder.tv_remark.setText(item.getRemark());
+
+            holder.tv_type.setOnLongClickListener(v -> {
+                        deleteItem(v, item.getId(), i);
+                        return true;
+                    }
+            );
+        } else if (item.getItemType() == MyConst.ITEM_TYPE_TITLE) {
             ViewHolder2 holder2;
             if (view == null) {
                 view = inflater.inflate(R.layout.item_cost_day_cost_title, null);
@@ -115,6 +137,12 @@ public class CostDayItemAdapter extends BaseAdapter {
         private TextView tv_money;
         private TextView tv_remark;
         private RecyclerView rcv_temp_img;
+    }
+
+    private class ViewHolder0 {
+        private TextView tv_type;
+        private TextView tv_money;
+        private TextView tv_remark;
     }
 
     private class ViewHolder2 {

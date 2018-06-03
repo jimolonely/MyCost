@@ -93,13 +93,19 @@ public class CostShowFragment extends Fragment {
         for (CostInComeRecord c : costInComeRecords) {
             if (!dates.contains(c.getDate())) {
                 dates.add(c.getDate());
-                dayCostItems.add(new CostDayItem(c.getDate(), MyConst.ITEM_TYPE2));
+                dayCostItems.add(new CostDayItem(c.getDate(), MyConst.ITEM_TYPE_TITLE));
                 for (CostInComeRecord tc : costInComeRecords) {
                     String d = tc.getDate();
                     if (d != null && d.equals(c.getDate())) {
-                        final RecyclerViewTempImgAdapter adapter = new RecyclerViewTempImgAdapter(getContext(), tc.getImagePaths(db));
-                        dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE1,
-                                tc.getTypeName(), String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId(), adapter));
+                        final List<RecyclerViewTempImgItem> imagePaths = tc.getImagePaths(db);
+                        if (imagePaths != null && imagePaths.size() > 0) {
+                            final RecyclerViewTempImgAdapter adapter = new RecyclerViewTempImgAdapter(getContext(), imagePaths);
+                            dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE_WITH_PHOTO,
+                                    tc.getTypeName(), String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId(), adapter));
+                        } else {
+                            dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE_NO_PHOTO, tc.getTypeName(),
+                                    String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId()));
+                        }
                     }
                 }
             }

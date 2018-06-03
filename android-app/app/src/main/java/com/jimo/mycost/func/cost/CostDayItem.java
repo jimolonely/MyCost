@@ -14,7 +14,7 @@ public class CostDayItem {
 
     private RecyclerViewTempImgAdapter adapter;
 
-    public CostDayItem(String date, int itemType, String type, String money, String remark, Long id, RecyclerViewTempImgAdapter adapter) {
+    CostDayItem(String date, int itemType, String type, String money, String remark, Long id, RecyclerViewTempImgAdapter adapter) {
         this.date = date;
         this.itemType = itemType;
         this.type = type;
@@ -24,7 +24,16 @@ public class CostDayItem {
         this.adapter = adapter;
     }
 
-    public CostDayItem(String date, int itemType) {
+    CostDayItem(String date, int itemType, String type, String money, String remark, Long id) {
+        this.date = date;
+        this.itemType = itemType;
+        this.type = type;
+        this.money = money;
+        this.remark = remark;
+        this.id = id;
+    }
+
+    CostDayItem(String date, int itemType) {
         this.date = date;
         this.itemType = itemType;
     }
