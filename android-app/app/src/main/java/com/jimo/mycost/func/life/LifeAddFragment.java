@@ -200,13 +200,7 @@ public class LifeAddFragment extends Fragment {
 
     @Event(R.id.input_time_life)
     private void chooseTime(View view) {
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute1 = c.get(Calendar.MINUTE);
-        new TimePickerDialog(getContext(), (view1, hourOfDay, minute) -> {
-            watchTime = hourOfDay + ":" + minute;
-            tv_date.setText(watchTime);
-        }, hour, minute1, true).show();
+        FuckUtil.showDateSelectDialog(getContext(), (date) -> tv_date.setText(String.valueOf(date)));
     }
 
 

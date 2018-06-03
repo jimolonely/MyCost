@@ -1,6 +1,7 @@
 package com.jimo.mycost.util;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -80,7 +81,7 @@ public class FuckUtil {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, (datePicker, year1, month1, dayOfMonth) -> {
+        new DatePickerDialog(context, (datePicker, year1, month1, dayOfMonth) -> {
             String date;
             //为了按日期排序，当9月9号时应该写成09-09,而不是9-9
             if (month1 < 9) {
@@ -94,10 +95,24 @@ public class FuckUtil {
                 date += "-" + dayOfMonth;
             }
             callback.doSomething(date);
-        }, year, month, day);
-        datePickerDialog.show();
+        }, year, month, day).show();
     }
 
+    /**
+     * 弹出时间选择对话框
+     *
+     * @param context
+     * @param callback
+     */
+    public static void showTimeSelectDialog(Context context, MyCallback.CommonCallback callback) {
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute1 = c.get(Calendar.MINUTE);
+        new TimePickerDialog(context, (view1, hourOfDay, minute) -> {
+            final String watchTime = hourOfDay + ":" + minute;
+            callback.doSomething(watchTime);
+        }, hour, minute1, true).show();
+    }
 
     /**
      * 把图片加载封装了
