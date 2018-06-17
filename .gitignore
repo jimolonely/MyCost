@@ -1,1 +1,26 @@
 android-app/gradle/wrapper/gradle-*.zip
+
+
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# 下面是对family-tree的限制
+# dependencies
+/family-tree/node_modules
+
+# testing
+/family-tree/coverage
+
+# production
+/family-tree/build
+
+# misc
+/family-tree/.DS_Store
+/family-tree/.env.local
+/family-tree/.env.development.local
+/family-tree/.env.test.local
+/family-tree/.env.production.local
+
+/family-tree/npm-debug.log*
+/family-tree/yarn-debug.log*
+/family-tree/yarn-error.log*
+
