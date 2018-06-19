@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "antd": "^3.6.2",
+    "echarts": "^4.1.0",
+    "echarts-for-react": "^2.0.12",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "1.1.4"
