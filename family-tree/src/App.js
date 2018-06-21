@@ -20,15 +20,6 @@ class App extends Component {
                 { "name": "HierarchicalCluster", "value": 6714 },
                 { "name": "MergeEdge", "value": 743 }
               ]
-            },
-            {
-              "name": "爸爸",
-              "children": [
-                { "name": "AgglomerativeCluster", "value": 3938 },
-                { "name": "CommunityStructure", "value": 3812 },
-                { "name": "HierarchicalCluster", "value": 6714 },
-                { "name": "MergeEdge", "value": 743 }
-              ]
             }
           ]
         }
