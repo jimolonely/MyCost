@@ -8,8 +8,25 @@ class RelationShow extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nodes: [],
-            links: []
+            graphHeight: 800,
+            nodes: [
+                {
+                    name: "寂寞",
+                    symbol: "image://http://img1.imgtn.bdimg.com/it/u=1303327007,1225577204&fm=27&gp=0.jpg",
+                    symbolSize: 20
+                },
+                {
+                    name: "呵呵",
+                    symbol: "image://http://img2.imgtn.bdimg.com/it/u=831174989,325996299&fm=27&gp=0.jpg"
+                    , symbolSize: 20
+                }
+            ],
+            links: [
+                {
+                    source: "寂寞",
+                    target: "呵呵"
+                }
+            ]
         }
         this.getOption = this.getOption.bind(this);
     }
@@ -80,7 +97,7 @@ class RelationShow extends Component {
         return (
             <div>
                 <Button type='primary'>click me</Button>
-                <ReactEcharts option={this.getOption()} />
+                <ReactEcharts option={this.getOption()} style={{ height: this.state.graphHeight + 'px' }} />
             </div>
         );
     }
