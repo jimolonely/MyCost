@@ -39,7 +39,6 @@ class RelationShow extends Component {
                 top: 'top',
                 left: 'middle'
             },
-            // animationDuration: 500,
             animationEasingUpdate: 'quinticInOut',
             tooltip: {
                 trigger: 'item',
