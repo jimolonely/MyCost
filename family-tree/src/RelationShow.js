@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, Modal, Divider } from 'antd';
 import ReactEcharts from 'echarts-for-react';
 
 
@@ -12,12 +12,12 @@ class RelationShow extends Component {
             nodes: [
                 {
                     name: "寂寞",
-                    symbol: "image://http://img1.imgtn.bdimg.com/it/u=1303327007,1225577204&fm=27&gp=0.jpg",
+                    symbol: "image://http://img0.imgtn.bdimg.com/it/u=326486006,812505670&fm=27&gp=0.jpg",
                     symbolSize: 20
                 },
                 {
                     name: "呵呵",
-                    symbol: "image://http://img2.imgtn.bdimg.com/it/u=831174989,325996299&fm=27&gp=0.jpg"
+                    symbol: "image://http://img0.imgtn.bdimg.com/it/u=326486006,812505670&fm=27&gp=0.jpg"
                     , symbolSize: 20
                 }
             ],
@@ -26,9 +26,13 @@ class RelationShow extends Component {
                     source: "寂寞",
                     target: "呵呵"
                 }
-            ]
+            ],
+            nodeVisible: false
         }
         this.getOption = this.getOption.bind(this);
+        this.onChartClick = this.onChartClick.bind(this);
+        this.handleNodeCancel = this.handleNodeCancel.bind(this);
+        this.onAddFamily = this.onAddFamily.bind(this);
     }
 
     getOption() {
@@ -92,11 +96,68 @@ class RelationShow extends Component {
         return option;
     }
 
+    //http://echarts.baidu.com/tutorial.html#ECharts%20%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%92%8C%E8%A1%8C%E4%B8%BA
+    onChartClick(params) {
+        console.log(params)
+        if (params.componentType === 'series') {
+            if (params.seriesType === 'graph') {
+                var data = params.data;
+                if (params.dataType === 'edge') {
+                    // 点击到了 graph 的 edge（边）上。
+                }
+                else {
+                    // 点击到了 graph 的 node（节点）上。
+                    this.setState({
+                        nodeVisible: true
+                    })
+                }
+            }
+        }
+    }
+
+    handleNodeCancel() {
+        this.setState({
+            nodeVisible: false
+        })
+    }
+
+    onAddFamily(e) {
+        var type = e.target.id;
+        console.log(type)
+        if (type === "mother") {
+
+        } else if (type === "father") {
+
+        }
+    }
+
     render() {
+        let onEvents = {
+            'click': this.onChartClick,
+            // 'legendselectchanged': this.onChartLegendselectchanged
+        };
+
         return (
             <div>
-                <Button type='primary'>click me</Button>
-                <ReactEcharts option={this.getOption()} style={{ height: this.state.graphHeight + 'px' }} />
+                <Button type='primary'>计算2人关系</Button>
+                <ReactEcharts option={this.getOption()} style={{ height: this.state.graphHeight + 'px' }}
+                    onEvents={onEvents}
+                />
+
+                <Modal
+                    title="节点操作"
+                    visible={this.state.nodeVisible}
+                    footer={null}
+                    onCancel={this.handleNodeCancel}
+                >
+                    <Button type="default" onClick={this.onAddFamily} id="mother">添加母亲</Button>
+                    <Button type="default" onClick={this.onAddFamily} id="father">添加父亲</Button>
+                    <Button type="default" onClick={this.onAddFamily} id="son">添加儿子</Button>
+                    <Button type="default" onClick={this.onAddFamily} id="daughter">添加女儿</Button>
+                    <Button type="default" onClick={this.onAddFamily} id="love">添加配偶</Button>
+                    <Divider orientation="left">基本信息</Divider>
+                    
+                </Modal>
             </div>
         );
     }
