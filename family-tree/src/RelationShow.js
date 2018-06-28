@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
-import { Button, Modal, Divider } from 'antd';
+import {
+    Button, Modal, Divider, Icon, Upload, Rate,
+    Form, Select, Input, DatePicker, Radio,
+} from 'antd';
 import ReactEcharts from 'echarts-for-react';
 
+
+const FormItem = Form.Item;
+const Option = Select.Option;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class RelationShow extends Component {
 
@@ -24,15 +32,23 @@ class RelationShow extends Component {
             links: [
                 {
                     source: "寂寞",
-                    target: "呵呵"
+                    target: "呵呵",
+                    label: {
+                        show: true,
+                        formatter: '朋友'
+                    }
                 }
             ],
-            nodeVisible: false
+            nodeVisible: false,
+            updateInfoVisible: false,
         }
         this.getOption = this.getOption.bind(this);
         this.onChartClick = this.onChartClick.bind(this);
         this.handleNodeCancel = this.handleNodeCancel.bind(this);
+        this.handleUpdateInfoCancel = this.handleUpdateInfoCancel.bind(this);
         this.onAddFamily = this.onAddFamily.bind(this);
+        this.onSaveInfo = this.onSaveInfo.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     getOption() {
@@ -120,21 +136,51 @@ class RelationShow extends Component {
             nodeVisible: false
         })
     }
+    handleUpdateInfoCancel() {
+        this.setState({
+            updateInfoVisible: false
+        })
+    }
 
     onAddFamily(e) {
         var type = e.target.id;
         console.log(type)
+        this.setState({
+            updateInfoVisible: true
+        })
         if (type === "mother") {
-
         } else if (type === "father") {
 
         }
+    }
+
+    //更新或新增个人信息
+    onSaveInfo() {
+
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
     }
 
     render() {
         let onEvents = {
             'click': this.onChartClick,
             // 'legendselectchanged': this.onChartLegendselectchanged
+        };
+
+        const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: { span: 6 },
+            wrapperCol: { span: 14 },
+        };
+        const datePickerConfig = {
+            rules: [{ type: 'object', required: true, message: 'Please select time!' }],
         };
 
         return (
@@ -156,11 +202,152 @@ class RelationShow extends Component {
                     <Button type="default" onClick={this.onAddFamily} id="daughter">添加女儿</Button>
                     <Button type="default" onClick={this.onAddFamily} id="love">添加配偶</Button>
                     <Divider orientation="left">基本信息</Divider>
-                    
+                    <Button type="primary" onClick={this.onSaveInfo}><Icon type="check" />保存</Button>
+                </Modal>
+
+                <Modal
+                    title="新增成员"
+                    visible={this.state.updateInfoVisible}
+                    footer={null}
+                    onCancel={this.handleUpdateInfoCancel}
+                >
+                    <Divider orientation="left">基本信息</Divider>
+                    <Form onSubmit={this.handleSubmit}>
+                        <FormItem
+                            {...formItemLayout}
+                            label="姓名"
+                        >
+                            {getFieldDecorator('name', {
+                                rules: [{ required: true, message: '名字必填!' }],
+                            })(
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                            )}
+                        </FormItem>
+                        <FormItem
+                            {...formItemLayout}
+                            label="性别"
+                        >
+                            {getFieldDecorator('sex', {
+                                rules: [{ required: true, message: '性别必填!' }],
+                            })(
+                                <RadioGroup>
+                                    <Radio value="男">男</Radio>
+                                    <Radio value="女">女</Radio>
+                                </RadioGroup>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            {...formItemLayout}
+                            label="生日"
+                        >
+                            {getFieldDecorator('birthday', datePickerConfig)(
+                                <DatePicker />
+                            )}
+                        </FormItem>
+                        <FormItem
+                            {...formItemLayout}
+                            label="血型"
+                        >
+                            {getFieldDecorator('blood', {
+                                rules: [{ required: true, message: '血型必填!' }],
+                            })(
+                                <RadioGroup>
+                                    <Radio value="O">O</Radio>
+                                    <Radio value="A">A</Radio>
+                                    <Radio value="B">B</Radio>
+                                    <Radio value="AB">AB</Radio>
+                                </RadioGroup>
+                            )}
+                        </FormItem>
+
+                        <FormItem
+                            {...formItemLayout}
+                            label="文化程度"
+                        >
+                            {getFieldDecorator('education', {
+                                rules: [{ required: true, message: '文化水平必填!' }],
+                            })(
+                                <RadioGroup>
+                                    <Radio value="文盲">文盲</Radio>
+                                    <Radio value="小学">小学</Radio>
+                                    <Radio value="初中">初中</Radio>
+                                    <Radio value="高中">高中</Radio>
+                                    <Radio value="大学">大学</Radio>
+                                    <Radio value="硕士">硕士</Radio>
+                                    <Radio value="博士">博士</Radio>
+                                </RadioGroup>
+                            )}
+                        </FormItem>
+
+                        <FormItem
+                            {...formItemLayout}
+                            label="工作"
+                        >
+                            {getFieldDecorator('job', {
+                                rules: [{ required: true, message: '工作必填!' }],
+                            })(
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                            )}
+                        </FormItem>
+
+                        <FormItem
+                            {...formItemLayout}
+                            label="备注"
+                        >
+                            {getFieldDecorator('remark', {
+                                rules: [{ required: true, message: '必填!' }],
+                            })(
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                            )}
+                        </FormItem>
+
+
+                        <FormItem
+                            {...formItemLayout}
+                            label="印象"
+                        >
+                            {getFieldDecorator('impression', {
+                                rules: [
+                                    { required: true, message: '大家对此人有何看法!', type: 'array' },
+                                ],
+                            })(
+                                <Select mode="multiple" placeholder="大家对此人有何看法">
+                                    <Option value="red">Red</Option>
+                                    <Option value="green">Green</Option>
+                                    <Option value="blue">Blue</Option>
+                                </Select>
+                            )}
+                        </FormItem>
+
+
+                        <FormItem
+                            {...formItemLayout}
+                            label="Upload"
+                            extra="longgggggggggggggggggggggggggggggggggg"
+                        >
+                            {getFieldDecorator('upload', {
+                                valuePropName: 'fileList',
+                                getValueFromEvent: this.normFile,
+                            })(
+                                <Upload name="logo" action="/upload.do" listType="picture">
+                                    <Button>
+                                        <Icon type="upload" /> Click to upload
+              </Button>
+                                </Upload>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            wrapperCol={{ span: 12, offset: 6 }}
+                        >
+                            <Button type="primary" htmlType="submit"><Icon type="check" />保存</Button>
+                        </FormItem>
+                    </Form>
                 </Modal>
             </div>
         );
     }
 }
 
-export default RelationShow;
+const WrappedRelationShow = Form.create()(RelationShow);
+
+export default WrappedRelationShow;
