@@ -47,7 +47,7 @@ class RelationShow extends Component {
         this.handleNodeCancel = this.handleNodeCancel.bind(this);
         this.handleUpdateInfoCancel = this.handleUpdateInfoCancel.bind(this);
         this.onAddFamily = this.onAddFamily.bind(this);
-        this.onSaveInfo = this.onSaveInfo.bind(this);
+        this.onModifyInfo = this.onModifyInfo.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -81,7 +81,7 @@ class RelationShow extends Component {
                     type: 'graph',
                     name: "家族关系图",
                     layout: 'force',
-                    edgeSymbol: ['arrow'],
+                    // edgeSymbol: ['arrow'],
                     categories: [
                         {
                             name: 'hehe'
@@ -154,9 +154,9 @@ class RelationShow extends Component {
         }
     }
 
-    //更新或新增个人信息
-    onSaveInfo() {
-
+    //更新信息
+    onModifyInfo() {
+        //弹出修改的框
     }
 
     handleSubmit = (e) => {
@@ -186,6 +186,7 @@ class RelationShow extends Component {
         return (
             <div>
                 <Button type='primary'>计算2人关系</Button>
+                <Button type='primary'>添加初始节点</Button>
                 <ReactEcharts option={this.getOption()} style={{ height: this.state.graphHeight + 'px' }}
                     onEvents={onEvents}
                 />
@@ -202,7 +203,11 @@ class RelationShow extends Component {
                     <Button type="default" onClick={this.onAddFamily} id="daughter">添加女儿</Button>
                     <Button type="default" onClick={this.onAddFamily} id="love">添加配偶</Button>
                     <Divider orientation="left">基本信息</Divider>
-                    <Button type="primary" onClick={this.onSaveInfo}><Icon type="check" />保存</Button>
+                    <div>
+                        <span className="ant-form-text">姓名: 寂寞</span>
+                        <span className="ant-form-text">年龄: 20</span>
+                    </div>
+                    <Button type="primary" onClick={this.onModifyInfo}><Icon type="modify" />修改</Button>
                 </Modal>
 
                 <Modal
@@ -220,7 +225,7 @@ class RelationShow extends Component {
                             {getFieldDecorator('name', {
                                 rules: [{ required: true, message: '名字必填!' }],
                             })(
-                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="name" />
                             )}
                         </FormItem>
                         <FormItem
@@ -286,7 +291,7 @@ class RelationShow extends Component {
                             {getFieldDecorator('job', {
                                 rules: [{ required: true, message: '工作必填!' }],
                             })(
-                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="job" />
                             )}
                         </FormItem>
 
@@ -297,7 +302,7 @@ class RelationShow extends Component {
                             {getFieldDecorator('remark', {
                                 rules: [{ required: true, message: '必填!' }],
                             })(
-                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="remark" />
                             )}
                         </FormItem>
 
