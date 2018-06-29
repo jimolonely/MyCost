@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    family:
+      jdbc-url: jdbc:mysql://localhost:3306/family
+      username: root
+      password: root
+#      driver-class-name: com.mysql.jdbc.Driver
+      #    阿里druid连接池配置
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,log4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      useGlobalDataSourceStat: true
+  thymeleaf:
+    cache: false
+    suffix: .html
+    mode: LEGACYHTML5
+    encoding: UTF-8
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.jimo.entity.*
+
+#写了logback-spring.xml会覆盖下面的模板,当然我已经写了
+logging:
+  file: ./vatuudmslog/vatuudms.log
+  level:
+    org.springframework.web: ERROR
+    com.jimo: debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
+server:
+  port: 8081
+
