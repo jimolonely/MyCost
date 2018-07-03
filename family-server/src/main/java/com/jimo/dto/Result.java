@@ -12,6 +12,10 @@ public class Result {
         this(true, "", null);
     }
 
+    public Result(boolean ok,String msg){
+        this(ok,msg,null);
+    }
+
     public Result(Object data) {
         this(true, "", data);
     }
