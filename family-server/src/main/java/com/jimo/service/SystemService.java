@@ -44,7 +44,7 @@ public class SystemService {
         final String ps = buffer.toString();
         //compare　to database
         final String psFromDB = systemMapper.getPassword(userName);
-        if (ps.equals(psFromDB)) {
+        if (ps.toLowerCase().equals(psFromDB)) {
             return new Result(getToken(userName));
         }
         return new Result(false, "用户名或密码错误");
