@@ -3,7 +3,7 @@ import qs from 'qs'; //对参数转化
 import './loading.css';
 // axios.defaults.baseURL = baseURL;
 
-const baseURL = baseURL;
+const baseURL = "http://localhost:8081/";
 
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();

@@ -33,9 +33,13 @@ class Login extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div id="login-form">
+        <br />
+        <br />
+        <br />
+        <br />
         <Row type="flex" justify='center'>
           <Col >
-            <h2>基于学生成绩数据的分析系统</h2>
+            <h2>王氏家族前景无瑕</h2>
           </Col>
         </Row>
         <Row type="flex" justify='center'>
