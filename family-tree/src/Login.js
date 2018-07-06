@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import './Login.css';
 import * as net from "./utils/net";
+import * as md5 from "./utils/md5";
 
 const FormItem = Form.Item;
 
@@ -19,12 +20,13 @@ class Login extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        if (values.userName === "jimo" && values.password === "1234") {
-          net.setCookie("user", values, 1);
-          window.location.href = "/";
-        } else {
-          message.error("用户名或密码不正确");
-        }
+        console.log(md5.md5(values.password))
+        net.post('', {
+          userName: values.userName,
+          password: md5.md5(values.password)
+        }, function (re) {
+          console.log(re)
+        })
       }
     });
   }
