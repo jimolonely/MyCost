@@ -21,7 +21,7 @@ class Login extends Component {
       if (!err) {
         console.log('Received values of form: ', values);
         console.log(md5.md5(values.password))
-        net.post('', {
+        net.post('/system/login', {
           userName: values.userName,
           password: md5.md5(values.password)
         }, function (re) {

@@ -1,0 +1,15 @@
+2018-07-02 08:57:19 [restartedMain] INFO  com.jimo.FamilyServerApplication - Starting FamilyServerApplication on jimo-pc with PID 4210 (/home/jimo/workspace/Git/MyCost/family-server/target/classes started by jimo in /home/jimo/workspace/Git/MyCost/family-server)
+2018-07-02 08:57:19 [restartedMain] DEBUG com.jimo.FamilyServerApplication - Running with Spring Boot v2.0.3.RELEASE, Spring v5.0.7.RELEASE
+2018-07-02 08:57:19 [restartedMain] INFO  com.jimo.FamilyServerApplication - The following profiles are active: dev
+2018-07-02 08:57:21 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$1e3439f2 - 数据库ready
+2018-07-02 08:57:21 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$1e3439f2 - mybatis配置文件加载完毕
+2018-07-02 08:57:22 [restartedMain] INFO  com.jimo.FamilyServerApplication - Started FamilyServerApplication in 3.23 seconds (JVM running for 3.747)
+2018-07-02 08:57:52 [restartedMain] INFO  com.jimo.FamilyServerApplication - Starting FamilyServerApplication on jimo-pc with PID 4302 (/home/jimo/workspace/Git/MyCost/family-server/target/classes started by jimo in /home/jimo/workspace/Git/MyCost/family-server)
+2018-07-02 08:57:52 [restartedMain] DEBUG com.jimo.FamilyServerApplication - Running with Spring Boot v2.0.3.RELEASE, Spring v5.0.7.RELEASE
+2018-07-02 08:57:52 [restartedMain] INFO  com.jimo.FamilyServerApplication - The following profiles are active: dev
+2018-07-02 08:57:54 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$cb92c4d3 - 数据库ready
+2018-07-02 08:57:54 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$cb92c4d3 - mybatis配置文件加载完毕
+2018-07-02 08:57:55 [restartedMain] INFO  com.jimo.FamilyServerApplication - Started FamilyServerApplication in 3.556 seconds (JVM running for 4.116)
+2018-07-02 08:58:10 [http-nio-8081-exec-1] DEBUG c.jimo.mapper.PersonMapper.getCount - ==>  Preparing: select count(*) from person 
+2018-07-02 08:58:10 [http-nio-8081-exec-1] DEBUG c.jimo.mapper.PersonMapper.getCount - ==> Parameters: 
+2018-07-02 08:58:10 [http-nio-8081-exec-1] DEBUG c.jimo.mapper.PersonMapper.getCount - <==      Total: 1

@@ -24,9 +24,9 @@ function getCookie(cname) {
 
 function loadShow() {
     //如果加载时没有cookie或过时了,跳转到登录页
-    if (getCookie("user") === "") {
-        window.location.href = "/login"
-    }
+    // if (getCookie("user") === "") {
+    //     window.location.href = "/login"
+    // }
     var loadDiv = document.createElement("div");
     loadDiv.className = "overlay-loader";
     loadDiv.id = "my-load";

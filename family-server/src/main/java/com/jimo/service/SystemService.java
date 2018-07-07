@@ -28,7 +28,7 @@ public class SystemService {
 
     public Result login(String userName, String md5Password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         final MessageDigest md5 = MessageDigest.getInstance("MD5");
-        final byte[] digest = md5.digest(md5Password.getBytes("utf-8"));
+        final byte[] digest = md5.digest(md5Password.toLowerCase().getBytes("utf-8"));
         StringBuilder buffer = new StringBuilder();
         // 把每一个byte 做一个与运算 0xff;
         for (byte b : digest) {
