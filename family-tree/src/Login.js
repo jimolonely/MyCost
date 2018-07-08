@@ -25,7 +25,7 @@ class Login extends Component {
           userName: values.userName,
           password: md5.md5(values.password)
         }, function (re) {
-          console.log(re)
+          net.setCookie('user', re.data.data, 1);
         })
       }
     });
