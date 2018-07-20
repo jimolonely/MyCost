@@ -1,0 +1,24 @@
+2018-07-07 18:21:14 [restartedMain] INFO  com.jimo.FamilyServerApplication - Starting FamilyServerApplication on jimo-pc with PID 15481 (/home/jimo/workspace/Git/MyCost/family-server/target/classes started by jimo in /home/jimo/workspace/Git/MyCost/family-server)
+2018-07-07 18:21:14 [restartedMain] DEBUG com.jimo.FamilyServerApplication - Running with Spring Boot v2.0.3.RELEASE, Spring v5.0.7.RELEASE
+2018-07-07 18:21:14 [restartedMain] INFO  com.jimo.FamilyServerApplication - The following profiles are active: dev
+2018-07-07 18:21:16 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$73339e50 - 数据库ready
+2018-07-07 18:21:16 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$73339e50 - mybatis配置文件加载完毕
+2018-07-07 18:21:16 [restartedMain] INFO  com.jimo.FamilyServerApplication - Started FamilyServerApplication in 3.333 seconds (JVM running for 4.092)
+2018-07-07 18:24:34 [http-nio-8081-exec-5] DEBUG c.j.mapper.SystemMapper.getPassword - ==>  Preparing: select password from user where user_name=? 
+2018-07-07 18:24:34 [http-nio-8081-exec-5] DEBUG c.j.mapper.SystemMapper.getPassword - ==> Parameters: jim(String)
+2018-07-07 18:24:34 [http-nio-8081-exec-5] DEBUG c.j.mapper.SystemMapper.getPassword - <==      Total: 0
+2018-07-07 18:24:44 [http-nio-8081-exec-6] DEBUG c.j.mapper.SystemMapper.getPassword - ==>  Preparing: select password from user where user_name=? 
+2018-07-07 18:24:44 [http-nio-8081-exec-6] DEBUG c.j.mapper.SystemMapper.getPassword - ==> Parameters: jimo(String)
+2018-07-07 18:24:44 [http-nio-8081-exec-6] DEBUG c.j.mapper.SystemMapper.getPassword - <==      Total: 1
+2018-07-07 18:27:40 [http-nio-8081-exec-8] DEBUG c.j.mapper.SystemMapper.getPassword - ==>  Preparing: select password from user where user_name=? 
+2018-07-07 18:27:40 [http-nio-8081-exec-8] DEBUG c.j.mapper.SystemMapper.getPassword - ==> Parameters: jimo(String)
+2018-07-07 18:27:40 [http-nio-8081-exec-8] DEBUG c.j.mapper.SystemMapper.getPassword - <==      Total: 1
+2018-07-07 18:28:59 [restartedMain] INFO  com.jimo.FamilyServerApplication - Starting FamilyServerApplication on jimo-pc with PID 16095 (/home/jimo/workspace/Git/MyCost/family-server/target/classes started by jimo in /home/jimo/workspace/Git/MyCost/family-server)
+2018-07-07 18:28:59 [restartedMain] DEBUG com.jimo.FamilyServerApplication - Running with Spring Boot v2.0.3.RELEASE, Spring v5.0.7.RELEASE
+2018-07-07 18:28:59 [restartedMain] INFO  com.jimo.FamilyServerApplication - The following profiles are active: dev
+2018-07-07 18:29:01 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$3aba0807 - 数据库ready
+2018-07-07 18:29:01 [restartedMain] INFO  c.j.DBConfig$$EnhancerBySpringCGLIB$$3aba0807 - mybatis配置文件加载完毕
+2018-07-07 18:29:01 [restartedMain] INFO  com.jimo.FamilyServerApplication - Started FamilyServerApplication in 2.695 seconds (JVM running for 3.284)
+2018-07-07 18:29:08 [http-nio-8081-exec-1] DEBUG c.j.mapper.SystemMapper.getPassword - ==>  Preparing: select password from user where user_name=? 
+2018-07-07 18:29:08 [http-nio-8081-exec-1] DEBUG c.j.mapper.SystemMapper.getPassword - ==> Parameters: jimo(String)
+2018-07-07 18:29:08 [http-nio-8081-exec-1] DEBUG c.j.mapper.SystemMapper.getPassword - <==      Total: 1

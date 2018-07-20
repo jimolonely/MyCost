@@ -87,7 +87,6 @@ public class LifeAddFragment extends Fragment {
     private SelectImgAdapter adapterForSelectImg;
 
     private float myScore = 6;
-    private String watchTime;
 
     @Nullable
     @Override
@@ -179,7 +178,7 @@ public class LifeAddFragment extends Fragment {
             final LifeRecord lifeRecord = new LifeRecord(String.valueOf(edt_name.getText()), theme, String.valueOf(edt_type.getText()),
                     String.valueOf(edt_author.getText()), String.valueOf(edt_pubdate.getText()), String.valueOf(edt_remark.getText()),
                     String.valueOf(edt_rating.getText()), myScore, String.valueOf(edt_comment.getText()), String.valueOf(edt_mood.getText()),
-                    String.valueOf(edt_spend.getText()), watchTime);
+                    String.valueOf(edt_spend.getText()), String.valueOf(tv_date.getText()));
             //image store
             final DbManager db = MyApp.dbManager;
             try {
