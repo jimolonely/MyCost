@@ -43,4 +43,9 @@ public class MyConst {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         return sharedPreferences.getString("username", "jimo");
     }
+
+    /**
+     * 音频记录的key
+     */
+    public static final String RECORD_PATH_KEY = "record_path_key";
 }
