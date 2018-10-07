@@ -232,4 +232,8 @@ public class MainActivity extends Activity {
     public void clickToFriend(View view) {
         startActivity(new Intent(this, FriendActivity.class));
     }
+
+    public void clickToRecord(View view) {
+        startActivity(new Intent(this, RecordActivity.class));
+    }
 }

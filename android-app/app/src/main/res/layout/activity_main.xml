@@ -123,6 +123,13 @@
                 android:layout_height="wrap_content"
                 android:onClick="clickToFriend"
                 android:text="Friend" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Record"
+                android:onClick="clickToRecord"
+                />
         </LinearLayout>
     </ScrollView>
 

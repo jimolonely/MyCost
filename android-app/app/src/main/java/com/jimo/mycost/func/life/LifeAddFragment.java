@@ -1,6 +1,5 @@
 package com.jimo.mycost.func.life;
 
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,8 +21,8 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
-import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.data.model.LifeRecord;
+import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 import com.luck.picture.lib.PictureSelector;
@@ -41,7 +40,6 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
