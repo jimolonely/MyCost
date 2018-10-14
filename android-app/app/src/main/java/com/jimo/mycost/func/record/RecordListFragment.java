@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
@@ -23,7 +24,6 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -34,8 +34,10 @@ import java.util.logging.Logger;
 @ContentView(R.layout.fragment_record_list)
 public class RecordListFragment extends Fragment {
 
-    @ViewInject(R.id.btn_record_search)
-    private Button btn_search;
+    @ViewInject(R.id.sp_record_path)
+    private Spinner sp_path;
+    @ViewInject(R.id.btn_record_add_path)
+    private Button btn_add_path;
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -48,7 +50,7 @@ public class RecordListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = x.view().inject(this, inflater, container);
-        initDatas();
+        initData();
         return view;
     }
 
@@ -58,18 +60,37 @@ public class RecordListFragment extends Fragment {
      * @author jimo
      * @date 18-10-7 下午4:39
      */
-    private void initDatas() {
-
-        btn_search.setOnLongClickListener(view -> {
-            //TODO 打开一个dialog，展示已选路径和添加新路径
-
-            //长按事件进行路径添加
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            startActivityForResult(intent, CODE_PATH);
+    private void initData() {
+        // 长按弹出路径列表，让我们可以删除
+        btn_add_path.setOnLongClickListener(view -> {
+        String[] paths = getPathArray();
+        String selectPath;
+            DeletePathDialog dialog = new DeletePathDialog();
+            dialog.show("delete path", paths,
+                    (dialogInterface, i) -> {},
+                    (dialogInterface, i) -> {
+                        // TODO delete
+                    },
+                    (dialogInterface, i) -> {
+                        //do nothing
+                    },
+                    Objects.requireNonNull(RecordListFragment.this.getActivity()).getFragmentManager()
+            );
             return true;
         });
+    }
+
+    /**
+     * @author jimo
+     * @date 18-10-14 上午11:42
+     */
+    private String[] getPathArray() {
+        Set<String> set = getAudioRootDirPath();
+        if (set == null) {
+            return new String[0];
+        }
+        String[] paths = new String[set.size()];
+        return set.toArray(paths);
     }
 
     /**
@@ -89,6 +110,20 @@ public class RecordListFragment extends Fragment {
     }
 
     /**
+     * 添加搜索路径
+     *
+     * @author jimo
+     * @date 18-10-14 上午10:58
+     */
+    @Event(R.id.btn_record_add_path)
+    private void clickToAddPath(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, CODE_PATH);
+    }
+
+    /**
      * 获取用户定义的存放录音的目录，可能不止一个
      *
      * @author jimo
@@ -104,13 +139,14 @@ public class RecordListFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
+
+        // 加入选择的路径存起来
         if (requestCode == CODE_PATH) {
             Uri uri = data.getData();
             if (uri != null) {
                 String path = uri.getPath() == null ? "" : uri.getPath();
                 //取出前面的路径
                 path = path.substring(0, path.lastIndexOf("/"));
-                JimoUtil.mySnackbar(btn_search, path);
                 SharedPreferences preferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
                 Set<String> paths = preferences.getStringSet(MyConst.RECORD_PATH_KEY, null);
                 if (paths == null) {
@@ -120,6 +156,7 @@ public class RecordListFragment extends Fragment {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putStringSet(MyConst.RECORD_PATH_KEY, paths);
                 editor.apply();
+                JimoUtil.mySnackbar(sp_path, "添加成功");
             }
         }
     }
