@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,14 +13,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.flexbox.AlignContent;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.flexbox.JustifyContent;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
+import com.jimo.mycost.data.model.CostIncomeType;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
@@ -39,7 +47,12 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.util.JimoUtil.getMonth;
@@ -53,7 +66,11 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
 @ContentView(R.layout.fragment_cost_add)
 public class CostAddFragment extends Fragment {
 
-    @ViewInject(R.id.fbl_food_cost)
+    @ViewInject(R.id.ll_cost_type)
+    LinearLayout ll_types;
+    @ViewInject(R.id.btn_cost_add_type)
+    Button btn_add_type;
+    /*@ViewInject(R.id.fbl_food_cost)
     FlexboxLayout fl_food;
 
     @ViewInject(R.id.fbl_transport_cost)
@@ -63,7 +80,7 @@ public class CostAddFragment extends Fragment {
     FlexboxLayout fl_study;
 
     @ViewInject(R.id.fbl_life_cost)
-    FlexboxLayout fl_life;
+    FlexboxLayout fl_life;*/
 
     @ViewInject(R.id.input_date)
     TextView tv_input_date;
@@ -105,40 +122,173 @@ public class CostAddFragment extends Fragment {
     }
 
     private void initData() {
-        registClickListener(foodTitles, "餐饮", fl_food);
-        registClickListener(transportTitles, "交通", fl_transport);
-        registClickListener(studyTitles, "学习", fl_study);
-        registClickListener(lifeTitles, "生活", fl_life);
-
+        setTypes();
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapterForSelectImg = new SelectImgAdapter(getContext());
         rcv_imgs.setAdapter(adapterForSelectImg);
     }
 
-    private void registClickListener(List<String> title, String type, FlexboxLayout flex) {
-        for (String s : title) {
-            TextView tvv = getTextView(s, (view) -> {
-                if (view instanceof TextView) {
-                    TextView tv = (TextView) view;
-                    final String text = type + " " + String.valueOf(tv.getText());
-                    tv_input_type.setText(text);
+    /**
+     * 从数据库读出开销类型
+     *
+     * @author jimo
+     * @date 18-10-20 上午8:31
+     */
+    private Map<String, Set<String>> getCostType() {
+        Map<String, Set<String>> types = new HashMap<>();
+        DbManager db = MyApp.dbManager;
+        try {
+            List<CostIncomeType> costTypes = db.selector(CostIncomeType.class)
+                    .and("type", "=", CostIncomeType.TYPE_COST).findAll();
+            if (costTypes == null) {
+                return types;
+            }
+            for (CostIncomeType type : costTypes) {
+                String bigType = type.getBigType();
+                if (types.containsKey(bigType)) {
+                    types.get(bigType).add(type.getSmallType());
+                } else {
+                    Set<String> s = new HashSet<>();
+                    s.add(type.getSmallType());
+                    types.put(type.getBigType(), s);
                 }
-            });
-            flex.addView(tvv);
+            }
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_input_date, "load types error");
+            e.printStackTrace();
+        }
+        return types;
+    }
+
+
+    /**
+     * @author jimo
+     * @date 18-10-20 上午9:40
+     */
+    private void setTypes() {
+        Map<String, Set<String>> types = getCostType();
+        if (types.size() == 0) {
+            // 如果没数据，则显示添加的button
+            btn_add_type.setVisibility(View.VISIBLE);
+        } else {
+            ll_types.removeAllViews();
+            for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
+                TextView bigTypeTextView = createBigTypeTextView(entry.getKey());
+                FlexboxLayout flexboxLayout = createFlexboxLayout();
+                TextView divider = createDivider();
+                ll_types.addView(bigTypeTextView);
+
+                for (String s : entry.getValue()) {
+                    TextView tvv = createSmallTypeTextView(s, (view) -> {
+                        if (view instanceof TextView) {
+                            TextView tv = (TextView) view;
+                            final String text = entry.getKey() + " " + String.valueOf(tv.getText());
+                            tv_input_type.setText(text);
+                        }
+                    });
+                    flexboxLayout.addView(tvv);
+                }
+                ll_types.addView(flexboxLayout);
+                ll_types.addView(divider);
+            }
         }
     }
 
-    //TODO 替代
+    /**
+     * 创建类型的流式布局，里面装TextView
+     *
+     * @author jimo
+     * @date 18-10-20 上午9:15
+     */
+    private FlexboxLayout createFlexboxLayout() {
+        FlexboxLayout flex = new FlexboxLayout(Objects.requireNonNull(getContext()));
+        flex.setAlignContent(AlignContent.STRETCH);
+        flex.setAlignItems(AlignItems.STRETCH);
+        flex.setFlexWrap(FlexWrap.WRAP);
+        flex.setJustifyContent(JustifyContent.FLEX_START);
+        flex.setLayoutParams(new FlexboxLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+        return flex;
+    }
+
+    /**
+     * 创建小类的TextView
+     *
+     * @author jimo
+     * @date 18-10-20 上午9:19
+     */
     @NonNull
-    private TextView getTextView(String s, View.OnClickListener listener) {
+    private TextView createSmallTypeTextView(String s, View.OnClickListener listener) {
         TextView tv = new TextView(getContext());
         tv.setText(s);
         tv.setTextSize(18);
         tv.setGravity(Gravity.CENTER);
         tv.setPadding(10, 5, 10, 5);
         tv.setOnClickListener(listener);
-        tv.setTextColor(getResources().getColor(R.color.secondary_text));
+        tv.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.secondary_text));
         return tv;
+    }
+
+    /**
+     * 创建分割线
+     *
+     * @author jimo
+     * @date 18-10-20 上午9:31
+     */
+    private TextView createDivider() {
+        TextView tv = new TextView(getContext());
+        tv.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 1
+        ));
+        tv.setBackgroundColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.divider));
+        return tv;
+    }
+
+    /**
+     * 创建大类的TextView
+     *
+     * @author jimo
+     * @date 18-10-20 上午9:23
+     */
+    private TextView createBigTypeTextView(String text) {
+        TextView tv = new TextView(getContext());
+        tv.setText(text);
+        tv.setGravity(Gravity.CENTER_VERTICAL);
+        tv.setGravity(Gravity.START);
+        tv.setTextSize(18);
+        tv.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 30
+        ));
+        tv.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.primary_text));
+        return tv;
+    }
+
+    /**
+     * 点击弹出框，添加类型
+     *
+     * @author jimo
+     * @date 18-10-20 上午9:50
+     */
+    @Event(R.id.btn_cost_add_type)
+    private void clickToAddTypes(View view) {
+        AddCostIncomeTypeDialog dialog = new AddCostIncomeTypeDialog();
+        String[] bigTypes = {"餐饮", "交通", "学习", "生活"};
+        dialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), bigTypes, this::saveType);
+    }
+
+    private void saveType(String bigType, String smallType) {
+        DbManager db = MyApp.dbManager;
+        CostIncomeType costIncomeType =
+                new CostIncomeType(bigType, smallType, CostIncomeType.TYPE_COST, JimoUtil.getDateTimeNow(), MyConst.SYNC_TYPE_INSERT);
+        try {
+            db.save(costIncomeType);
+            setTypes();
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(ll_types, "保存error:" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
