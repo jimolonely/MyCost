@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/btn_cost_add_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="add types"
+            />
 
         <LinearLayout
             android:id="@+id/ll_cost_type"
@@ -18,12 +24,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <Button
-            android:id="@+id/btn_cost_add_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="add types"
-            android:visibility="gone" />
         <!--  <TextView
               android:layout_width="match_parent"
               android:layout_height="30dp"

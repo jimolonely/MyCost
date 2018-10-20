@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,19 +67,6 @@ public class CostAddFragment extends Fragment {
 
     @ViewInject(R.id.ll_cost_type)
     LinearLayout ll_types;
-    @ViewInject(R.id.btn_cost_add_type)
-    Button btn_add_type;
-    /*@ViewInject(R.id.fbl_food_cost)
-    FlexboxLayout fl_food;
-
-    @ViewInject(R.id.fbl_transport_cost)
-    FlexboxLayout fl_transport;
-
-    @ViewInject(R.id.fbl_study_cost)
-    FlexboxLayout fl_study;
-
-    @ViewInject(R.id.fbl_life_cost)
-    FlexboxLayout fl_life;*/
 
     @ViewInject(R.id.input_date)
     TextView tv_input_date;
@@ -139,7 +125,7 @@ public class CostAddFragment extends Fragment {
         DbManager db = MyApp.dbManager;
         try {
             List<CostIncomeType> costTypes = db.selector(CostIncomeType.class)
-                    .and("type", "=", CostIncomeType.TYPE_COST).findAll();
+                    .where("type", "=", CostIncomeType.TYPE_COST).findAll();
             if (costTypes == null) {
                 return types;
             }
@@ -167,30 +153,25 @@ public class CostAddFragment extends Fragment {
      */
     private void setTypes() {
         Map<String, Set<String>> types = getCostType();
-        if (types.size() == 0) {
-            // 如果没数据，则显示添加的button
-            btn_add_type.setVisibility(View.VISIBLE);
-        } else {
-            ll_types.removeAllViews();
-            for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
-                TextView bigTypeTextView = createBigTypeTextView(entry.getKey());
-                FlexboxLayout flexboxLayout = createFlexboxLayout();
-                TextView divider = createDivider();
-                ll_types.addView(bigTypeTextView);
+        ll_types.removeAllViews();
+        for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
+            TextView bigTypeTextView = createBigTypeTextView(entry.getKey());
+            FlexboxLayout flexboxLayout = createFlexboxLayout();
+            TextView divider = createDivider();
+            ll_types.addView(bigTypeTextView);
 
-                for (String s : entry.getValue()) {
-                    TextView tvv = createSmallTypeTextView(s, (view) -> {
-                        if (view instanceof TextView) {
-                            TextView tv = (TextView) view;
-                            final String text = entry.getKey() + " " + String.valueOf(tv.getText());
-                            tv_input_type.setText(text);
-                        }
-                    });
-                    flexboxLayout.addView(tvv);
-                }
-                ll_types.addView(flexboxLayout);
-                ll_types.addView(divider);
+            for (String s : entry.getValue()) {
+                TextView tvv = createSmallTypeTextView(s, (view) -> {
+                    if (view instanceof TextView) {
+                        TextView tv = (TextView) view;
+                        final String text = entry.getKey() + " " + String.valueOf(tv.getText());
+                        tv_input_type.setText(text);
+                    }
+                });
+                flexboxLayout.addView(tvv);
             }
+            ll_types.addView(flexboxLayout);
+            ll_types.addView(divider);
         }
     }
 
@@ -259,7 +240,7 @@ public class CostAddFragment extends Fragment {
         tv.setGravity(Gravity.START);
         tv.setTextSize(18);
         tv.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 30
+                ViewGroup.LayoutParams.MATCH_PARENT, 60
         ));
         tv.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.primary_text));
         return tv;
