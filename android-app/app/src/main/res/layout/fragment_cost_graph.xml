@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:padding="5dp">-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/common_choose_from_end_date" />
+
+        <TextView
+            android:id="@+id/tv_cost_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="总支出： 10000元"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <!--分类展示的饼状图-->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_cost_type"
+            android:layout_width="match_parent"
+            android:layout_height="500dp" />
+
+        <!--分类展示-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_cost_type"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <!--按月/天展示的柱状图-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_cost_month"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <!--按月/天展示分类对比的折线图-->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/line_cost_month"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <!--花费的词云图-->
+        <ImageView
+            android:id="@+id/iv_cost_word_cloud"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+    </LinearLayout>
+</ScrollView>

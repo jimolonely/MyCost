@@ -146,7 +146,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:background="@mipmap/ic_tubiao"
-            android:onClick="ibStatisticClick" />
+            android:onClick="clickToStatistic" />
 
         <ImageButton
             android:layout_width="50dp"

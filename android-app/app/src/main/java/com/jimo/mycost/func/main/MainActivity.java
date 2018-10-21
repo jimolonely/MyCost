@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
      *
      * @param v
      */
-    public void ibStatisticClick(View v) {
+    public void clickToStatistic(View v) {
         JimoUtil.myToast(this, "待实现~~");
     }
 

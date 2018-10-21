@@ -3,6 +3,7 @@ package com.jimo.mycost.util;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import org.xutils.x;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Random;
 
 /**
  * 还没取好名字
@@ -159,5 +161,23 @@ public class FuckUtil {
         tv.setOnClickListener(listener);
         tv.setTextColor(context.getResources().getColor(R.color.secondary_text));
         return tv;
+    }
+
+    /**
+     * 随机生成颜色
+     *
+     * @author jimo
+     * @date 18-10-21 下午5:41
+     */
+    public static int[] getRandomColors(int num) {
+        if (num <= 0) {
+            return new int[0];
+        }
+        int[] colors = new int[num];
+        Random r = new Random();
+        for (int i = 0; i < num; i++) {
+            colors[i] = Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+        }
+        return colors;
     }
 }

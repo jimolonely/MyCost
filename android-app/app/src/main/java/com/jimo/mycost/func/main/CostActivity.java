@@ -13,6 +13,7 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.func.common.MyFragmentAdapter;
 import com.jimo.mycost.func.common.MyOnPageChangeListener;
 import com.jimo.mycost.func.cost.CostAddFragment;
+import com.jimo.mycost.func.cost.CostGraphFragment;
 import com.jimo.mycost.func.cost.CostShowFragment;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
@@ -61,9 +62,11 @@ public class CostActivity extends AppCompatActivity {
 
         titles.add("Add");
         titles.add("Show");
+        titles.add("Graph");
 
         fragments.add(new CostAddFragment());
         fragments.add(new CostShowFragment());
+        fragments.add(new CostGraphFragment());
 
         adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
 
