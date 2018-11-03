@@ -48,6 +48,8 @@ import java.util.Map;
 @ContentView(R.layout.fragment_cost_graph)
 public class CostGraphFragment extends Fragment {
 
+    @ViewInject(R.id.tv_cost_total)
+    private TextView tv_cost_total;
     @ViewInject(R.id.tv_common_start_date)
     private TextView tv_date_from;
     @ViewInject(R.id.tv_common_end_date)
@@ -83,8 +85,22 @@ public class CostGraphFragment extends Fragment {
             return;
         }
         List<CostInComeRecord> costs = loadCostData(dateFrom, dateTo);
+        setTotalMoney(costs);
         drawPie(loadPieData(costs));
         drawBar(loadBarData(costs));
+    }
+
+    /**
+     * 计算出总共的钱
+     * @author jimo
+     * @date 18-11-3 下午10:22
+     */
+    private void setTotalMoney(List<CostInComeRecord> costs) {
+        float total = 0;
+        for (CostInComeRecord cost : costs) {
+            total += cost.getMoney();
+        }
+        tv_cost_total.setText("总支出： "+total+"元");
     }
 
     private void drawBar(List<BarEntry> barEntries) {
@@ -140,11 +156,10 @@ public class CostGraphFragment extends Fragment {
         DbManager db = MyApp.dbManager;
 
         try {
-            List<CostInComeRecord> costs = db.selector(CostInComeRecord.class).where("in_out", "=", MyConst.COST)
+            return db.selector(CostInComeRecord.class).where("in_out", "=", MyConst.COST)
                     .and("c_date", ">=", dateFrom)
                     .and("c_date", "<=", dateTo)
                     .findAll();
-            return costs;
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_date_from, "load cost data error: " + e.getMessage());
         }
