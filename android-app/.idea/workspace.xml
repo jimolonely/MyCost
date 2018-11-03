@@ -46,20 +46,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CostShowFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CostShowFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostShowFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-435">
-              <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+            <state relative-caret-position="459">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
+              <folding>
+                <element signature="e#4367#4368#0" expanded="true" />
+                <element signature="e#4392#4393#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CostGraphFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="fragment_cost_show.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_show.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="41" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="41" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CostDayItemAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostDayItemAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="83" column="13" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CostGraphFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostGraphFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="141" column="13" lean-forward="true" selection-start-line="141" selection-start-column="13" selection-end-line="141" selection-end-column="13" />
+            <state relative-caret-position="330">
+              <caret line="91" selection-start-line="91" selection-end-line="91" />
             </state>
           </provider>
         </entry>
@@ -76,8 +101,8 @@
       <file leaf-file-name="fragment_cost_graph.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_graph.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+            <state relative-caret-position="270">
+              <caret line="18" column="37" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="37" />
             </state>
           </provider>
           <provider editor-type-id="android-designer2">
@@ -2365,6 +2390,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/util/FuckUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_graph.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostGraphFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_show.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostShowFragment.java" />
       </list>
     </option>
   </component>
@@ -2710,13 +2737,6 @@
     </ignored-roots>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/data/model/CostIncomeType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android/flexbox/0.3.0/30af8f054f44d2bdb73f1e9c95a40a57a9fdc784/flexbox-0.3.0-sources.jar!/com/google/android/flexbox/AlignContent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -2903,14 +2923,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_show.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/main/CostActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -3004,13 +3016,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/data/model/CostInComeRecord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v3.0.3/ba5d9acb6c4a31753a10c7bbc3959833ea9b7d15/MPAndroidChart-v3.0.3-sources.jar!/com/github/mikephil/charting/data/BaseDataSet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -3029,13 +3034,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="339">
           <caret line="173" column="30" selection-start-line="173" selection-start-column="30" selection-end-line="173" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostShowFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-435">
-          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -3082,16 +3080,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_graph.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v3.0.3/ba5d9acb6c4a31753a10c7bbc3959833ea9b7d15/MPAndroidChart-v3.0.3-sources.jar!/com/github/mikephil/charting/data/Entry.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
@@ -3121,10 +3109,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_graph.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="37" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="37" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/data/model/CostInComeRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostDayItemAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="83" column="13" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostGraphFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="141" column="13" lean-forward="true" selection-start-line="141" selection-start-column="13" selection-end-line="141" selection-end-column="13" />
+        <state relative-caret-position="330">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_cost_show.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="41" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="41" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jimo/mycost/func/cost/CostShowFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+          <folding>
+            <element signature="e#4367#4368#0" expanded="true" />
+            <element signature="e#4392#4393#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

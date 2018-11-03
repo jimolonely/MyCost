@@ -2,11 +2,13 @@ package com.jimo.mycost.func.cost;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.jimo.mycost.MyApp;
@@ -17,6 +19,7 @@ import com.jimo.mycost.data.model.CostInComeRecord;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -42,7 +45,7 @@ public class CostShowFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = x.view().inject(this, inflater, container);
         initViews();
         return view;
@@ -62,7 +65,7 @@ public class CostShowFragment extends Fragment {
             //TODO 显示item
         });
 
-        refresh();
+//        refresh();
     }
 
     private void queryData() {
@@ -82,10 +85,10 @@ public class CostShowFragment extends Fragment {
      * 解析数据构造double ListView的数据
      * //TODO 待优化
      *
-     * @param costInComeRecords
-     * @param db
+     * @param costInComeRecords data
+     * @param db db
      */
-    private void fillTitles(List<CostInComeRecord> costInComeRecords, DbManager db) throws DbException {
+    private void fillTitles(List<CostInComeRecord> costInComeRecords, DbManager db) {
         if (costInComeRecords == null) {
             return;
         }
@@ -97,7 +100,9 @@ public class CostShowFragment extends Fragment {
                 for (CostInComeRecord tc : costInComeRecords) {
                     String d = tc.getDate();
                     if (d != null && d.equals(c.getDate())) {
-                        final List<RecyclerViewTempImgItem> imagePaths = tc.getImagePaths(db);
+
+                        /*暫時不加載圖片*/
+                        /*final List<RecyclerViewTempImgItem> imagePaths = tc.getImagePaths(db);
                         if (imagePaths != null && imagePaths.size() > 0) {
                             final RecyclerViewTempImgAdapter adapter = new RecyclerViewTempImgAdapter(getContext(), imagePaths);
                             dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE_WITH_PHOTO,
@@ -105,7 +110,10 @@ public class CostShowFragment extends Fragment {
                         } else {
                             dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE_NO_PHOTO, tc.getTypeName(),
                                     String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId()));
-                        }
+                        }*/
+
+                        dayCostItems.add(new CostDayItem(tc.getDate(), MyConst.ITEM_TYPE_NO_PHOTO, tc.getTypeName(),
+                                String.valueOf(tc.getMoney()), tc.getRemark(), tc.getId()));
                     }
                 }
             }
@@ -117,4 +125,8 @@ public class CostShowFragment extends Fragment {
         costDayItemAdapter.notifyDataSetChanged();
     }
 
+    @Event(R.id.btn_cost_refresh)
+    private void clickToRefresh(View view){
+        refresh();
+    }
 }
