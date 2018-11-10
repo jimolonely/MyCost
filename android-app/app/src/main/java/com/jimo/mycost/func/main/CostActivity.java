@@ -70,6 +70,8 @@ public class CostActivity extends AppCompatActivity {
 
         adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);
 
+        // 设置fragment不销毁
+        viewPager.setOffscreenPageLimit(fragments.size());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
 
