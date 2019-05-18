@@ -168,6 +168,10 @@ public class JimoUtil {
         }
     }
 
+    public static int getCurrentMonth() {
+        return getMonthOfYear(0, 0);
+    }
+
     private static int getMonthOfYear(int currCount, int offset) {
         if (currCount + offset <= 0) {
             return 12;

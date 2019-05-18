@@ -2,12 +2,15 @@ package com.jimo.mycost.func.cost;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -26,6 +29,7 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
+import com.jimo.mycost.view.AutoLineBreakLayout;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -36,8 +40,10 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 图表分析开销
@@ -58,6 +64,14 @@ public class CostGraphFragment extends Fragment {
     private PieChart pie_type;
     @ViewInject(R.id.bar_cost_type)
     private BarChart bar_type;
+    @ViewInject(R.id.ll_check_type)
+    private AutoLineBreakLayout ll_check_type;
+    /**
+     * 选中要显示的类型
+     */
+    private Set<String> checkedTypes;
+
+    List<CostInComeRecord> costs;
 
     @Nullable
     @Override
@@ -68,6 +82,11 @@ public class CostGraphFragment extends Fragment {
     }
 
     private void initViews() {
+        checkedTypes = new HashSet<>();
+
+        //初始日期为本月
+        tv_date_from.setText(JimoUtil.getFirstDayOfMonth(JimoUtil.getCurrentMonth()));
+        tv_date_to.setText(JimoUtil.getDateBefore(0));
     }
 
     /**
@@ -84,10 +103,14 @@ public class CostGraphFragment extends Fragment {
             JimoUtil.mySnackbar(view, "please pick the date!");
             return;
         }
-        List<CostInComeRecord> costs = loadCostData(dateFrom, dateTo);
+        costs = loadCostData(dateFrom, dateTo);
         setTotalMoney(costs);
-        drawPie(loadPieData(costs));
-        drawBar(loadBarData(costs));
+        setGraph(true);
+    }
+
+    private void setGraph(boolean first) {
+        drawPie(loadPieData(costs, first));
+        drawBar(loadBarData(costs, first));
     }
 
     /**
@@ -127,24 +150,39 @@ public class CostGraphFragment extends Fragment {
         Description description = new Description();
         description.setText("cost");
         pie_type.setDescription(description);
+
         pie_type.invalidate();
     }
 
-    private List<BarEntry> loadBarData(List<CostInComeRecord> costs) {
+    private List<BarEntry> loadBarData(List<CostInComeRecord> costs, boolean first) {
         List<BarEntry> barEntries = new ArrayList<>();
-        Map<String, Float> map = new HashMap<>();
-        for (CostInComeRecord cost : costs) {
-            if (map.containsKey(cost.getTypeName())) {
-                map.put(cost.getTypeName(), map.get(cost.getTypeName()) + cost.getMoney());
-            } else {
-                map.put(cost.getTypeName(), cost.getMoney());
-            }
-        }
+        Map<String, Float> map = getGroupedCostData(costs, first);
         int i = 0;
         for (Map.Entry<String, Float> c : map.entrySet()) {
             barEntries.add(new BarEntry(i++, c.getValue(), c.getKey()));
         }
         return barEntries;
+    }
+
+    /**
+     * 循环生成chengbox控件，用于选择是否显示cost type
+     */
+    private void setTypeCheckboxes(Set<String> types) {
+        ll_check_type.removeAllViews();
+        for (String type : types) {
+            CheckBox c = new CheckBox(getActivity());
+            c.setText(type);
+            c.setOnCheckedChangeListener((compoundButton, checked) -> {
+                if (checked) {
+                    checkedTypes.add(compoundButton.getText().toString());
+                } else {
+                    checkedTypes.remove(compoundButton.getText().toString());
+                }
+                setGraph(false);
+            });
+            c.setChecked(true);
+            ll_check_type.addView(c);
+        }
     }
 
     /**
@@ -173,16 +211,34 @@ public class CostGraphFragment extends Fragment {
      * @author jimo
      * @date 18-10-21 下午6:13
      */
-    private List<PieEntry> loadPieData(List<CostInComeRecord> costs) {
+    private List<PieEntry> loadPieData(List<CostInComeRecord> costs, boolean first) {
         List<PieEntry> pieEntries = new ArrayList<>();
-        Map<String, Float> map = new HashMap<>();
-        for (CostInComeRecord cost : costs) {
-            map.put(cost.getTypeName(), map.getOrDefault(cost.getTypeName(), 0.0f) + cost.getMoney());
-        }
+        Map<String, Float> map = getGroupedCostData(costs, first);
         for (Map.Entry<String, Float> c : map.entrySet()) {
             pieEntries.add(new PieEntry(c.getValue(), c.getKey()));
         }
         return pieEntries;
+    }
+
+    /**
+     * 如果是第一次，就选中所有，否则根据选中的构造
+     */
+    @NonNull
+    private Map<String, Float> getGroupedCostData(List<CostInComeRecord> costs, boolean first) {
+        Map<String, Float> map = new HashMap<>();
+        if (first) {
+            for (CostInComeRecord cost : costs) {
+                map.put(cost.getTypeName(), map.getOrDefault(cost.getTypeName(), 0.0f) + cost.getMoney());
+            }
+            setTypeCheckboxes(map.keySet());
+        } else {
+            for (CostInComeRecord cost : costs) {
+                if (checkedTypes.contains(cost.getTypeName())) {
+                    map.put(cost.getTypeName(), map.getOrDefault(cost.getTypeName(), 0.0f) + cost.getMoney());
+                }
+            }
+        }
+        return map;
     }
 
     @Event(R.id.tv_common_start_date)
