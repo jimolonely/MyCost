@@ -92,6 +92,7 @@ public class CostGraphFragment extends Fragment {
 
     /**
      * 计算出总共的钱
+     *
      * @author jimo
      * @date 18-11-3 下午10:22
      */
@@ -100,7 +101,7 @@ public class CostGraphFragment extends Fragment {
         for (CostInComeRecord cost : costs) {
             total += cost.getMoney();
         }
-        tv_cost_total.setText("总支出： "+total+"元");
+        tv_cost_total.setText("总支出： " + total + "元");
     }
 
     private void drawBar(List<BarEntry> barEntries) {
@@ -176,11 +177,7 @@ public class CostGraphFragment extends Fragment {
         List<PieEntry> pieEntries = new ArrayList<>();
         Map<String, Float> map = new HashMap<>();
         for (CostInComeRecord cost : costs) {
-            if (map.containsKey(cost.getTypeName())) {
-                map.put(cost.getTypeName(), map.get(cost.getTypeName()) + cost.getMoney());
-            } else {
-                map.put(cost.getTypeName(), cost.getMoney());
-            }
+            map.put(cost.getTypeName(), map.getOrDefault(cost.getTypeName(), 0.0f) + cost.getMoney());
         }
         for (Map.Entry<String, Float> c : map.entrySet()) {
             pieEntries.add(new PieEntry(c.getValue(), c.getKey()));

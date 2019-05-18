@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import org.xutils.DbManager;
-import org.xutils.db.table.TableEntity;
 import org.xutils.x;
 
 import java.io.File;

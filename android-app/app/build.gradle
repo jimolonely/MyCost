@@ -49,7 +49,7 @@ dependencies {
     compile 'com.google.android:flexbox:0.3.0'
     compile 'com.alibaba:fastjson:1.2.21'
     //图表库必备
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     //    //用于上啦加载更多
     //    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     compile 'com.github.anzaizai:EasyRefreshLayout:1.3.1'

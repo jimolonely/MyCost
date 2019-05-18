@@ -1,8 +1,10 @@
 package com.jimo.mycost.func.main;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +17,6 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.cost.CostAddActivity;
-import com.jimo.mycost.func.cost.CostAddFragment;
 import com.jimo.mycost.func.time.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
 
@@ -42,16 +43,21 @@ public class MainActivity extends Activity {
     @ViewInject(R.id.tv_month_income)
     TextView tv_income;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        x.view().inject(this);
 
+        // 申请权限
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+        }, 0);
+        x.view().inject(this);
         initViews();
     }
 
     /**
+     *
      */
     private void initViews() {
         refresh();
