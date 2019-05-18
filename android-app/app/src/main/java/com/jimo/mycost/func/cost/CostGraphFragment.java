@@ -22,10 +22,13 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
@@ -92,6 +95,10 @@ public class CostGraphFragment extends Fragment {
         //初始日期为本月
         tv_date_from.setText(JimoUtil.getFirstDayOfMonth(JimoUtil.getCurrentMonth()));
         tv_date_to.setText(JimoUtil.getDateBefore(0));
+
+        MyChartValueSelectedListener l = new MyChartValueSelectedListener();
+        pie_type.setOnChartValueSelectedListener(l);
+        bar_type.setOnChartValueSelectedListener(l);
     }
 
     /**
@@ -116,20 +123,14 @@ public class CostGraphFragment extends Fragment {
     private void setGraph(boolean first) {
         // prepare data
         List<PieEntry> pieEntries = new ArrayList<>();
-        List<BarEntry> barEntries = new ArrayList<>();
-        List<String> xVals = new ArrayList<>();
         Map<String, Float> map = getGroupedCostData(costs, first);
         int[] randomColors = FuckUtil.getRandomColors(map.size());
         int i = 0;
         List<BarEntryWithColor> barEntryWithColors = new ArrayList<>();
         for (Map.Entry<String, Float> c : map.entrySet()) {
-            pieEntries.add(new PieEntry(c.getValue(), c.getKey()));
-
-//            barEntries.add(new BarEntry(i++, c.getValue(), c.getKey()));
-
+            pieEntries.add(new PieEntry(c.getValue(), c.getKey(), c.getKey()));
             barEntryWithColors.add(new BarEntryWithColor(
                     new BarEntry(i, c.getValue(), c.getKey()), randomColors[i++], c.getKey()));
-//            xVals.add(c.getKey());
         }
 
         // pie chart
@@ -295,5 +296,19 @@ public class CostGraphFragment extends Fragment {
     @Event(R.id.tv_common_end_date)
     private void clickToSetEndDate(View view) {
         FuckUtil.showDateSelectDialog(getContext(), obj -> tv_date_to.setText((String) obj));
+    }
+
+    private class MyChartValueSelectedListener implements OnChartValueSelectedListener {
+
+        @Override
+        public void onValueSelected(Entry e, Highlight h) {
+            String type = (String) e.getData();
+            JimoUtil.mySnackbar(tv_cost_total, "type:" + type);
+            // TODO 弹框查询这个类别在时间范围内的数据
+        }
+
+        @Override
+        public void onNothingSelected() {
+        }
     }
 }
