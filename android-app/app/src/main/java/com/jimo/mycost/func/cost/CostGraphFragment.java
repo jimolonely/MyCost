@@ -15,17 +15,22 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.data.dto.BarEntryColorList;
+import com.jimo.mycost.data.dto.BarEntryWithColor;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
@@ -109,8 +114,30 @@ public class CostGraphFragment extends Fragment {
     }
 
     private void setGraph(boolean first) {
-        drawPie(loadPieData(costs, first));
-        drawBar(loadBarData(costs, first));
+        // prepare data
+        List<PieEntry> pieEntries = new ArrayList<>();
+        List<BarEntry> barEntries = new ArrayList<>();
+        List<String> xVals = new ArrayList<>();
+        Map<String, Float> map = getGroupedCostData(costs, first);
+        int[] randomColors = FuckUtil.getRandomColors(map.size());
+        int i = 0;
+        List<BarEntryWithColor> barEntryWithColors = new ArrayList<>();
+        for (Map.Entry<String, Float> c : map.entrySet()) {
+            pieEntries.add(new PieEntry(c.getValue(), c.getKey()));
+
+//            barEntries.add(new BarEntry(i++, c.getValue(), c.getKey()));
+
+            barEntryWithColors.add(new BarEntryWithColor(
+                    new BarEntry(i, c.getValue(), c.getKey()), randomColors[i++], c.getKey()));
+//            xVals.add(c.getKey());
+        }
+
+        // pie chart
+        drawPie(pieEntries, randomColors);
+
+        // bar chart
+        BarEntryColorList barEntryColorList = new BarEntryColorList(barEntryWithColors);
+        drawBar(barEntryColorList);
     }
 
     /**
@@ -127,18 +154,36 @@ public class CostGraphFragment extends Fragment {
         tv_cost_total.setText("总支出： " + total + "元");
     }
 
-    private void drawBar(List<BarEntry> barEntries) {
+    private void drawBar(BarEntryColorList barEntryColorList) {
+        List<BarEntry> barEntries = barEntryColorList.getBarEntries();
+        int[] colors = barEntryColorList.getColors();
+        List<String> xVals = barEntryColorList.getxVals();
         BarDataSet dataSet = new BarDataSet(barEntries, "cost type");
-        dataSet.setColors(FuckUtil.getRandomColors(barEntries.size()));
+        dataSet.setColors(colors);
         BarData data = new BarData(dataSet);
         bar_type.setData(data);
         bar_type.setFitBars(true);
+
+        // x val
+        XAxis xAxis = bar_type.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new ValueFormatter() {
+
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                int i = (int) value;
+                return i >= xVals.size() ? "未知" : xVals.get(i);
+            }
+        });
+        Description description = new Description();
+        description.setText("cost bar");
+        bar_type.setDescription(description);
         bar_type.invalidate();
     }
 
-    private void drawPie(List<PieEntry> pieEntries) {
+    private void drawPie(List<PieEntry> pieEntries, int[] colors) {
         PieDataSet dataSet = new PieDataSet(pieEntries, "cost type");
-        dataSet.setColors(FuckUtil.getRandomColors(pieEntries.size()));
+        dataSet.setColors(colors);
         PieData pieData = new PieData(dataSet);
         pie_type.setData(pieData);
         // 实心圆
@@ -148,7 +193,7 @@ public class CostGraphFragment extends Fragment {
         legend.setYEntrySpace(2f);
 
         Description description = new Description();
-        description.setText("cost");
+        description.setText("cost pie");
         pie_type.setDescription(description);
 
         pie_type.invalidate();
@@ -172,6 +217,8 @@ public class CostGraphFragment extends Fragment {
         for (String type : types) {
             CheckBox c = new CheckBox(getActivity());
             c.setText(type);
+            c.setChecked(true);
+            checkedTypes.add(type);
             c.setOnCheckedChangeListener((compoundButton, checked) -> {
                 if (checked) {
                     checkedTypes.add(compoundButton.getText().toString());
@@ -180,7 +227,6 @@ public class CostGraphFragment extends Fragment {
                 }
                 setGraph(false);
             });
-            c.setChecked(true);
             ll_check_type.addView(c);
         }
     }

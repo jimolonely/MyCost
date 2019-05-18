@@ -169,7 +169,9 @@ public class JimoUtil {
     }
 
     public static int getCurrentMonth() {
-        return getMonthOfYear(0, 0);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        return calendar.get(Calendar.MONTH) + 1;
     }
 
     private static int getMonthOfYear(int currCount, int offset) {
