@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -51,6 +50,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -305,10 +305,24 @@ public class CostGraphFragment extends Fragment {
             String type = (String) e.getData();
             JimoUtil.mySnackbar(tv_cost_total, "type:" + type);
             // TODO 弹框查询这个类别在时间范围内的数据
+
+            CostShowDialog dialog = new CostShowDialog(
+                    Objects.requireNonNull(CostGraphFragment.this.getContext()), getCostsBetweenType(type));
+            dialog.show();
         }
 
         @Override
         public void onNothingSelected() {
         }
+    }
+
+    private List<CostInComeRecord> getCostsBetweenType(String type) {
+        List<CostInComeRecord> re = new ArrayList<>();
+        for (CostInComeRecord cost : costs) {
+            if (type != null && type.equals(cost.getTypeName())) {
+                re.add(cost);
+            }
+        }
+        return re;
     }
 }

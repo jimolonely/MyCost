@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.jimo.mycost.MyApp;
@@ -41,7 +40,7 @@ public class CostShowFragment extends Fragment {
     private List<CostDayItem> dayCostItems;
     private CostDayItemAdapter costDayItemAdapter;
 
-    final int SHOW_LIMIT = 15;//主页面显示的记录条数
+    final int SHOW_LIMIT = 50;//主页面显示的记录条数
 
     @Nullable
     @Override
@@ -75,7 +74,7 @@ public class CostShowFragment extends Fragment {
         try {
             List<CostInComeRecord> costInComeRecords =
                     db.selector(CostInComeRecord.class).orderBy("c_date", true).limit(SHOW_LIMIT).findAll();
-            fillTitles(costInComeRecords, db);
+            fillTitles(costInComeRecords, dayCostItems);
         } catch (DbException e) {
             e.printStackTrace();
         }
@@ -86,9 +85,8 @@ public class CostShowFragment extends Fragment {
      * //TODO 待优化
      *
      * @param costInComeRecords data
-     * @param db db
      */
-    private void fillTitles(List<CostInComeRecord> costInComeRecords, DbManager db) {
+    public static void fillTitles(List<CostInComeRecord> costInComeRecords, List<CostDayItem> dayCostItems) {
         if (costInComeRecords == null) {
             return;
         }
@@ -126,7 +124,7 @@ public class CostShowFragment extends Fragment {
     }
 
     @Event(R.id.btn_cost_refresh)
-    private void clickToRefresh(View view){
+    private void clickToRefresh(View view) {
         refresh();
     }
 }
