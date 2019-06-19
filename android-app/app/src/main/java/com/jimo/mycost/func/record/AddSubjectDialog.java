@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.time;
+package com.jimo.mycost.func.record;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

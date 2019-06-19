@@ -10,7 +10,7 @@ import org.xutils.db.annotation.Table;
  * @date 18-10-20 上午8:19
  */
 @Table(name = "cost_income_type")
-public class CostIncomeType {
+public class BigSmallType {
     @Column(name = "id", isId = true, property = "NOT NULL")
     private long id;
 
@@ -34,6 +34,7 @@ public class CostIncomeType {
 
     public static final int TYPE_COST = 0;
     public static final int TYPE_INCOME = 1;
+    public static final int TYPE_TIME = 2;
 
     @Column(name = "create_time")
     private String createTime;
@@ -41,10 +42,10 @@ public class CostIncomeType {
     @Column(name = "sync_type", property = "default 1")
     private int syncType;//0代表已同步，1,2,3代表增删改
 
-    public CostIncomeType() {
+    public BigSmallType() {
     }
 
-    public CostIncomeType(String bigType, String smallType, int type, String createTime, int syncType) {
+    public BigSmallType(String bigType, String smallType, int type, String createTime, int syncType) {
         this.bigType = bigType;
         this.smallType = smallType;
         this.type = type;

@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.time;
+package com.jimo.mycost.func.record;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.jimo.mycost.R;
-import com.jimo.mycost.func.time.TimeDayItem;
 
 import java.util.List;
 

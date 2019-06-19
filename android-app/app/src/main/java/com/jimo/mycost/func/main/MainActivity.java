@@ -17,7 +17,7 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.cost.CostAddActivity;
-import com.jimo.mycost.func.time.TimeCostActivity;
+import com.jimo.mycost.func.record.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.DbManager;
@@ -241,5 +241,9 @@ public class MainActivity extends Activity {
 
     public void clickToRecord(View view) {
         startActivity(new Intent(this, RecordActivity.class));
+    }
+
+    public void clickToTime(View view) {
+        startActivity(new Intent(this, TimeActivity.class));
     }
 }

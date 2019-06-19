@@ -28,8 +28,9 @@
         <activity android:name=".func.main.BodyActivity" />
         <activity android:name=".func.main.InComeActivity" />
         <activity android:name=".func.main.LifeActivity" />
-        <activity android:name=".func.time.TimeCostActivity" />
+        <activity android:name=".func.record.TimeCostActivity" />
         <activity android:name=".func.main.RecordActivity" />
+        <activity android:name=".func.main.TimeActivity" />
         <activity
             android:name=".func.cost.CostAddActivity"
             android:label="@string/title_activity_cost_add"

@@ -1,4 +1,4 @@
-package com.jimo.mycost.func.time;
+package com.jimo.mycost.func.record;
 
 /**
  * Created by jimo on 17-11-25.

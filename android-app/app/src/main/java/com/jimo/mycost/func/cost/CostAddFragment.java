@@ -1,5 +1,6 @@
 package com.jimo.mycost.func.cost;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,9 +27,10 @@ import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
-import com.jimo.mycost.data.model.CostIncomeType;
+import com.jimo.mycost.data.model.BigSmallType;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.common.SelectImgAdapter;
+import com.jimo.mycost.util.CreateTypeList;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 import com.luck.picture.lib.PictureSelector;
@@ -95,6 +97,8 @@ public class CostAddFragment extends Fragment {
     //同步类型。默认是插入
     private int modifyType = MyConst.SYNC_TYPE_INSERT;
 
+    private CreateTypeList createTypeList;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,146 +108,19 @@ public class CostAddFragment extends Fragment {
 
 //        Log.i("root-path", Environment.getExternalStorageDirectory().getAbsolutePath());///storage/emulated/0
         return view;
-
     }
 
+    @SuppressLint("SetTextI18n")
     private void initData() {
-        setTypes();
+        createTypeList = new CreateTypeList(ll_types, getContext(), (
+                (bigType, smallType) -> tv_input_type.setText(bigType + " " + smallType)),
+                BigSmallType.TYPE_COST
+        );
+        createTypeList.setTypes();
+
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapterForSelectImg = new SelectImgAdapter(getContext());
         rcv_imgs.setAdapter(adapterForSelectImg);
-    }
-
-    /**
-     * 从数据库读出开销类型
-     *
-     * @author jimo
-     * @date 18-10-20 上午8:31
-     */
-    private Map<String, Set<String>> getCostType() {
-        Map<String, Set<String>> types = new HashMap<>();
-        DbManager db = MyApp.dbManager;
-        try {
-            List<CostIncomeType> costTypes = db.selector(CostIncomeType.class)
-                    .where("type", "=", CostIncomeType.TYPE_COST).findAll();
-            if (costTypes == null) {
-                return types;
-            }
-            for (CostIncomeType type : costTypes) {
-                String bigType = type.getBigType();
-                if (types.containsKey(bigType)) {
-                    types.get(bigType).add(type.getSmallType());
-                } else {
-                    Set<String> s = new HashSet<>();
-                    s.add(type.getSmallType());
-                    types.put(type.getBigType(), s);
-                }
-            }
-        } catch (DbException e) {
-            JimoUtil.mySnackbar(tv_input_date, "load types error");
-            e.printStackTrace();
-        }
-        return types;
-    }
-
-
-    /**
-     * @author jimo
-     * @date 18-10-20 上午9:40
-     */
-    private void setTypes() {
-        Map<String, Set<String>> types = getCostType();
-        ll_types.removeAllViews();
-        for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
-            TextView bigTypeTextView = createBigTypeTextView(entry.getKey());
-            FlexboxLayout flexboxLayout = createFlexboxLayout();
-            TextView divider = createDivider();
-            ll_types.addView(bigTypeTextView);
-
-            for (String s : entry.getValue()) {
-                TextView tvv = createSmallTypeTextView(s, (view) -> {
-                    if (view instanceof TextView) {
-                        TextView tv = (TextView) view;
-                        final String text = entry.getKey() + " " + String.valueOf(tv.getText());
-                        tv_input_type.setText(text);
-                    }
-                });
-                flexboxLayout.addView(tvv);
-            }
-            ll_types.addView(flexboxLayout);
-            ll_types.addView(divider);
-        }
-    }
-
-    /**
-     * 创建类型的流式布局，里面装TextView
-     *
-     * @author jimo
-     * @date 18-10-20 上午9:15
-     */
-    private FlexboxLayout createFlexboxLayout() {
-        FlexboxLayout flex = new FlexboxLayout(Objects.requireNonNull(getContext()));
-        flex.setAlignContent(AlignContent.STRETCH);
-        flex.setAlignItems(AlignItems.STRETCH);
-        flex.setFlexWrap(FlexWrap.WRAP);
-        flex.setJustifyContent(JustifyContent.FLEX_START);
-        flex.setLayoutParams(new FlexboxLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        return flex;
-    }
-
-    /**
-     * 创建小类的TextView
-     *
-     * @author jimo
-     * @date 18-10-20 上午9:19
-     */
-    @NonNull
-    private TextView createSmallTypeTextView(String s, View.OnClickListener listener) {
-        TextView tv = new TextView(getContext());
-        tv.setText(s);
-        tv.setTextSize(18);
-        tv.setGravity(Gravity.CENTER);
-        tv.setPadding(10, 5, 10, 5);
-        tv.setOnClickListener(listener);
-        tv.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.secondary_text));
-        return tv;
-    }
-
-    /**
-     * 创建分割线
-     *
-     * @author jimo
-     * @date 18-10-20 上午9:31
-     */
-    private TextView createDivider() {
-        TextView tv = new TextView(getContext());
-        tv.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 1
-        ));
-        tv.setBackgroundColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.divider));
-        return tv;
-    }
-
-    /**
-     * 创建大类的TextView
-     *
-     * @author jimo
-     * @date 18-10-20 上午9:23
-     */
-    private TextView createBigTypeTextView(String text) {
-        TextView tv = new TextView(getContext());
-        tv.setText(text);
-        tv.setGravity(Gravity.CENTER_VERTICAL);
-        tv.setGravity(Gravity.START);
-        tv.setTextSize(18);
-        tv.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 60
-        ));
-        tv.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.primary_text));
-        return tv;
     }
 
     /**
@@ -261,11 +138,11 @@ public class CostAddFragment extends Fragment {
 
     private void saveType(String bigType, String smallType) {
         DbManager db = MyApp.dbManager;
-        CostIncomeType costIncomeType =
-                new CostIncomeType(bigType, smallType, CostIncomeType.TYPE_COST, JimoUtil.getDateTimeNow(), MyConst.SYNC_TYPE_INSERT);
+        BigSmallType bigSmallType =
+                new BigSmallType(bigType, smallType, BigSmallType.TYPE_COST, JimoUtil.getDateTimeNow(), MyConst.SYNC_TYPE_INSERT);
         try {
-            db.save(costIncomeType);
-            setTypes();
+            db.save(bigSmallType);
+            createTypeList.setTypes();
         } catch (DbException e) {
             JimoUtil.mySnackbar(ll_types, "保存error:" + e.getMessage());
             e.printStackTrace();
