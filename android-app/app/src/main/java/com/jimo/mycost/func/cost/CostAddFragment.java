@@ -3,14 +3,11 @@ package com.jimo.mycost.func.cost;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.flexbox.AlignContent;
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.flexbox.JustifyContent;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
@@ -48,12 +40,8 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.util.JimoUtil.getMonth;
@@ -131,22 +119,10 @@ public class CostAddFragment extends Fragment {
      */
     @Event(R.id.btn_cost_add_type)
     private void clickToAddTypes(View view) {
-        AddCostIncomeTypeDialog dialog = new AddCostIncomeTypeDialog();
+        AddBigSmallTypeDialog dialog = new AddBigSmallTypeDialog();
         String[] bigTypes = {"餐饮", "交通", "学习", "生活"};
-        dialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), bigTypes, this::saveType);
-    }
-
-    private void saveType(String bigType, String smallType) {
-        DbManager db = MyApp.dbManager;
-        BigSmallType bigSmallType =
-                new BigSmallType(bigType, smallType, BigSmallType.TYPE_COST, JimoUtil.getDateTimeNow(), MyConst.SYNC_TYPE_INSERT);
-        try {
-            db.save(bigSmallType);
-            createTypeList.setTypes();
-        } catch (DbException e) {
-            JimoUtil.mySnackbar(ll_types, "保存error:" + e.getMessage());
-            e.printStackTrace();
-        }
+        dialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(),
+                bigTypes, (b, s) -> createTypeList.saveSmallType(b, s));
     }
 
     /**

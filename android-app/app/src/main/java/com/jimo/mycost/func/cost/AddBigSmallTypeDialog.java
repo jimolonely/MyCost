@@ -23,7 +23,7 @@ import com.jimo.mycost.util.JimoUtil;
  * @author jimo
  * @date 18-10-20 上午10:08
  */
-public class AddCostIncomeTypeDialog extends DialogFragment {
+public class AddBigSmallTypeDialog extends DialogFragment {
 
     public interface Callback {
         void onOk(String bigType, String smallType);

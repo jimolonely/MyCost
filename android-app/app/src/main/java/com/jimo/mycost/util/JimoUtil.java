@@ -72,9 +72,6 @@ public class JimoUtil {
 
     /**
      * 做个时间偏移
-     *
-     * @param distanceDay
-     * @return
      */
     public static String getDateBefore(int distanceDay) {
         SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");

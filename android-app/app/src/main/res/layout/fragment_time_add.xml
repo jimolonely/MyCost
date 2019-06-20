@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context=".func.friend.FriendAddFragment">
+        tools:context=".func.time.TimeAddFragment">
 
         <Button
             android:id="@+id/btn_time_add_type"
@@ -27,7 +27,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/tv_time_type"
@@ -43,7 +44,7 @@
                 android:width="1dp"
                 android:background="@color/bar_grey" />
 
-            <TextView
+            <TextView 
                 android:id="@+id/tv_time_begin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,5 +52,12 @@
                 android:text="开始"
                 android:textSize="30sp" />
         </RelativeLayout>
+
+        <ListView
+            android:id="@+id/lv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="1dp"
+            android:nestedScrollingEnabled="true" />
     </LinearLayout>
 </ScrollView>

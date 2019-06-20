@@ -15,6 +15,7 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.flexbox.JustifyContent;
 import com.jimo.mycost.MyApp;
+import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.BigSmallType;
 
@@ -47,6 +48,22 @@ public class CreateTypeList {
 
     public interface Callback {
         void callback(String bigType, String smallType);
+    }
+
+    /**
+     * 存储小类别
+     */
+    public void saveSmallType(String bigType, String smallType) {
+        DbManager db = MyApp.dbManager;
+        BigSmallType bigSmallType =
+                new BigSmallType(bigType, smallType, type, JimoUtil.getDateTimeNow(), MyConst.SYNC_TYPE_INSERT);
+        try {
+            db.save(bigSmallType);
+            setTypes();
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(ll_types, "保存error:" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**

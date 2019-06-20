@@ -10,19 +10,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
+import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.BigSmallType;
+import com.jimo.mycost.data.model.TimeCostRecord;
+import com.jimo.mycost.func.cost.AddBigSmallTypeDialog;
 import com.jimo.mycost.util.CreateTypeList;
+import com.jimo.mycost.util.JimoUtil;
 
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -37,8 +47,12 @@ public class TimeAddFragment extends Fragment {
     private TextView tv_time_type;
     @ViewInject(R.id.tv_time_begin)
     private TextView tv_time_begin;
+    @ViewInject(R.id.lv_time)
+    private ListView lv_time;
 
     private CreateTypeList createTypeList;
+    private RunningTaskItemAdapter runningTaskItemAdapter;
+    private List<TimeCostRecord> timeCostRecords;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -57,17 +71,69 @@ public class TimeAddFragment extends Fragment {
                 BigSmallType.TYPE_TIME
         );
         createTypeList.setTypes();
+        getTimeCostRecords();
+        runningTaskItemAdapter = new RunningTaskItemAdapter(timeCostRecords, getContext());
+        lv_time.setAdapter(runningTaskItemAdapter);
+    }
+
+    private void getTimeCostRecords() {
+        DbManager db = MyApp.dbManager;
+        try {
+            timeCostRecords = db.selector(TimeCostRecord.class).where("day", "=",
+                    JimoUtil.getDateBefore(0)).findAll();
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_time_begin, "查询进行中任务失败：" + e.getMessage());
+            e.printStackTrace();
+            timeCostRecords = new ArrayList<>();
+        }
+    }
+
+    private void refreshRunningTask() {
+        getTimeCostRecords();
+        runningTaskItemAdapter.notifyDataSetChanged();
     }
 
     /**
      * 开始一个项目
      */
     @Event(R.id.tv_time_begin)
-    public void startTime(View view) {
+    private void startTime(View view) {
         String type = tv_time_type.getText().toString();
         if (TextUtils.isEmpty(type)) {
+            JimoUtil.mySnackbar(view, "请选择");
             return;
         }
         // begin
+        String start = JimoUtil.getDateTimeNow();
+        String day = JimoUtil.getDateBefore(0);
+        // 默认把一件事的结束时间设为一天的结束
+        String end = JimoUtil.getDateBefore(1) + " 00:00:00";
+        String[] s = type.split(" ");
+        String bigType = s[0];
+        String smallType = s[1];
+        // save to db
+        saveToDb(start, day, end, bigType, smallType);
+    }
+
+    private void saveToDb(String start, String day, String end, String bigType, String smallType) {
+        DbManager db = MyApp.dbManager;
+        TimeCostRecord record = new TimeCostRecord(start, end, day, bigType, smallType);
+        try {
+            db.save(record);
+            refreshRunningTask();
+            JimoUtil.mySnackbar(tv_time_begin, "保存成功");
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_time_begin, "保存失败：" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Event(R.id.btn_time_add_type)
+    private void addType(View view) {
+        // 弹框添加类别
+        AddBigSmallTypeDialog dialog = new AddBigSmallTypeDialog();
+        String[] bigTypes = {"娱乐", "休息", "强迫工作", "高效工作", "拖延"};
+        dialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(),
+                bigTypes, (b, s) -> createTypeList.saveSmallType(b, s));
     }
 }
