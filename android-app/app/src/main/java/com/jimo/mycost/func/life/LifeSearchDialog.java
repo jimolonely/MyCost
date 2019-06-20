@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.util.JimoUtil;
+import com.jimo.mycost.view.MyCostView;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -171,6 +172,7 @@ public class LifeSearchDialog extends Dialog {
     private void loadData(int type, String api, HandleJSONData handle) {
         final RequestParams params = new RequestParams(api);
         params.addQueryStringParameter("q", keyword);
+        params.addQueryStringParameter("apiKey", MyConst.DOUBAN_KEY);
         if (type == TYPE_REFRESH) {
             //如果是刷新,则从0开始
             start = 0;
