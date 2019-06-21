@@ -111,7 +111,15 @@ public class FuckUtil {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute1 = c.get(Calendar.MINUTE);
         new TimePickerDialog(context, (view1, hourOfDay, minute) -> {
-            final String watchTime = hourOfDay + ":" + minute;
+            String h = hourOfDay + "";
+            if (hourOfDay < 10) {
+                h = "0" + hourOfDay;
+            }
+            String m = minute + "";
+            if (minute < 10) {
+                m = "0" + minute;
+            }
+            final String watchTime = h + ":" + m;
             callback.doSomething(watchTime);
         }, hour, minute1, true).show();
     }
