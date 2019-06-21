@@ -18,12 +18,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.util.DoubanCrawler;
 import com.jimo.mycost.util.JimoUtil;
-import com.jimo.mycost.view.MyCostView;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class LifeSearchDialog extends Dialog {
 
@@ -130,7 +133,7 @@ public class LifeSearchDialog extends Dialog {
                 start += len;
             });
         } else if (LifeAddFragment.THEME_MOVIE.equals(theme)) {
-            loadData(type, MyConst.DOUBAN_MOVIE_API, result -> {
+            /*loadData(type, MyConst.DOUBAN_MOVIE_API, result -> {
                 JSONObject obj = JSON.parseObject(result);
                 final JSONArray movies = obj.getJSONArray("subjects");
                 if (movies == null) {
@@ -159,9 +162,16 @@ public class LifeSearchDialog extends Dialog {
                             , creators.toString(), movie.getString("year"),
                             remark.toString(), rating
                     ));
-                }
-                start += len;
-            });
+                }*/
+            try {
+                List<LifeItemSearchResult> movies = new DoubanCrawler().execute(keyword, start + "").get();
+                adapter.setData(movies);
+                start += movies.size();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
     }
 

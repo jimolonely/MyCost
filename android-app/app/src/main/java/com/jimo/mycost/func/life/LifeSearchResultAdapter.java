@@ -35,6 +35,10 @@ public class LifeSearchResultAdapter extends RecyclerView.Adapter<LifeSearchResu
         return this.data;
     }
 
+    public void setData(List<LifeItemSearchResult> data) {
+        this.data = data;
+    }
+
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ItemViewHolder(inflater.inflate(R.layout.item_life_search, parent, false));
