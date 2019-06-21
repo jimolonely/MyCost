@@ -2,6 +2,7 @@ package com.jimo.mycost.func.time;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,6 +55,9 @@ public class TimeAddFragment extends Fragment {
     private CreateTypeList createTypeList;
     private RunningTaskItemAdapter runningTaskItemAdapter;
     private List<TimeCostRecord> timeCostRecords;
+    private String[] bigTypes = {"娱乐", "休息", "强迫工作", "高效工作", "拖延"};
+    // 类别对应的item展示颜色
+    private Map<String, Integer> colorMap;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -71,9 +76,23 @@ public class TimeAddFragment extends Fragment {
                 BigSmallType.TYPE_TIME
         );
         createTypeList.setTypes();
+
+        colorMap = getColorMap();
+
         getTimeCostRecords();
-        runningTaskItemAdapter = new RunningTaskItemAdapter(timeCostRecords, getContext());
+        runningTaskItemAdapter = new RunningTaskItemAdapter(timeCostRecords, getContext(), colorMap);
         lv_time.setAdapter(runningTaskItemAdapter);
+    }
+
+    private Map<String, Integer> getColorMap() {
+        Map<String, Integer> map = new HashMap<>(bigTypes.length);
+        // 以后可能从数据库获取 TODO
+        map.put(bigTypes[0], Color.rgb(146, 222, 233));
+        map.put(bigTypes[1], Color.rgb(80, 238, 107));
+        map.put(bigTypes[2], Color.rgb(254, 174, 102));
+        map.put(bigTypes[3], Color.rgb(255, 255, 102));
+        map.put(bigTypes[4], Color.rgb(245, 78, 37));
+        return map;
     }
 
     private void getTimeCostRecords() {
@@ -90,6 +109,7 @@ public class TimeAddFragment extends Fragment {
 
     private void refreshRunningTask() {
         getTimeCostRecords();
+        runningTaskItemAdapter.setItems(timeCostRecords);
         runningTaskItemAdapter.notifyDataSetChanged();
     }
 
@@ -120,8 +140,8 @@ public class TimeAddFragment extends Fragment {
         TimeCostRecord record = new TimeCostRecord(start, end, day, bigType, smallType);
         try {
             db.save(record);
-            refreshRunningTask();
             JimoUtil.mySnackbar(tv_time_begin, "保存成功");
+            refreshRunningTask();
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_time_begin, "保存失败：" + e.getMessage());
             e.printStackTrace();
@@ -132,7 +152,6 @@ public class TimeAddFragment extends Fragment {
     private void addType(View view) {
         // 弹框添加类别
         AddBigSmallTypeDialog dialog = new AddBigSmallTypeDialog();
-        String[] bigTypes = {"娱乐", "休息", "强迫工作", "高效工作", "拖延"};
         dialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(),
                 bigTypes, (b, s) -> createTypeList.saveSmallType(b, s));
     }
