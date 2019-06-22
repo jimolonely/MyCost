@@ -23,6 +23,8 @@ public class TimeCostRecord {
     private String bigType;
     @Column(name = "small_type")
     private String smallType;
+    @Column(name = "remark")
+    private String remark; // 备注
     @Column(name = "user_name")
     private String userName;
     @Column(name = "update_time")
@@ -33,15 +35,25 @@ public class TimeCostRecord {
     public TimeCostRecord() {
     }
 
-    public TimeCostRecord(String start, String end, String day, String bigType, String smallType) {
+    public TimeCostRecord(String start, String end, String day,
+                          String bigType, String smallType, String remark) {
         this.start = start;
         this.end = end;
         this.day = day;
         this.bigType = bigType;
         this.smallType = smallType;
+        this.remark = remark;
         this.syncType = MyConst.SYNC_TYPE_INSERT;
         this.userName = "jimo";
         this.updateTime = JimoUtil.getDateTimeNow();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getUpdateTime() {

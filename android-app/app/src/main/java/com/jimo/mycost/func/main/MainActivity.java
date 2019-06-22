@@ -246,4 +246,8 @@ public class MainActivity extends Activity {
     public void clickToTime(View view) {
         startActivity(new Intent(this, TimeActivity.class));
     }
+
+    public void clickToReflect(View view) {
+        startActivity(new Intent(this, ReflectActivity.class));
+    }
 }

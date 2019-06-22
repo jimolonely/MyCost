@@ -36,12 +36,13 @@
                 android:hint="请选择"
                 android:textSize="30sp" />
 
-            <TextView
+            <EditText
+                android:id="@+id/edt_time_remark"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:width="1dp"
-                android:background="@color/bar_grey" />
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/tv_time_begin"
+                android:layout_toEndOf="@+id/tv_time_type"
+                android:hint="remark" />
 
             <TextView
                 android:id="@+id/tv_time_begin"

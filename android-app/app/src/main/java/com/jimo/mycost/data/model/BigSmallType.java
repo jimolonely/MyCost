@@ -35,6 +35,7 @@ public class BigSmallType {
     public static final int TYPE_COST = 0;
     public static final int TYPE_INCOME = 1;
     public static final int TYPE_TIME = 2;
+    public static final int TYPE_REFLECT = 3;
 
     @Column(name = "create_time")
     private String createTime;

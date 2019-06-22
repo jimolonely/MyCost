@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,13 +50,15 @@ public class TimeAddFragment extends Fragment {
     private TextView tv_time_type;
     @ViewInject(R.id.tv_time_begin)
     private TextView tv_time_begin;
+    @ViewInject(R.id.edt_time_remark)
+    private EditText edt_time_remark;
     @ViewInject(R.id.lv_time)
     private ListView lv_time;
 
     private CreateTypeList createTypeList;
     private RunningTaskItemAdapter runningTaskItemAdapter;
     private List<TimeCostRecord> timeCostRecords;
-    private String[] bigTypes = {"娱乐", "休息", "强迫工作", "高效工作", "拖延"};
+    private String[] bigTypes = {"娱乐", "休息", "学习", "工作", "拖延"};
     // 类别对应的item展示颜色
     private Map<String, Integer> colorMap;
 
@@ -119,7 +122,8 @@ public class TimeAddFragment extends Fragment {
     @Event(R.id.tv_time_begin)
     private void startTime(View view) {
         String type = tv_time_type.getText().toString();
-        if (TextUtils.isEmpty(type)) {
+        String remark = edt_time_remark.getText().toString();
+        if (TextUtils.isEmpty(type) || TextUtils.isEmpty(remark)) {
             JimoUtil.mySnackbar(view, "请选择");
             return;
         }
@@ -132,12 +136,13 @@ public class TimeAddFragment extends Fragment {
         String bigType = s[0];
         String smallType = s[1];
         // save to db
-        saveToDb(start, day, end, bigType, smallType);
+        saveToDb(start, day, end, bigType, smallType, remark);
     }
 
-    private void saveToDb(String start, String day, String end, String bigType, String smallType) {
+    private void saveToDb(String start, String day,
+                          String end, String bigType, String smallType, String remark) {
         DbManager db = MyApp.dbManager;
-        TimeCostRecord record = new TimeCostRecord(start, end, day, bigType, smallType);
+        TimeCostRecord record = new TimeCostRecord(start, end, day, bigType, smallType, remark);
         try {
             db.save(record);
             JimoUtil.mySnackbar(tv_time_begin, "保存成功");

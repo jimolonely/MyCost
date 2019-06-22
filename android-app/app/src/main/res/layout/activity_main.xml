@@ -136,6 +136,12 @@
                 android:text="Time"
                 android:onClick="clickToTime"
                 />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reflection"
+                android:onClick="clickToReflect"
+                />
         </LinearLayout>
     </ScrollView>
 

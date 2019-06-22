@@ -3,7 +3,10 @@ package com.jimo.mycost;
 import android.app.Application;
 import android.util.Log;
 
+import com.jimo.mycost.data.model.TimeCostRecord;
+
 import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.io.File;
@@ -26,13 +29,17 @@ public class MyApp extends Application {
                 .setDbName("mycost.db")
                 // 不设置dbDir时, 默认存储在app的私有目录.
                 .setDbDir(new File("/mnt/sdcard"))
-                .setDbVersion(3)
+                .setDbVersion(4)
                 .setDbOpenListener(db -> {
                     // 开启WAL, 对写入加速提升巨大
                     db.getDatabase().enableWriteAheadLogging();
                 })
                 .setDbUpgradeListener((db, oldVersion, newVersion) -> {
-                    // TODO: ...
+                    /*try {
+                        db.addColumn(TimeCostRecord.class, "remark");
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }*/
                     // db.addColumn(...);
                     // db.dropTable(...);
                     // ...

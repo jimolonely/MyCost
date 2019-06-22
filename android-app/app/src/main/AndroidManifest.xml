@@ -36,6 +36,7 @@
             android:label="@string/title_activity_cost_add"
             android:theme="@style/AppTheme" />
         <activity android:name=".func.main.FriendActivity" />
+        <activity android:name=".func.main.ReflectActivity" />
     </application>
 
 </manifest>
