@@ -20,6 +20,7 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.util.DoubanCrawler;
 import com.jimo.mycost.util.JimoUtil;
+import com.jimo.mycost.util.MovieCrawler;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -164,13 +165,21 @@ public class LifeSearchDialog extends Dialog {
                     ));
                 }*/
             try {
-                List<LifeItemSearchResult> movies = new DoubanCrawler().execute(keyword, start + "").get();
+                List<LifeItemSearchResult> movies =
+                        new DoubanCrawler().execute(keyword, start + "").get();
                 adapter.setData(movies);
                 start += movies.size();
+
+                /*new MovieCrawler().searchOneByOne(keyword, start, d -> {
+                    adapter.getData().add((LifeItemSearchResult) d);
+                    start += 1;
+                });*/
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
             }
         }
     }

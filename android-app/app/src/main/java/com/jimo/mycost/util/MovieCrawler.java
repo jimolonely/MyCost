@@ -1,59 +1,35 @@
 package com.jimo.mycost.util;
 
-import android.os.AsyncTask;
-
 import com.jimo.mycost.func.life.LifeItemSearchResult;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 /**
- * 因为要网络请求，所以不能在主线程执行
- * 使用方法：new DoubanCrawler().execute(theme, start + "").get()
+ * 这个与DoubanCrawler的区别是：
+ * 本类采用http先把页面下载再解析，然后没解析完一部电影就调用回调方法
+ * 而DoubanCrawler是全部下载完了才返回
  */
-public class DoubanCrawler extends AsyncTask<String, Void, List<LifeItemSearchResult>> {
-
-    // https://movie.douban.com/subject_search?search_text=%E8%A5%BF%E6%B8%B8%E8%AE%B0&start=15
-    // https://www.douban.com/search?cat=1002&q=%E8%A5%BF%E6%B8%B8%E8%AE%B0
-
+public class MovieCrawler {
     private static final String BASE_URL = "https://www.douban.com/";
-
-/*    private String encode(String text) {
-        try {
-            return URLEncoder.encode(text, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return text;
-        }
-    }*/
 
     private String getUrl(String text, int start) {
         return BASE_URL + "search?q=" + text + "&cat=1002&start=" + start;
     }
 
-    public List<LifeItemSearchResult> search(String movie, int start) throws IOException {
-        String url = getUrl(movie, start);
-        Document doc = Jsoup.connect(url).get();
-        Elements links = doc.select("div.result div.title a");
-        List<LifeItemSearchResult> results = new ArrayList<>();
-        for (Element link : links) {
-            String href = link.attr("href");
-            System.out.println(href);
-            results.add(getItem(href));
-        }
-        return results;
+    private String downloadPage(String url) throws Throwable {
+        RequestParams params = new RequestParams(url);
+        return x.http().getSync(params, String.class);
     }
 
     public void searchOneByOne(
-            String movie, int start, MyCallback.CommonCallback callback) throws IOException {
+            String movie, int start, MyCallback.CommonCallback callback) throws Throwable {
         String url = getUrl(movie, start);
-        Document doc = Jsoup.connect(url).get();
+        Document doc = Jsoup.parse(downloadPage(url));
         Elements links = doc.select("div.result div.title a");
         for (Element link : links) {
             String href = link.attr("href");
@@ -65,8 +41,8 @@ public class DoubanCrawler extends AsyncTask<String, Void, List<LifeItemSearchRe
     /**
      * 每一部电影页面的解析
      */
-    LifeItemSearchResult getItem(String href) throws IOException {
-        Document doc = Jsoup.connect(href).get();
+    LifeItemSearchResult getItem(String href) throws Throwable {
+        Document doc = Jsoup.parse(downloadPage(href));
         System.out.println(doc.html());
         Element e = doc.selectFirst("span[property=v:summary]");
         String desc = getText(e);
@@ -102,14 +78,5 @@ public class DoubanCrawler extends AsyncTask<String, Void, List<LifeItemSearchRe
             sb.append(actor.text()).append("/");
         }
         return sb.toString();
-    }
-
-    @Override
-    protected List<LifeItemSearchResult> doInBackground(String... strings) {
-        try {
-            return search(strings[0], Integer.parseInt(strings[1]));
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
     }
 }

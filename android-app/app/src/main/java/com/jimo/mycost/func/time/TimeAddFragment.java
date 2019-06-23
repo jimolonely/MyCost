@@ -146,6 +146,7 @@ public class TimeAddFragment extends Fragment {
         try {
             db.save(record);
             JimoUtil.mySnackbar(tv_time_begin, "保存成功");
+            edt_time_remark.setText("");
             refreshRunningTask();
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_time_begin, "保存失败：" + e.getMessage());
