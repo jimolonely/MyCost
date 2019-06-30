@@ -7,18 +7,32 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.R;
+import com.jimo.mycost.data.dto.BarEntryColorList;
+import com.jimo.mycost.data.dto.BarEntryWithColor;
 import com.jimo.mycost.data.model.TimeCostRecord;
+import com.jimo.mycost.func.cost.CostGraphFragment;
+import com.jimo.mycost.func.cost.CostShowDialog;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 import com.jimo.mycost.view.AutoLineBreakLayout;
@@ -35,9 +49,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  *
@@ -55,8 +72,12 @@ public class TimeShowFragment extends Fragment {
     private BarChart bar_type;
     @ViewInject(R.id.ll_check_type)
     private AutoLineBreakLayout ll_check_type;
-
+    /**
+     * 选中要显示的类型
+     */
+    private Set<String> checkedTypes;
     private List<TimeCostRecord> costs;
+    private Map<String, Integer> typeMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,9 +88,13 @@ public class TimeShowFragment extends Fragment {
     }
 
     private void initData() {
+        checkedTypes = new HashSet<>();
+        typeMap = new HashMap<>(5);
         //初始日期为本月
         tv_date_from.setText(JimoUtil.getFirstDayOfMonth(JimoUtil.getCurrentMonth()));
         tv_date_to.setText(JimoUtil.getDateBefore(0));
+
+        pie_type.setOnChartValueSelectedListener(new MyChartValueSelectedListener());
     }
 
     @Event(R.id.btn_common_ok)
@@ -87,30 +112,70 @@ public class TimeShowFragment extends Fragment {
 
     private void setGraph(boolean first) {
         List<PieEntry> pieEntries = new ArrayList<>();
-        Map<String, Integer> map = getGroupedData();
+        Map<String, Integer> map = getGroupedData(first);
         for (Map.Entry<String, Integer> e : map.entrySet()) {
             pieEntries.add(new PieEntry(e.getValue(), e.getKey(), e.getKey()));
         }
         drawPie(pieEntries, FuckUtil.getRandomColors(pieEntries.size()));
     }
 
-    private Map<String, Integer> getGroupedData() {
-        Map<String, Integer> map = new HashMap<>(5);
-        for (TimeCostRecord cost : costs) {
-            map.put(cost.getBigType(), map.getOrDefault(
-                    cost.getBigType(), 0) + getTimeLen(cost));
+    private Map<String, Integer> getGroupedData(boolean first) {
+        if (first) {
+            int totalLen = getTimeLen(
+                    tv_date_from.getText() + " 00:00:00", tv_date_to.getText() + " 00:00:00");
+            for (TimeCostRecord cost : costs) {
+                int timeLen = getTimeLen(cost.getStart(), cost.getEnd());
+                typeMap.put(cost.getBigType(), typeMap.getOrDefault(cost.getBigType(), 0)
+                        + timeLen);
+                totalLen -= timeLen;
+            }
+            typeMap.put("未知", totalLen);
+            /*costs.add(new TimeCostRecord(tv_date_from.getText() + " 00:00:00",
+                    tv_date_to.getText() + " 00:00:00", tv_date_to.getText().toString(),
+                    "未知", "未知", ""));*/
+            setTypeCheckboxes(typeMap.keySet());
+            return typeMap;
+        } else {
+            Map<String, Integer> map = new HashMap<>(5);
+            for (Map.Entry<String, Integer> e : typeMap.entrySet()) {
+                if (checkedTypes.contains(e.getKey())) {
+                    map.put(e.getKey(), e.getValue());
+                }
+            }
+            return map;
         }
-        return map;
+    }
+
+    /**
+     * 循环生成chengbox控件，用于选择是否显示cost type
+     */
+    private void setTypeCheckboxes(Set<String> types) {
+        ll_check_type.removeAllViews();
+        for (String type : types) {
+            CheckBox c = new CheckBox(getActivity());
+            c.setText(type);
+            c.setChecked(true);
+            checkedTypes.add(type);
+            c.setOnCheckedChangeListener((compoundButton, checked) -> {
+                if (checked) {
+                    checkedTypes.add(compoundButton.getText().toString());
+                } else {
+                    checkedTypes.remove(compoundButton.getText().toString());
+                }
+                setGraph(false);
+            });
+            ll_check_type.addView(c);
+        }
     }
 
     /**
      * 计算时间长度
      */
-    private int getTimeLen(TimeCostRecord cost) {
+    private int getTimeLen(String startTime, String endTime) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE);
         try {
-            Date start = format.parse(cost.getStart());
-            Date end = format.parse(cost.getEnd());
+            Date start = format.parse(startTime);
+            Date end = format.parse(endTime);
             // 转成分钟
             return (int) ((end.getTime() - start.getTime()) / 1000 / 60);
         } catch (ParseException e) {
@@ -157,5 +222,64 @@ public class TimeShowFragment extends Fragment {
     @Event(R.id.tv_common_end_date)
     private void clickToSetEndDate(View view) {
         FuckUtil.showDateSelectDialog(getContext(), obj -> tv_date_to.setText((String) obj));
+    }
+
+    private class MyChartValueSelectedListener implements OnChartValueSelectedListener {
+
+        @Override
+        public void onValueSelected(Entry e, Highlight h) {
+            String type = (String) e.getData();
+            if ("未知".equals(type)) {
+                return;
+            }
+            // 加载柱状图展示小类别
+            Map<String, Integer> map = new HashMap<>(8);
+            for (TimeCostRecord cost : costs) {
+                if (type.equals(cost.getBigType())) {
+                    map.put(cost.getSmallType(), map.getOrDefault(cost.getSmallType(), 0)
+                            + getTimeLen(cost.getStart(), cost.getEnd()));
+                }
+            }
+            List<BarEntryWithColor> barEntryWithColors = new ArrayList<>();
+            int i = 0;
+            int[] randomColors = FuckUtil.getRandomColors(map.size());
+            for (Map.Entry<String, Integer> c : map.entrySet()) {
+                barEntryWithColors.add(new BarEntryWithColor(
+                        new BarEntry(i, c.getValue(), c.getKey()), randomColors[i++], c.getKey()));
+            }
+            BarEntryColorList barEntryColorList = new BarEntryColorList(barEntryWithColors);
+            drawBar(barEntryColorList);
+        }
+
+        @Override
+        public void onNothingSelected() {
+        }
+    }
+
+    private void drawBar(BarEntryColorList barEntryColorList) {
+        List<BarEntry> barEntries = barEntryColorList.getBarEntries();
+        int[] colors = barEntryColorList.getColors();
+        List<String> xVals = barEntryColorList.getxVals();
+        BarDataSet dataSet = new BarDataSet(barEntries, "time type");
+        dataSet.setColors(colors);
+        BarData data = new BarData(dataSet);
+        bar_type.setData(data);
+        bar_type.setFitBars(true);
+
+        // x val
+        XAxis xAxis = bar_type.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new ValueFormatter() {
+
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                int i = (int) value;
+                return i >= xVals.size() ? "未知" : xVals.get(i);
+            }
+        });
+        Description description = new Description();
+        description.setText("time bar");
+        bar_type.setDescription(description);
+        bar_type.invalidate();
     }
 }
