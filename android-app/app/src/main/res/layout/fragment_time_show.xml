@@ -1,13 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:padding="5dp">-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".func.time.TimeShowFragment">
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="time show" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <include layout="@layout/common_choose_from_end_date" />
+
+        <TextView
+            android:id="@+id/tv_time_percent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="请选择日期查询"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <com.jimo.mycost.view.AutoLineBreakLayout
+            android:id="@+id/ll_check_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></com.jimo.mycost.view.AutoLineBreakLayout>
+
+        <!--分类展示的饼状图-->
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_time_type"
+            android:layout_width="match_parent"
+            android:layout_height="500dp" />
+
+        <!--分类展示-->
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_time_type"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <!--花费的词云图-->
+        <ImageView
+            android:id="@+id/iv_cost_word_cloud"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+    </LinearLayout>
+</ScrollView>
