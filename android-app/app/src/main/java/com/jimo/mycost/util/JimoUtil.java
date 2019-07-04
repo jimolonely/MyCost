@@ -88,6 +88,20 @@ public class JimoUtil {
         return dft.format(endDate);
     }
 
+    public static String getDateBefore(int distanceDay, String beginDate) {
+        SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar date = Calendar.getInstance();
+        Date endDate = null;
+        try {
+            date.setTime(dft.parse(beginDate));
+            date.set(Calendar.DATE, date.get(Calendar.DATE) + distanceDay);
+            endDate = dft.parse(dft.format(date.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dft.format(endDate);
+    }
+
     /**
      * 相加的时间格式为 00:00:00 或则 00:00
      *
@@ -304,6 +318,21 @@ public class JimoUtil {
             } else {
                 JimoUtil.myToast(context, "存储图片失败");
             }
+        }
+    }
+
+    /**
+     * 获取2个日期之间的距离
+     */
+    public static int getDistOfDate(String dateFrom, String dateTo) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date from = format.parse(dateFrom);
+            Date end = format.parse(dateTo);
+            return (int) ((end.getTime() - from.getTime()) / (1000 * 3600 * 24)) + 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 1;
         }
     }
 }

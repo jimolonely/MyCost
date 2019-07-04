@@ -43,4 +43,12 @@ public class JimoUtilTest {
     public void testFileCopy() {
         JimoUtil.fileCopy("/home/jimo/图片/me.jpg", "/home/jimo/workspace/hehe", "me.jpg");
     }
+
+    @Test
+    public void getDistOfDate() {
+        int i1 = JimoUtil.getDistOfDate("2019-07-01", "2019-07-01");
+        assertEquals(1, i1);
+        int i2 = JimoUtil.getDistOfDate("2019-07-01", "2019-07-03");
+        assertEquals(3, i2);
+    }
 }

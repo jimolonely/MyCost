@@ -205,8 +205,15 @@ public class TimeShowFragment extends Fragment {
     private List<TimeCostRecord> loadData(String dateFrom, String dateTo) {
         DbManager db = MyApp.dbManager;
         try {
-            return db.selector(TimeCostRecord.class).where("start", ">=", dateFrom)
-                    .and("end", "<=", dateTo).findAll();
+            List<TimeCostRecord> re = db.selector(TimeCostRecord.class).where("start", ">=", dateFrom)
+                    .and("end", "<=", dateTo + " 23:59:59").findAll();
+            /*int dist = JimoUtil.getDistOfDate(dateFrom, dateTo);
+            for (int i = 0; i < dist; i++) {
+                re.add(new TimeCostRecord(JimoUtil.getDateBefore(i + 1, dateTo) + " 23:00:00",
+                        JimoUtil.getDateBefore(i, dateTo) + " 06:20:00",
+                        JimoUtil.getDateBefore(i, dateTo), "休息", "睡觉", ""));
+            }*/
+            return re;
         } catch (DbException e) {
             e.printStackTrace();
             JimoUtil.myToast(getContext(), "load time error：" + e.getMessage());
