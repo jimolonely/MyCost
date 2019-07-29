@@ -27,6 +27,14 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
@@ -61,7 +69,7 @@ dependencies {
     compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
 
     // https://mvnrepository.com/artifact/org.apache.jackrabbit/jackrabbit-webdav
-    compile group: 'org.apache.jackrabbit', name: 'jackrabbit-webdav', version: '2.19.3'
+//    compile group: 'org.apache.jackrabbit', name: 'jackrabbit-webdav', version: '2.19.3'
 
 //    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
 //    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.6'

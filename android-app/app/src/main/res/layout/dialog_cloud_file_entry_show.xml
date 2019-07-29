@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--远程文件展示-->
+
+    <TextView
+        android:id="@+id/tv_cost_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="文件名  大小  修改时间"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_sync"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确定同步" />
+
+    <ListView
+        android:id="@+id/lv_cloud_files"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="1dp" />
+</LinearLayout>

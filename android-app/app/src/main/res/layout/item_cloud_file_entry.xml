@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/icons"
+    android:padding="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+
+    <TextView
+        android:id="@+id/tv_file_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:text="mycost.db"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tv_file_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="200kb"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/tv_file_modify_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/tv_file_size"
+        android:gravity="center"
+        android:text="2019-01-01 10:10:10"
+        android:textColor="@color/secondary_text" />
+
+</RelativeLayout>

@@ -55,7 +55,7 @@ public class MyConst {
     /**
      * 上传数据库到坚果云
      */
-    private static final String CLOUD_DAV_PATH = "https://dav.jianguoyun.com/dav/";
+    public static final String CLOUD_DAV_PATH = "https://dav.jianguoyun.com/dav/";
     public static final String CLOUD_DB_PATH = CLOUD_DAV_PATH + "mycost-db";
 
     public static String getCloudUserName(Context context) {

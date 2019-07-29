@@ -2,7 +2,9 @@ package com.jimo.mycost.func.main;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +22,8 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.data.dto.CloudFileEntry;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
+import com.jimo.mycost.func.cloud.AddUserInfoDialog;
+import com.jimo.mycost.func.cloud.CloudFileListDialog;
 import com.jimo.mycost.func.cost.CostAddActivity;
 import com.jimo.mycost.func.record.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
@@ -156,8 +160,8 @@ public class MainActivity extends Activity {
      * @param view
      */
     @Event(R.id.ib_up_to_cloud)
-    private void ibToCloudClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    private void ibToCloudClick(View view) throws IOException {
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("上传数据");
         builder.setMessage("是否上传?");
         final View v = view;
@@ -166,7 +170,9 @@ public class MainActivity extends Activity {
             uploadData(v);
             dialogInterface.dismiss();
         });
-        builder.create().show();
+        builder.create().show();*/
+
+        syncToCloud();
     }
 
     /**
@@ -179,7 +185,20 @@ public class MainActivity extends Activity {
         // 0.
         if (MyConst.getCloudUserName(this) == null) {
             // 弹框填信息,记得验证
-
+            new AddUserInfoDialog().show(getFragmentManager(), (name, pass) -> {
+                if (isRightUserInfo(name, pass)) {
+                    // 存起来
+                    SharedPreferences pref = getApplication()
+                            .getSharedPreferences("cloud-user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("username", name);
+                    editor.putString("password", pass);
+                    editor.apply();
+                    JimoUtil.myToast(getApplicationContext(), "保存成功");
+                } else {
+                    JimoUtil.myToast(getApplicationContext(), "不正确的信息");
+                }
+            }, getApplicationContext());
             return;
         }
 
@@ -202,7 +221,18 @@ public class MainActivity extends Activity {
             }
         }
         // 传递给dialog展示
+        new CloudFileListDialog().show(getFragmentManager(), getApplicationContext(), entries);
+    }
 
+    private boolean isRightUserInfo(String name, String pass) {
+        try {
+            Sardine sardine = SardineFactory.begin(name, pass);
+            sardine.list(MyConst.CLOUD_DAV_PATH);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void uploadData(final View view) {
