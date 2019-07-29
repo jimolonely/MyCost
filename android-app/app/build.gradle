@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.jimo.mycost"
         minSdkVersion 26
@@ -60,6 +59,19 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+
+    // https://mvnrepository.com/artifact/org.apache.jackrabbit/jackrabbit-webdav
+    compile group: 'org.apache.jackrabbit', name: 'jackrabbit-webdav', version: '2.19.3'
+
+//    // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+//    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.6'
+//
+//    // https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient
+//    compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+
+    // https://mvnrepository.com/artifact/com.github.lookfirst/sardine
+    compile group: 'com.github.lookfirst', name: 'sardine', version: '5.9'
+
 }
 /*
 Error:Execution failed for task ':app:transformClassesWithDexForDebug'.

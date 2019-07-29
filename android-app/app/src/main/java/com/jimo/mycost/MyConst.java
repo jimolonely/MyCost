@@ -3,6 +3,8 @@ package com.jimo.mycost;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Map;
+
 /**
  * Created by root on 17-7-22.
  */
@@ -49,4 +51,21 @@ public class MyConst {
      * 音频记录的key
      */
     public static final String RECORD_PATH_KEY = "record_path_key";
+
+    /**
+     * 上传数据库到坚果云
+     */
+    private static final String CLOUD_DAV_PATH = "https://dav.jianguoyun.com/dav/";
+    public static final String CLOUD_DB_PATH = CLOUD_DAV_PATH + "mycost-db";
+
+    public static String getCloudUserName(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("cloud-user", Context.MODE_PRIVATE);
+        return pref.getString("username", null);
+    }
+
+    public static String getCloudUserPass(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("cloud-user", Context.MODE_PRIVATE);
+        return pref.getString("password", null);
+    }
+
 }

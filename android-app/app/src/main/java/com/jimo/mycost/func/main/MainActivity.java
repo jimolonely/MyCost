@@ -11,14 +11,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.github.sardine.DavResource;
+import com.github.sardine.Sardine;
+import com.github.sardine.SardineFactory;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.data.dto.CloudFileEntry;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.cost.CostAddActivity;
 import com.jimo.mycost.func.record.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
+import com.jimo.mycost.view.MyCostView;
 
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
@@ -29,7 +34,9 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -160,6 +167,42 @@ public class MainActivity extends Activity {
             dialogInterface.dismiss();
         });
         builder.create().show();
+    }
+
+    /**
+     * 0.判断坚果云基础信息是否填了，没有就弹出填写框
+     * 1.首次同步，先创建目录mycost-db
+     * 2.加载列表，展示数据库文件的修改时间，文件大小
+     * 3.再次同步，覆写文件
+     */
+    void syncToCloud() throws IOException {
+        // 0.
+        if (MyConst.getCloudUserName(this) == null) {
+            // 弹框填信息,记得验证
+
+            return;
+        }
+
+        Sardine sardine = SardineFactory.begin(MyConst.getUserName(this),
+                MyConst.getCloudUserPass(this));
+        // 1.
+        if (!sardine.exists(MyConst.CLOUD_DB_PATH)) {
+            sardine.createDirectory(MyConst.CLOUD_DB_PATH);
+        }
+
+        // 2.
+        List<DavResource> resources = sardine.list(MyConst.CLOUD_DB_PATH);
+        List<CloudFileEntry> entries = new ArrayList<>();
+        for (DavResource resource : resources) {
+            String name = resource.getName();
+            if (name.startsWith("mycost.db")) {
+                long size = resource.getContentLength() / 1024;
+                String time = JimoUtil.formatDate(resource.getModified());
+                entries.add(new CloudFileEntry(name, size, time));
+            }
+        }
+        // 传递给dialog展示
+
     }
 
     private void uploadData(final View view) {
