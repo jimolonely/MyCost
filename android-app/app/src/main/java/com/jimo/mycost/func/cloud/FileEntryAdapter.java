@@ -63,7 +63,7 @@ public class FileEntryAdapter extends BaseAdapter {
         }
 
         holder.tv_name.setText(entry.getName());
-        holder.tv_size.setText(entry.getSize() + "");
+        holder.tv_size.setText(entry.getSize() + "kb");
         holder.tv_modify.setText(entry.getModifyTime());
 
         return view;

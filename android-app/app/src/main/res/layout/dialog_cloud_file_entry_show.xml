@@ -5,6 +5,11 @@
     android:orientation="vertical">
 
     <!--远程文件展示-->
+    <Button
+        android:id="@+id/btn_sync"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确定同步" />
 
     <TextView
         android:id="@+id/tv_cost_show"
@@ -12,12 +17,6 @@
         android:layout_height="wrap_content"
         android:text="文件名  大小  修改时间"
         android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/btn_sync"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="确定同步" />
 
     <ListView
         android:id="@+id/lv_cloud_files"

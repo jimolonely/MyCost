@@ -7,33 +7,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.dto.CloudFileEntry;
-import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.cloud.AddUserInfoDialog;
 import com.jimo.mycost.func.cloud.CloudFileListDialog;
 import com.jimo.mycost.func.cost.CostAddActivity;
 import com.jimo.mycost.func.record.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
+import com.thegrizzlylabs.sardineandroid.DavResource;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
 import org.xutils.DbManager;
-import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
-import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -45,9 +39,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @ContentView(R.layout.activity_main)
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     @ViewInject(R.id.tv_month_total)
     TextView tv_total;
@@ -187,8 +182,8 @@ public class MainActivity extends Activity {
         // 0.
         if (MyConst.getCloudUserName(this) == null) {
             // 弹框填信息,记得验证
-            new AddUserInfoDialog().show(getFragmentManager(), (name, pass) -> {
-                Test test = new Test();
+            new AddUserInfoDialog().show(getSupportFragmentManager(), (name, pass) -> {
+                CheckCloudUserInfoTask test = new CheckCloudUserInfoTask();
                 Boolean ok = false;
                 try {
                     ok = test.execute(name, pass).get();
@@ -231,87 +226,31 @@ public class MainActivity extends Activity {
                 entries.add(new CloudFileEntry(name, size, time));
             }
         }*/
-        List<CloudFileEntry> entries = new ArrayList<>();
 
         // 传递给dialog展示
-        new CloudFileListDialog().show(getFragmentManager(), getApplicationContext(), entries);
+        new CloudFileListDialog().show(getSupportFragmentManager(), getApplicationContext());
     }
 
-    private class Test extends AsyncTask<String, Integer, Boolean> {
+    private static class CheckCloudUserInfoTask extends AsyncTask<String, Integer, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... strings) {
-            return isRightUserInfo(strings[0], strings[1]);
-        }
-    }
-
-    private boolean isRightUserInfo(String name, String pass) {
-        try {
+            try {
             /*Sardine sardine = SardineFactory.begin(name, pass);
             sardine.list(MyConst.CLOUD_DAV_PATH);*/
-
-            Sardine sardine = new OkHttpSardine();
-            sardine.setCredentials(name, pass);
-            sardine.list(MyConst.CLOUD_DAV_PATH);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+                String name = strings[0];
+                String pass = strings[1];
+                Sardine sardine = new OkHttpSardine();
+                sardine.setCredentials(name, pass);
+                sardine.list(MyConst.CLOUD_DAV_PATH);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
     }
 
-    private void uploadData(final View view) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("上传中...");
-        builder.setMessage("正在上传数据...");
-        builder.setCancelable(false);
-        builder.setPositiveButton("后台", (dialogInterface, i) -> dialogInterface.dismiss());
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        //查出数据封装在params里
-        RequestParams params = new RequestParams(MyConst.UPLOAD_URL);
-        DbManager db = MyApp.dbManager;
-        //查存每条没上传的记录
-        try {
-            List<CostInComeRecord> costInComeRecords =
-                    db.selector(CostInComeRecord.class).
-                            where("sync_type", "!=", MyConst.SYNC_TYPE_SYNCED).findAll();
-            //用户名和密码
-            params.addParameter("username", "jimo");
-            String jsonString = JSON.toJSONString(costInComeRecords);
-            params.addParameter("data", jsonString);
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-
-        final Callback.Cancelable post = x.http().post(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                Log.i("xxxxx", result);
-                JimoUtil.mySnackbar(view, "上传完成");
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-                JimoUtil.mySnackbar(view, "已中止");
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                builder.setMessage("错误：" + ex.getMessage());
-                JimoUtil.mySnackbar(view, "错误：" + ex.getMessage());
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-
-    }
 
     public int getMonth() {
         return Calendar.getInstance().get(Calendar.MONTH) + 1;

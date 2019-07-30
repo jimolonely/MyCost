@@ -70,6 +70,10 @@ public class JimoUtil {
         return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
+    public static String formatDate(Date date, String format) {
+        return new SimpleDateFormat(format).format(date);
+    }
+
     /**
      * 做个时间偏移
      */

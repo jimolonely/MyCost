@@ -2,21 +2,18 @@ package com.jimo.mycost.func.cloud;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.jimo.mycost.R;
-import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * 添加云用户密码信息弹框
@@ -27,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 public class AddUserInfoDialog extends DialogFragment {
 
     public interface Callback {
-        void onOk(String username, String password) ;
+        void onOk(String username, String password);
     }
 
     private Context context;
@@ -41,6 +38,7 @@ public class AddUserInfoDialog extends DialogFragment {
     }
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
