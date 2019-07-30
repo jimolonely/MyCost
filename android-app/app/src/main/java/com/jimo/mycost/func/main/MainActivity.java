@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -13,9 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.github.sardine.DavResource;
-import com.github.sardine.Sardine;
-import com.github.sardine.SardineFactory;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
@@ -27,7 +27,8 @@ import com.jimo.mycost.func.cloud.CloudFileListDialog;
 import com.jimo.mycost.func.cost.CostAddActivity;
 import com.jimo.mycost.func.record.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
-import com.jimo.mycost.view.MyCostView;
+import com.thegrizzlylabs.sardineandroid.Sardine;
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
@@ -43,6 +44,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends Activity {
@@ -181,12 +183,21 @@ public class MainActivity extends Activity {
      * 2.加载列表，展示数据库文件的修改时间，文件大小
      * 3.再次同步，覆写文件
      */
-    void syncToCloud() throws IOException {
+    void syncToCloud() {
         // 0.
         if (MyConst.getCloudUserName(this) == null) {
             // 弹框填信息,记得验证
             new AddUserInfoDialog().show(getFragmentManager(), (name, pass) -> {
-                if (isRightUserInfo(name, pass)) {
+                Test test = new Test();
+                Boolean ok = false;
+                try {
+                    ok = test.execute(name, pass).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (ok) {
                     // 存起来
                     SharedPreferences pref = getApplication()
                             .getSharedPreferences("cloud-user", Context.MODE_PRIVATE);
@@ -202,7 +213,7 @@ public class MainActivity extends Activity {
             return;
         }
 
-        Sardine sardine = SardineFactory.begin(MyConst.getUserName(this),
+        /*Sardine sardine = SardineFactory.begin(MyConst.getUserName(this),
                 MyConst.getCloudUserPass(this));
         // 1.
         if (!sardine.exists(MyConst.CLOUD_DB_PATH)) {
@@ -219,14 +230,28 @@ public class MainActivity extends Activity {
                 String time = JimoUtil.formatDate(resource.getModified());
                 entries.add(new CloudFileEntry(name, size, time));
             }
-        }
+        }*/
+        List<CloudFileEntry> entries = new ArrayList<>();
+
         // 传递给dialog展示
         new CloudFileListDialog().show(getFragmentManager(), getApplicationContext(), entries);
     }
 
+    private class Test extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            return isRightUserInfo(strings[0], strings[1]);
+        }
+    }
+
     private boolean isRightUserInfo(String name, String pass) {
         try {
-            Sardine sardine = SardineFactory.begin(name, pass);
+            /*Sardine sardine = SardineFactory.begin(name, pass);
+            sardine.list(MyConst.CLOUD_DAV_PATH);*/
+
+            Sardine sardine = new OkHttpSardine();
+            sardine.setCredentials(name, pass);
             sardine.list(MyConst.CLOUD_DAV_PATH);
             return true;
         } catch (IOException e) {

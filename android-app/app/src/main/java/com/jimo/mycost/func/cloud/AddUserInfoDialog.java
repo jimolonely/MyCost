@@ -16,6 +16,8 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * 添加云用户密码信息弹框
  *
@@ -25,7 +27,7 @@ import com.jimo.mycost.util.JimoUtil;
 public class AddUserInfoDialog extends DialogFragment {
 
     public interface Callback {
-        void onOk(String username, String password);
+        void onOk(String username, String password) ;
     }
 
     private Context context;
