@@ -119,12 +119,10 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
-     * 跳到数据统计页面
-     *
-     * @param v
+     * 跳到随机页面
      */
-    public void clickToStatistic(View v) {
-        JimoUtil.myToast(this, "待实现~~");
+    public void clickToRandom(View v) {
+        startActivity(new Intent(this, RandomActivity.class));
     }
 
     @Override

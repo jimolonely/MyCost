@@ -154,11 +154,11 @@
         android:background="@color/icons">
 
         <ImageButton
-            android:id="@+id/ib_statistic"
+            android:id="@+id/ib_random"
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@mipmap/ic_tubiao"
-            android:onClick="clickToStatistic" />
+            android:layout_height="50dp"
+            android:background="@mipmap/R"
+            android:onClick="clickToRandom" />
 
         <ImageButton
             android:layout_width="50dp"
