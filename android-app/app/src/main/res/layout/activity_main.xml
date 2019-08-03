@@ -157,7 +157,7 @@
             android:id="@+id/ib_random"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@mipmap/R"
+            android:background="@mipmap/r"
             android:onClick="clickToRandom" />
 
         <ImageButton

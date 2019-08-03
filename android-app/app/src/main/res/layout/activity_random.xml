@@ -7,66 +7,14 @@
     android:orientation="vertical"
     tools:context=".func.main.RandomActivity">
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="309dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="6dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swt_random_fix_length">
-
-        <RadioButton
-            android:id="@+id/rbt_random_len_1"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="1位" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_len_2"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="2位" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_len_3"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="3位" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_len_4"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="4位" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_len_5"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="5位" />
-    </RadioGroup>
-
     <TextView
         android:id="@+id/tv_random_input_len2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="36dp"
         android:text="输入长度"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/swt_random_fix_length" />
 
     <RelativeLayout
@@ -107,66 +55,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
-    <RadioGroup
-        android:id="@+id/rg_random_num"
-        android:layout_width="309dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="6dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
-        <RadioButton
-            android:id="@+id/rbt_random_num_1"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="1个" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_num_2"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="2个" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_num_3"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="3个" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_num_4"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="4个" />
-
-        <RadioButton
-            android:id="@+id/rbt_random_num_5"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="5个" />
-    </RadioGroup>
-
     <TextView
         android:id="@+id/tv_random_input_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
         android:text="输入数量"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_random_input_len2" />
 
     <Button
@@ -174,33 +70,76 @@
         android:layout_width="382dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="8dp"
+        android:onClick="generate"
         android:text="生成"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.307"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_random_show" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="308dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:text="结果"
+        android:id="@+id/tv_random_show"
+        android:layout_width="340dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="要求"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_random_num" />
+        app:layout_constraintTop_toBottomOf="@+id/sbk_num" />
+
+    <EditText
+        android:id="@+id/tv_random_result"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="8dp"
+        android:hint="结果"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_random" />
 
     <TextView
         android:id="@+id/tv_random_option"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_width="36dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
+        android:onClick="highOption"
         android:text="高级"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        tools:layout_editor_absoluteY="247dp" />
+        app:layout_constraintHorizontal_bias="0.911"
+        app:layout_constraintStart_toEndOf="@+id/tv_random_show"
+        app:layout_constraintTop_toBottomOf="@+id/tv_random_input_num" />
+
+    <SeekBar
+        android:id="@+id/sbk_num"
+        android:layout_width="321dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:max="100"
+        android:min="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_random_input_num"
+        app:layout_constraintTop_toBottomOf="@+id/sbk_len" />
+
+    <SeekBar
+        android:id="@+id/sbk_len"
+        android:layout_width="318dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:max="10"
+        android:min="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_random_input_len2"
+        app:layout_constraintTop_toBottomOf="@+id/swt_random_fix_length" />
 
 </android.support.constraint.ConstraintLayout>
