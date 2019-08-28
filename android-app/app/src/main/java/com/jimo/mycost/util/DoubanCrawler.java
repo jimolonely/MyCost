@@ -42,10 +42,15 @@ public class DoubanCrawler extends AsyncTask<String, Void, List<LifeItemSearchRe
         Document doc = Jsoup.connect(url).get();
         Elements links = doc.select("div.result div.title a");
         List<LifeItemSearchResult> results = new ArrayList<>();
+        int i = 0;
         for (Element link : links) {
             String href = link.attr("href");
             System.out.println(href);
             results.add(getItem(href));
+            // 只取4个
+            if (i++ > 3) {
+                break;
+            }
         }
         return results;
     }
