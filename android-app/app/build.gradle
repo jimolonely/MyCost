@@ -96,11 +96,7 @@ dependencies {
 
     implementation 'com.thegrizzlylabs.sardine-android:sardine-android:0.4'
 
-    // https://mvnrepository.com/artifact/com.kennycason/kumo-core
-    compile group: 'com.kennycason', name: 'kumo-core', version: '1.22'
-    // https://mvnrepository.com/artifact/com.kennycason/kumo-tokenizers
-    compile group: 'com.kennycason', name: 'kumo-tokenizers', version: '1.22'
-
+    compile 'net.alhazmy13.wordcloud:library:0.2.0-beta'
 }
 /*
 Error:Execution failed for task ':app:transformClassesWithDexForDebug'.

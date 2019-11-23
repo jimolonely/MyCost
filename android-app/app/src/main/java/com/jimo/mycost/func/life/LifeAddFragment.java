@@ -44,12 +44,10 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.MyConst.themeData;
+import static com.jimo.mycost.func.life.Constant.THEME_MOVIE;
 
 @ContentView(R.layout.fragment_life_add)
 public class LifeAddFragment extends Fragment {
-
-    public static final String THEME_MOVIE = "电影";
-    public static final String THEME_BOOK = "书籍";
 
     @ViewInject(R.id.sp_theme_life)
     private Spinner sp_theme;
