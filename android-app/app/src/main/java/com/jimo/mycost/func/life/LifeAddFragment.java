@@ -46,6 +46,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.MyConst.themeData;
 import static com.jimo.mycost.func.life.Constant.THEME_MOVIE;
 
+
 @ContentView(R.layout.fragment_life_add)
 public class LifeAddFragment extends Fragment {
 

@@ -29,6 +29,9 @@ import org.xutils.x;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.jimo.mycost.func.life.Constant.THEME_BOOK;
+import static com.jimo.mycost.func.life.Constant.THEME_MOVIE;
+
 public class LifeSearchDialog extends Dialog {
 
     private Context context;
@@ -105,7 +108,7 @@ public class LifeSearchDialog extends Dialog {
     }
 
     private void loadSearchData(int type) {
-        if (LifeAddFragment.THEME_BOOK.equals(theme)) {
+        if (THEME_BOOK.equals(theme)) {
             loadData(type, MyConst.DOUBAN_BOOK_API, result -> {
                 JSONObject obj = JSON.parseObject(result);
                 final JSONArray books = obj.getJSONArray("books");
@@ -133,7 +136,7 @@ public class LifeSearchDialog extends Dialog {
                 }
                 start += len;
             });
-        } else if (LifeAddFragment.THEME_MOVIE.equals(theme)) {
+        } else if (THEME_MOVIE.equals(theme)) {
             /*loadData(type, MyConst.DOUBAN_MOVIE_API, result -> {
                 JSONObject obj = JSON.parseObject(result);
                 final JSONArray movies = obj.getJSONArray("subjects");
