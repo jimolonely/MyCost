@@ -31,8 +31,6 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/common_choose_from_end_date" />
-
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"

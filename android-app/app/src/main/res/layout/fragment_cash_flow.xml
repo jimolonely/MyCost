@@ -10,5 +10,13 @@
 
         <include layout="@layout/common_choose_from_end_date" />
 
+        <TableLayout
+            android:id="@+id/tl_cash_flow"
+            android:paddingStart="40dp"
+            android:paddingRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </TableLayout>
     </LinearLayout>
 </ScrollView>

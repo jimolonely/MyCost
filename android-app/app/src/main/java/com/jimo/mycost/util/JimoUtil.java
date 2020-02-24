@@ -21,11 +21,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by root on 17-7-25.
@@ -338,5 +340,9 @@ public class JimoUtil {
             e.printStackTrace();
             return 1;
         }
+    }
+
+    public static String keepPrecision(double num) {
+        return String.format(Locale.CHINESE, "%.2f", num);
     }
 }

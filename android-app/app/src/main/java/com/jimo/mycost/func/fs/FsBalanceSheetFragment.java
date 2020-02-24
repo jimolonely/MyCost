@@ -24,7 +24,9 @@ import org.xutils.x;
 @ContentView(R.layout.fragment_balance_sheet)
 public class FsBalanceSheetFragment extends Fragment {
 
+    @ViewInject(R.id.tv_common_start_date)
     private TextView tv_date_from;
+    @ViewInject(R.id.tv_common_end_date)
     private TextView tv_date_to;
 
     @Nullable
@@ -36,9 +38,6 @@ public class FsBalanceSheetFragment extends Fragment {
     }
 
     private void initData() {
-
-        tv_date_from = getActivity().findViewById(R.id.tv_common_start_date);
-        tv_date_to = getActivity().findViewById(R.id.tv_common_end_date);
 
         //初始日期为本月
         tv_date_from.setText(JimoUtil.getFirstDayOfMonth(JimoUtil.getCurrentMonth()));
