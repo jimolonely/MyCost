@@ -1,7 +1,6 @@
 package com.jimo.mycost.func.main;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,14 +14,12 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
-import com.jimo.mycost.data.dto.CloudFileEntry;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.cloud.AddUserInfoDialog;
 import com.jimo.mycost.func.cloud.CloudFileListDialog;
 import com.jimo.mycost.func.cost.CostAddActivity;
 import com.jimo.mycost.func.record.TimeCostActivity;
 import com.jimo.mycost.util.JimoUtil;
-import com.thegrizzlylabs.sardineandroid.DavResource;
 import com.thegrizzlylabs.sardineandroid.Sardine;
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine;
 
@@ -35,11 +32,8 @@ import org.xutils.x;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends FragmentActivity {
@@ -284,5 +278,12 @@ public class MainActivity extends FragmentActivity {
 
     public void clickToReflect(View view) {
         startActivity(new Intent(this, ReflectActivity.class));
+    }
+
+    /**
+     * 跳转到财务报表
+     */
+    public void clickToFinancialStatement(View view) {
+        startActivity(new Intent(this, FinancialStatementActivity.class));
     }
 }

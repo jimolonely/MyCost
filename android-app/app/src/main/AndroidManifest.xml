@@ -38,6 +38,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".func.main.FriendActivity" />
         <activity android:name=".func.main.ReflectActivity" />
+        <activity android:name=".func.main.FinancialStatementActivity" />
     </application>
 
 </manifest>

@@ -51,6 +51,7 @@
             android:gravity="center"
             android:text="本月：-1000元"
             android:textColor="@color/icons"
+            android:onClick="clickToFinancialStatement"
             android:textSize="30sp" />
 
         <RelativeLayout
@@ -118,18 +119,6 @@
                 android:onClick="clickToLife"
                 android:text="Life" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="clickToFriend"
-                android:text="Friend" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Record"
-                android:onClick="clickToRecord"
-                />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
