@@ -37,7 +37,6 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,8 +51,12 @@ import static com.jimo.mycost.util.JimoUtil.getYear;
 @ContentView(R.layout.fragment_income_add)
 public class InComeAddFragment extends Fragment {
 
-    @ViewInject(R.id.fbl_normal_income)
-    FlexboxLayout fl_normal;
+    @ViewInject(R.id.fbl_work_income)
+    FlexboxLayout fl_work;
+    @ViewInject(R.id.fbl_invest_income)
+    FlexboxLayout fl_invest;
+    @ViewInject(R.id.fbl_invest_sold_income)
+    FlexboxLayout fl_invest_sold;
 
     @ViewInject(R.id.input_date)
     TextView tv_input_date;
@@ -66,8 +69,6 @@ public class InComeAddFragment extends Fragment {
 
     @ViewInject(R.id.input_remark)
     EditText edt_input_remark;
-
-    private List<String> normalInComes = new ArrayList<>(Arrays.asList("工资", "兼职", "红包", "投资", "奖金", "补贴", "礼金", "其他"));
 
     //同步类型。默认是插入
     private int modifyType = MyConst.SYNC_TYPE_INSERT;
@@ -88,7 +89,14 @@ public class InComeAddFragment extends Fragment {
     }
 
     private void initData() {
-        registClickListener(normalInComes, "正常", fl_normal);
+        List<String> workType = Arrays.asList("工资", "兼职", "红包", "其他");
+        List<String> investType = Arrays.asList("银行存款利息", "逆回购利息", "货币基金分红",
+                "债券利息", "股息", "REITs分红", "基金分红", "房租收入", "股权分红", "版税", "其他");
+        List<String> invertSoldType = Arrays.asList("逆回购到期回本", "卖出货币基金",
+                "卖出债券", "卖出股票", "卖出REITs", "卖出基金", "卖出房地产", "卖出股权", "其他");
+        registClickListener(workType, "劳动收入", fl_work);
+        registClickListener(investType, "投资收入", fl_invest);
+        registClickListener(invertSoldType, "投资卖出收入", fl_invest_sold);
 
         rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapterForSelectImg = new SelectImgAdapter(getContext());
@@ -100,7 +108,7 @@ public class InComeAddFragment extends Fragment {
             TextView tvv = getTextView(s, (view) -> {
                 if (view instanceof TextView) {
                     TextView tv = (TextView) view;
-                    final String text = type + " " + String.valueOf(tv.getText());
+                    final String text = type + " " + tv.getText();
                     tv_input_type.setText(text);
                 }
             });

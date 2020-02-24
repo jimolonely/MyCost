@@ -120,7 +120,7 @@ public class CostAddFragment extends Fragment {
     @Event(R.id.btn_cost_add_type)
     private void clickToAddTypes(View view) {
         AddBigSmallTypeDialog dialog = new AddBigSmallTypeDialog();
-        String[] bigTypes = {"餐饮", "交通", "学习", "生活"};
+        String[] bigTypes = {"投资", "餐饮", "交通", "教育", "生活", "负债"};
         dialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(),
                 bigTypes, (b, s) -> createTypeList.saveSmallType(b, s));
     }

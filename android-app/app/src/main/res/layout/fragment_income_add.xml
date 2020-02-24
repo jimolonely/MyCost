@@ -1,172 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="end|center_vertical"
-        android:text="正常收入"
-        android:textColor="@color/primary_text"
-        android:textSize="18sp" />
-
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/fbl_normal_income"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:alignContent="stretch"
-        app:alignItems="stretch"
-        app:flexWrap="wrap"
-        app:justifyContent="flex_end" />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="end|center_vertical"
+            android:text="劳动收入"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
 
-    <include layout="@layout/common_input_cost" />
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/fbl_work_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:justifyContent="flex_end" />
 
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="end|center_vertical"
+            android:text="投资收入"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical">-->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/fbl_invest_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:justifyContent="flex_end" />
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="60dp"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:padding="5dp">-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="end|center_vertical"
+            android:text="投资卖出收入"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/input_date_income"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginEnd="10dp"-->
-    <!--android:layout_weight="4"-->
-    <!--android:gravity="center|end"-->
-    <!--android:hint="点击选日期"-->
-    <!--android:text=""-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center"-->
-    <!--android:padding="10dp"-->
-    <!--android:text="日期"-->
-    <!--android:textSize="15sp" />-->
-
-
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="60dp"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:padding="5dp">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/input_type_income"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginEnd="10dp"-->
-    <!--android:layout_weight="4"-->
-    <!--android:gravity="center|end"-->
-    <!--android:hint="请选择"-->
-    <!--android:text=""-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center"-->
-    <!--android:padding="10dp"-->
-    <!--android:text="用途"-->
-    <!--android:textSize="15sp" />-->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/fbl_invest_sold_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:justifyContent="flex_end" />
 
 
-    <!--</LinearLayout>-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="60dp"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:padding="5dp">-->
+        <include layout="@layout/common_input_cost" />
 
-    <!--<EditText-->
-    <!--android:id="@+id/input_money_income"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginStart="10dp"-->
-    <!--android:layout_weight="4"-->
-    <!--android:gravity="center|end"-->
-    <!--android:hint="任命比"-->
-    <!--android:inputType="numberDecimal"-->
-    <!--android:textColor="@color/colorPrimaryDark"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center"-->
-    <!--android:padding="10dp"-->
-    <!--android:text="金额"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="60dp"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:padding="5dp">-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/input_remark_income"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginStart="10dp"-->
-    <!--android:layout_weight="4"-->
-    <!--android:gravity="center|end"-->
-    <!--android:hint="备注内容"-->
-    <!--android:inputType="text"-->
-    <!--android:textColor="@color/primary_light"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center"-->
-    <!--android:padding="10dp"-->
-    <!--android:text="备注"-->
-    <!--android:textSize="15sp" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--<Button-->
-    <!--android:id="@+id/btn_finish_income"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_margin="10dp"-->
-    <!--android:background="@color/colorPrimaryDark"-->
-    <!--android:padding="10dp"-->
-    <!--android:text="提交"-->
-    <!--android:textColor="@color/icons" />-->
-    <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
