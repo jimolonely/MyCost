@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +14,6 @@ import com.jimo.mycost.func.common.MyOnPageChangeListener;
 import com.jimo.mycost.func.cost.CostAddFragment;
 import com.jimo.mycost.func.cost.CostGraphFragment;
 import com.jimo.mycost.func.cost.CostShowFragment;
-import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -79,10 +77,4 @@ public class CostActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PictureFileUtils.deleteCacheDirFile(this);
-        Log.i("destory-activity", "已清除缓存");
-    }
 }

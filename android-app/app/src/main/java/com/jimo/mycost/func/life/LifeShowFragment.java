@@ -95,7 +95,7 @@ public class LifeShowFragment extends Fragment {
         try {
             return db.selector(LifeRecord.class)
                     .select("type", "creators", "pubdate", "score", "mood", "spend_time")
-                    .and("theme", "=", theme)
+                    .where("theme", "=", theme)
                     .and("time", ">=", tv_date_from.getText())
                     .and("time", "<=", tv_date_to.getText())
                     .findAll();

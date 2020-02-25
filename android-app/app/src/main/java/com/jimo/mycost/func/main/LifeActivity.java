@@ -5,18 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.jimo.mycost.R;
-import com.jimo.mycost.func.body.BodyDataFragment;
-import com.jimo.mycost.func.body.BodyDataShowFragment;
 import com.jimo.mycost.func.common.MyFragmentAdapter;
 import com.jimo.mycost.func.common.MyOnPageChangeListener;
 import com.jimo.mycost.func.life.LifeAddFragment;
 import com.jimo.mycost.func.life.LifeShowFragment;
-import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -76,10 +72,4 @@ public class LifeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PictureFileUtils.deleteCacheDirFile(this);
-        Log.i("destory-activity", "已清除缓存");
-    }
 }

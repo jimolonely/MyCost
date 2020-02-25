@@ -1,11 +1,8 @@
 package com.jimo.mycost.func.life;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +22,6 @@ import com.jimo.mycost.data.model.LifeRecord;
 import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
@@ -40,9 +32,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.File;
-import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.MyConst.themeData;
 import static com.jimo.mycost.func.life.Constant.THEME_MOVIE;
 
@@ -78,9 +68,6 @@ public class LifeAddFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private String theme = THEME_MOVIE;
 
-    @ViewInject(R.id.rcv_images)
-    RecyclerView rcv_imgs;
-
     private SelectImgAdapter adapterForSelectImg;
 
     private float myScore = 6;
@@ -111,10 +98,6 @@ public class LifeAddFragment extends Fragment {
         rb_score.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             myScore = rating;
         });
-
-        rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        adapterForSelectImg = new SelectImgAdapter(getContext());
-        rcv_imgs.setAdapter(adapterForSelectImg);
     }
 
 
@@ -198,43 +181,4 @@ public class LifeAddFragment extends Fragment {
     private void chooseTime(View view) {
         FuckUtil.showDateSelectDialog(getContext(), (date) -> tv_date.setText(String.valueOf(date)));
     }
-
-
-    @Event(R.id.iv_select_img)
-    private void onSelectImgClick(View view) {
-        PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
-                .compress(true).isCamera(true).forResult(PictureConfig.CHOOSE_REQUEST);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PictureConfig.CHOOSE_REQUEST:
-
-                    final List<LocalMedia> media = PictureSelector.obtainMultipleResult(data);
-                    for (LocalMedia m : media) {
-                        if (m.isCompressed()) {
-                            Log.i("path-compress", m.getCompressPath());
-                            adapterForSelectImg.getData().add(m.getCompressPath());
-                        } else {
-                            Log.i("path", m.getPath());
-                            adapterForSelectImg.getData().add(m.getPath());
-                        }
-                    }
-                    adapterForSelectImg.notifyDataSetChanged();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        PictureFileUtils.deleteExternalCacheDirFile(getContext());
-        Log.i("destory", "已清除缓存");
-    }
-
 }

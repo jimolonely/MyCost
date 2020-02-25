@@ -12,7 +12,7 @@
 
         <TableLayout
             android:id="@+id/tl_cash_flow"
-            android:paddingStart="40dp"
+            android:paddingStart="35dp"
             android:paddingRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

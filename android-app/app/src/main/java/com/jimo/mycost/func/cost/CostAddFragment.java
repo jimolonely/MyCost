@@ -1,13 +1,9 @@
 package com.jimo.mycost.func.cost;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +14,13 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
-import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.BigSmallType;
+import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.CreateTypeList;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
-import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -43,7 +34,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static android.app.Activity.RESULT_OK;
 import static com.jimo.mycost.util.JimoUtil.getMonth;
 import static com.jimo.mycost.util.JimoUtil.getYear;
 
@@ -69,9 +59,6 @@ public class CostAddFragment extends Fragment {
 
     @ViewInject(R.id.input_remark)
     EditText edt_input_remark;//备注
-
-    @ViewInject(R.id.rcv_images)
-    RecyclerView rcv_imgs;
 
     private SelectImgAdapter adapterForSelectImg;
 
@@ -105,10 +92,6 @@ public class CostAddFragment extends Fragment {
                 BigSmallType.TYPE_COST
         );
         createTypeList.setTypes();
-
-        rcv_imgs.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        adapterForSelectImg = new SelectImgAdapter(getContext());
-        rcv_imgs.setAdapter(adapterForSelectImg);
     }
 
     /**
@@ -187,41 +170,4 @@ public class CostAddFragment extends Fragment {
     //在从主页面点击一条数据进来时确定是修改
     //TODO
 
-
-    @Event(R.id.iv_select_img)
-    private void onSelectImgClick(View view) {
-        PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
-                .compress(true).isCamera(true).forResult(PictureConfig.CHOOSE_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PictureConfig.CHOOSE_REQUEST:
-
-                    final List<LocalMedia> media = PictureSelector.obtainMultipleResult(data);
-                    for (LocalMedia m : media) {
-                        if (m.isCompressed()) {
-                            Log.i("path-compress", m.getCompressPath());
-                            adapterForSelectImg.getData().add(m.getCompressPath());
-                        } else {
-                            Log.i("path", m.getPath());
-                            adapterForSelectImg.getData().add(m.getPath());
-                        }
-                    }
-                    adapterForSelectImg.notifyDataSetChanged();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        PictureFileUtils.deleteCacheDirFile(getContext());
-        PictureFileUtils.deleteExternalCacheDirFile(getContext());
-        Log.i("destory", "已清除缓存");
-    }
 }
