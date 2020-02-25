@@ -116,11 +116,30 @@ public class FsCashFlowFragment extends Fragment {
         }
 
         // 构造视图
-        addTableView(lifeCost, "日常生活支出", totalCost, R.color.danger);
+        addTableDivider(3);
+
+        double lifeSum = addTableView(lifeCost, "日常生活支出", totalCost, R.color.danger);
         addTableView(investCost, "投资活动支出", totalCost, R.color.danger);
         addTableView(workIncome, "劳动收入", totalIncome, R.color.yellow);
-        addTableView(investIncome, "投资收入", totalIncome, R.color.green);
-        addTableView(investSoldIncome, "投资卖出收入", totalIncome, R.color.green);
+        double investSum = addTableView(investIncome, "投资收入", totalIncome, R.color.green);
+        double investSoldSum = addTableView(investSoldIncome, "投资卖出收入", totalIncome, R.color.green);
+
+        addTableDivider(9);
+        // 总收入
+        addConcludeRow("总收入", 1, R.color.green, totalIncome);
+        // 总支出
+        addConcludeRow("总支出", 1, R.color.danger, totalCost);
+        // 总投资收入
+        double investTotal = investSoldSum + investSum;
+        addConcludeRow("总投资收入", investTotal / totalIncome, R.color.green, investTotal);
+        // 净流量, 如果占收入的比例越高，那说明收入越高
+        addConcludeRow("净收入现金流量", (totalIncome - totalCost) / totalIncome,
+                R.color.green, totalIncome - totalCost);
+        // 财务自由流量净额,占总收入的比重越高，说明越财务自由
+        double freeMoney = investSum - lifeSum;
+        addConcludeRow("财务自由流量净额", (freeMoney) / totalIncome,
+                freeMoney > 0 ? R.color.green : R.color.danger, freeMoney);
+        addTableDivider(9);
     }
 
     private void clearDataView() {
@@ -138,7 +157,7 @@ public class FsCashFlowFragment extends Fragment {
         }
     }
 
-    private void addTableView(Map<String, MoneyPercent> map, String title, double total, int color) {
+    private double addTableView(Map<String, MoneyPercent> map, String title, double total, int color) {
         double sum = 0d;
         for (Map.Entry<String, MoneyPercent> e : map.entrySet()) {
             sum += e.getValue().getMoney();
@@ -156,23 +175,34 @@ public class FsCashFlowFragment extends Fragment {
             tl_cash.addView(row);
         }
         // 总结栏
+        addConcludeRow(title, sum / total, color, sum);
+
+        addTableDivider(3);
+
+        return sum;
+    }
+
+    private void addConcludeRow(String title, double percent, int color, double num) {
         TextView tv_key = new TextView(this.getContext());
         tv_key.setText(title);
         tv_key.setTextColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()), color));
         tv_key.setTextSize(20);
         TextView tv_sum = new TextView(this.getContext());
-        tv_sum.setText(JimoUtil.keepPrecision(sum));
+        tv_sum.setText(JimoUtil.keepPrecision(num));
         TextView tv_percent = new TextView(this.getContext());
-        tv_percent.setText(String.format("%s%%", JimoUtil.keepPrecision(sum / total * 100)));
+        tv_percent.setText(String.format("%s%%", JimoUtil.keepPrecision(percent * 100)));
         TableRow row = new TableRow(this.getContext());
         row.addView(tv_key);
         row.addView(tv_sum);
         row.addView(tv_percent);
         tl_cash.addView(row);
+    }
+
+    private void addTableDivider(int height) {
         // 增加一根分割线
         TextView tv_divider = new TextView(this.getContext());
         tv_divider.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 3
+                ViewGroup.LayoutParams.MATCH_PARENT, height
         ));
         tv_divider.setBackgroundColor(ContextCompat.getColor(
                 Objects.requireNonNull(this.getContext()), R.color.divider));
@@ -183,7 +213,7 @@ public class FsCashFlowFragment extends Fragment {
         String type = record.getTypeName();
         if (type.startsWith("劳动收入")) {
             putToWorkIncome(record, type.substring(5));
-        } else if (type.startsWith("投资收入")) {
+        } else if (type.startsWith("投资经常收入")) {
             putToInvestIncome(record, type.substring(5));
         } else if (type.startsWith("投资卖出收入")) {
             putToInvestSoldIncome(record, type.substring(7));
