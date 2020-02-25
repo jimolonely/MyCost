@@ -17,7 +17,6 @@ import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.BigSmallType;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
-import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.CreateTypeList;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
@@ -59,8 +58,6 @@ public class CostAddFragment extends Fragment {
 
     @ViewInject(R.id.input_remark)
     EditText edt_input_remark;//备注
-
-    private SelectImgAdapter adapterForSelectImg;
 
     private List<String> foodTitles = new ArrayList<>(Arrays.asList("早餐", "午餐", "晚餐", "零食", "其他"));
     private List<String> transportTitles = new ArrayList<>(Arrays.asList(
@@ -135,8 +132,6 @@ public class CostAddFragment extends Fragment {
 
                         //存储后获得id,用于关联图片
                         db.save(cost);
-                        final long parentId = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst().getId();
-                        JimoUtil.storeImg(getContext(), adapterForSelectImg.getData(), db, parentId, MyConst.IMG_TYPE_COST, month, year);
 
                         //更新月记录
                         MonthCost monthCost = db.selector(MonthCost.class).
@@ -151,7 +146,6 @@ public class CostAddFragment extends Fragment {
                             db.update(monthCost, "money", "sync_type");
                         }
                         FuckUtil.clearInput((obj) -> {
-                            adapterForSelectImg.clear();
                         }, tv_input_date, tv_input_type, edt_input_money, edt_input_remark);
                         JimoUtil.mySnackbar(view, "保存成功");
                     } catch (DbException e) {

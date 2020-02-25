@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +15,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jimo.mycost.MyApp;
-import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.LifeRecord;
-import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 
 import org.xutils.DbManager;
-import org.xutils.common.Callback;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
-import java.io.File;
 
 import static com.jimo.mycost.MyConst.themeData;
 import static com.jimo.mycost.func.life.Constant.THEME_MOVIE;
@@ -68,8 +62,6 @@ public class LifeAddFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private String theme = THEME_MOVIE;
 
-    private SelectImgAdapter adapterForSelectImg;
-
     private float myScore = 6;
 
     @Nullable
@@ -98,6 +90,7 @@ public class LifeAddFragment extends Fragment {
         rb_score.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             myScore = rating;
         });
+
     }
 
 
@@ -118,7 +111,7 @@ public class LifeAddFragment extends Fragment {
                 edt_remark.setText(result.getRemark());
                 edt_type.setText(result.getType());
                 //把封面加入图片列表
-                x.image().loadFile(result.getImgUrl(), null, new Callback.CacheCallback<File>() {
+                /*x.image().loadFile(result.getImgUrl(), null, new Callback.CacheCallback<File>() {
                     @Override
                     public boolean onCache(File result) {
                         Log.i("cache-img-path", result.getAbsolutePath() + "/" + result.getName());
@@ -142,7 +135,7 @@ public class LifeAddFragment extends Fragment {
                     @Override
                     public void onFinished() {
                     }
-                });
+                });*/
             });
             dialog.show();
         }
@@ -163,11 +156,8 @@ public class LifeAddFragment extends Fragment {
             final DbManager db = MyApp.dbManager;
             try {
                 db.save(lifeRecord);
-                final long parentId = db.selector(LifeRecord.class).orderBy("id", true).findFirst().getId();
-                JimoUtil.storeImg(getContext(), adapterForSelectImg.getData(), db, parentId, MyConst.IMG_TYPE_LIFE);
                 FuckUtil.clearInput((obj) -> {
                     tv_date.setText("点击选择时间");
-                    adapterForSelectImg.clear();
                 }, edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood);
                 JimoUtil.mySnackbar(view, "保存成功");
             } catch (DbException e) {

@@ -17,7 +17,6 @@ import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
 import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
-import com.jimo.mycost.func.common.SelectImgAdapter;
 import com.jimo.mycost.util.FuckUtil;
 import com.jimo.mycost.util.JimoUtil;
 
@@ -63,8 +62,6 @@ public class InComeAddFragment extends Fragment {
     //同步类型。默认是插入
     private int modifyType = MyConst.SYNC_TYPE_INSERT;
 
-    private SelectImgAdapter adapterForSelectImg;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,7 +82,6 @@ public class InComeAddFragment extends Fragment {
         registClickListener(investType, "投资收入", fl_invest);
         registClickListener(invertSoldType, "投资卖出收入", fl_invest_sold);
 
-        adapterForSelectImg = new SelectImgAdapter(getContext());
     }
 
     private void registClickListener(List<String> title, String type, FlexboxLayout flex) {
@@ -140,8 +136,6 @@ public class InComeAddFragment extends Fragment {
 
                         //存储后获得id,用于关联图片
                         db.save(cost);
-                        final long parentId = db.selector(CostInComeRecord.class).orderBy("id", true).findFirst().getId();
-                        JimoUtil.storeImg(getContext(), adapterForSelectImg.getData(), db, parentId, MyConst.IMG_TYPE_INCOME, month, year);
 
                         //更新月记录
                         MonthCost monthCost = db.selector(MonthCost.class).
@@ -156,7 +150,6 @@ public class InComeAddFragment extends Fragment {
                             db.update(monthCost, "money", "sync_type");
                         }
                         FuckUtil.clearInput((obj) -> {
-                            adapterForSelectImg.clear();
                         }, tv_input_date, tv_input_type, edt_input_money, edt_input_remark);
                         JimoUtil.mySnackbar(view, "保存成功");
                     } catch (DbException e) {
