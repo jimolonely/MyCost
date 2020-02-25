@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -50,6 +49,9 @@ public class FsCashFlowFragment extends Fragment {
 
     private Map<String, MoneyPercent> lifeCost;
     private Map<String, MoneyPercent> investCost;
+    private Map<String, MoneyPercent> workIncome;
+    private Map<String, MoneyPercent> investIncome;
+    private Map<String, MoneyPercent> investSoldIncome;
 
     @Nullable
     @Override
@@ -68,6 +70,9 @@ public class FsCashFlowFragment extends Fragment {
 
         lifeCost = new HashMap<>(16);
         investCost = new HashMap<>(16);
+        workIncome = new HashMap<>(16);
+        investIncome = new HashMap<>(16);
+        investSoldIncome = new HashMap<>(16);
 
         //设置所有的item都可伸缩扩展
         tl_cash.setStretchAllColumns(true);
@@ -78,6 +83,7 @@ public class FsCashFlowFragment extends Fragment {
      */
     @Event(R.id.btn_common_ok)
     private void query(View view) {
+        clearDataView();
         CharSequence startTime = tv_date_from.getText();
         CharSequence endTime = tv_date_to.getText();
         // 从库里查出列表
@@ -99,19 +105,40 @@ public class FsCashFlowFragment extends Fragment {
                     totalIncome += record.getMoney();
                 }
             }
-            // TODO update percent
-            for (Map.Entry<String, MoneyPercent> e : lifeCost.entrySet()) {
-                e.getValue().setPercent(JimoUtil.keepPrecision(e.getValue().getMoney() / totalCost * 100) + "%");
-            }
+            // update percent
+            updatePercent(lifeCost, totalCost);
+            updatePercent(investCost, totalCost);
+            updatePercent(workIncome, totalIncome);
+            updatePercent(investIncome, totalIncome);
+            updatePercent(investSoldIncome, totalIncome);
         } catch (DbException e) {
             JimoUtil.mySnackbar(view, e.getMessage());
         }
 
         // 构造视图
-        addTableView(lifeCost, "日常生活支出", totalCost);
+        addTableView(lifeCost, "日常生活支出", totalCost, R.color.danger);
+        addTableView(investCost, "投资活动支出", totalCost, R.color.danger);
+        addTableView(workIncome, "劳动收入", totalIncome, R.color.yellow);
+        addTableView(investIncome, "投资收入", totalIncome, R.color.green);
+        addTableView(investSoldIncome, "投资卖出收入", totalIncome, R.color.green);
     }
 
-    private void addTableView(Map<String, MoneyPercent> map, String title, double total) {
+    private void clearDataView() {
+        tl_cash.removeAllViews();
+        lifeCost.clear();
+        investCost.clear();
+        workIncome.clear();
+        investIncome.clear();
+        investSoldIncome.clear();
+    }
+
+    private void updatePercent(Map<String, MoneyPercent> cost, double totalCost) {
+        for (Map.Entry<String, MoneyPercent> e : cost.entrySet()) {
+            e.getValue().setPercent(JimoUtil.keepPrecision(e.getValue().getMoney() / totalCost * 100) + "%");
+        }
+    }
+
+    private void addTableView(Map<String, MoneyPercent> map, String title, double total, int color) {
         double sum = 0d;
         for (Map.Entry<String, MoneyPercent> e : map.entrySet()) {
             sum += e.getValue().getMoney();
@@ -131,7 +158,7 @@ public class FsCashFlowFragment extends Fragment {
         // 总结栏
         TextView tv_key = new TextView(this.getContext());
         tv_key.setText(title);
-        tv_key.setTextColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()), R.color.danger));
+        tv_key.setTextColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()), color));
         tv_key.setTextSize(20);
         TextView tv_sum = new TextView(this.getContext());
         tv_sum.setText(JimoUtil.keepPrecision(sum));
@@ -142,40 +169,85 @@ public class FsCashFlowFragment extends Fragment {
         row.addView(tv_sum);
         row.addView(tv_percent);
         tl_cash.addView(row);
+        // 增加一根分割线
+        TextView tv_divider = new TextView(this.getContext());
+        tv_divider.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 3
+        ));
+        tv_divider.setBackgroundColor(ContextCompat.getColor(
+                Objects.requireNonNull(this.getContext()), R.color.divider));
+        tl_cash.addView(tv_divider);
     }
 
     private void handleIncome(CostInComeRecord record) {
-
+        String type = record.getTypeName();
+        if (type.startsWith("劳动收入")) {
+            putToWorkIncome(record, type.substring(5));
+        } else if (type.startsWith("投资收入")) {
+            putToInvestIncome(record, type.substring(5));
+        } else if (type.startsWith("投资卖出收入")) {
+            putToInvestSoldIncome(record, type.substring(7));
+        } else {
+            putToWorkIncome(record, "未知其他");
+        }
     }
 
     // 遍历列表取相应的数据，组合成map
     private void handleCost(CostInComeRecord record) {
         String type = record.getTypeName();
         if (type.startsWith("餐饮")) {
-            putToCost(record, "餐饮");
+            putToLifeCost(record, "餐饮");
         } else if (type.startsWith("交通")) {
-            putToCost(record, "交通");
+            putToLifeCost(record, "交通");
         } else if (type.equals("生活 住房")) {
-            putToCost(record, "住房");
+            putToLifeCost(record, "住房");
         } else if (type.equals("生活 服饰")) {
-            putToCost(record, "服饰");
+            putToLifeCost(record, "服饰");
         } else if (type.startsWith("教育")) {
-            putToCost(record, "教育费");
+            putToLifeCost(record, "教育费");
         } else if (type.equals("生活 娱乐")) {
-            putToCost(record, "休闲娱乐");
+            putToLifeCost(record, "休闲娱乐");
         } else if (type.equals("生活 旅游")) {
-            putToCost(record, "旅游");
+            putToLifeCost(record, "旅游");
         } else if (type.equals("生活 保险")) {
-            putToCost(record, "保险费");
+            putToLifeCost(record, "保险费");
         } else if (type.equals("生活 医疗")) {
-            putToCost(record, "医疗费");
+            putToLifeCost(record, "医疗费");
+        } else if (type.equals("投资 REITs")) {
+            putToInvestCost(record, "买入REITs");
+        } else if (type.equals("投资 逆回购")) {
+            putToInvestCost(record, "买入逆回购");
+        } else if (type.equals("投资 债券")) {
+            putToInvestCost(record, "买入债券");
+        } else if (type.equals("投资 货币基金")) {
+            putToInvestCost(record, "买入货币基金");
+        } else if (type.equals("投资 股票")) {
+            putToInvestCost(record, "买入股票");
+        } else if (type.equals("投资 基金")) {
+            putToInvestCost(record, "买入基金");
         } else {
-            putToCost(record, "其他生活支出");
+            putToLifeCost(record, "其他生活支出");
         }
     }
 
-    private void putToCost(CostInComeRecord record, String key) {
+    private void putToWorkIncome(CostInComeRecord record, String key) {
+        workIncome.put(key, setMoney(workIncome, key, record.getMoney()));
+    }
+
+    private void putToInvestIncome(CostInComeRecord record, String key) {
+        investIncome.put(key, setMoney(investCost, key, record.getMoney()));
+    }
+
+    private void putToInvestSoldIncome(CostInComeRecord record, String key) {
+        investSoldIncome.put(key, setMoney(investSoldIncome, key, record.getMoney()));
+    }
+
+    private void putToLifeCost(CostInComeRecord record, String key) {
         lifeCost.put(key, setMoney(lifeCost, key, record.getMoney()));
+    }
+
+    private void putToInvestCost(CostInComeRecord record, String key) {
+        investCost.put(key, setMoney(investCost, key, record.getMoney()));
     }
 
     private MoneyPercent setMoney(Map<String, MoneyPercent> map, String type, Float money) {

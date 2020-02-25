@@ -63,7 +63,7 @@ public class FinancialStatementActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        tv_title.setText("财务报表");
+        tv_title.setText("J财报");
 
         titles.add("资产负债表");
         titles.add("现金流量表");
