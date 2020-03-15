@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.jimo.mycost.MyApp;
 import com.jimo.mycost.MyConst;
 import com.jimo.mycost.R;
+import com.jimo.mycost.data.model.CostInComeRecord;
 import com.jimo.mycost.data.model.MonthCost;
 import com.jimo.mycost.func.cloud.AddUserInfoDialog;
 import com.jimo.mycost.func.cloud.CloudFileListDialog;
@@ -33,6 +34,7 @@ import org.xutils.x;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @ContentView(R.layout.activity_main)
@@ -44,6 +46,16 @@ public class MainActivity extends FragmentActivity {
     TextView tv_cost;
     @ViewInject(R.id.tv_month_income)
     TextView tv_income;
+    @ViewInject(R.id.tv_month_total_invest)
+    TextView tv_total_invest;
+    @ViewInject(R.id.tv_month_cost_invest)
+    TextView tv_cost_invest;
+    @ViewInject(R.id.tv_month_income_invest)
+    TextView tv_income_invest;
+    @ViewInject(R.id.tv_month_cost_life)
+    TextView tv_cost_life;
+    @ViewInject(R.id.tv_month_income_life)
+    TextView tv_income_life;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +80,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * 从数据库查出记录存在List里
      */
-    private void queryData() {
+    private void queryMonthTotalData() {
         DbManager db = MyApp.dbManager;
         //查询月记录
         int month = getMonth();
@@ -89,9 +101,52 @@ public class MainActivity extends FragmentActivity {
                 i = monthInCome.getMoney();
             }
             DecimalFormat format = new DecimalFormat("#.##");
-            tv_cost.setText("-" + format.format(c));
-            tv_income.setText("+" + format.format(i));
-            tv_total.setText(month + "月: " + format.format(i - c) + "元");
+            tv_cost.setText(String.format("-%s", format.format(c)));
+            tv_income.setText(String.format("+%s", format.format(i)));
+            tv_total.setText(String.format("%s月: %s元", month, format.format(i - c)));
+        } catch (DbException e) {
+            JimoUtil.mySnackbar(tv_income, "月记录查询出错");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 每月对生活和投资开销分别统计统计
+     */
+    private void queryMonthTypeData() {
+        DbManager db = MyApp.dbManager;
+        //查询月记录
+        int currentMonth = JimoUtil.getCurrentMonth();
+        String firstDayOfMonth = JimoUtil.getFirstDayOfMonth(currentMonth);
+        String lastDayOfMonth = JimoUtil.getLastDayOfMonth(currentMonth);
+        try {
+            List<CostInComeRecord> records = db.selector(CostInComeRecord.class).where("c_date", ">=", firstDayOfMonth)
+                    .and("c_date", "<=", lastDayOfMonth).findAll();
+            double investIncome = 0d;
+            double investCost = 0d;
+            double lifeCost = 0d;
+            double lifeIncome = 0d;
+            for (CostInComeRecord record : records) {
+                if (record.getTypeName().startsWith("投资")) {
+                    if (record.getInOut() == MyConst.COST) {
+                        investCost += record.getMoney();
+                    } else {
+                        investIncome += record.getMoney();
+                    }
+                } else {
+                    if (record.getInOut() == MyConst.COST) {
+                        lifeCost += record.getMoney();
+                    } else {
+                        lifeIncome += record.getMoney();
+                    }
+                }
+            }
+            DecimalFormat format = new DecimalFormat("#.##");
+            tv_total_invest.setText(String.format("本月：%s元", format.format(investIncome - investCost)));
+            tv_income_invest.setText(String.format("+%s", format.format(investIncome)));
+            tv_cost_invest.setText(String.format("-%s", format.format(investCost)));
+            tv_cost_life.setText(String.format("-%s", format.format(lifeCost)));
+            tv_income_life.setText(String.format("+%s", format.format(lifeIncome)));
         } catch (DbException e) {
             JimoUtil.mySnackbar(tv_income, "月记录查询出错");
             e.printStackTrace();
@@ -123,7 +178,7 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         //刷新列表
-//        queryData();
+//        queryMonthTotalData();
 //        costDayItemAdapter.notifyDataSetChanged();
     }
 
@@ -140,7 +195,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void refresh() {
-        queryData();
+        queryMonthTotalData();
+        queryMonthTypeData();
     }
 
     /**

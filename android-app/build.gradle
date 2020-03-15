@@ -3,6 +3,7 @@
 buildscript {
     repositories {
 //        jcenter()
+        //maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         google()
     }
     dependencies {
@@ -17,8 +18,8 @@ allprojects {
     repositories {
 //        jcenter()
         maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
-        google()
         maven { url "https://jitpack.io" }
+        google()
     }
 }
 
