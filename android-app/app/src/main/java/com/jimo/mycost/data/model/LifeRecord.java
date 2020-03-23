@@ -32,6 +32,17 @@ public class LifeRecord {
     private String mood;//看完的心情
     @Column(name = "spend_time")
     private String spendTime;//花的时间
+
+    @Column(name = "spend_hour")
+    private double spendHour;
+
+    // 开始看的时间
+    @Column(name = "start_time")
+    private String startTime;
+    // 看完的时间
+    @Column(name = "end_time")
+    private String endTime;
+
     @Column(name = "time")
     private String time;//看的时间
     @Column(name = "record_time")
@@ -39,7 +50,10 @@ public class LifeRecord {
     @Column(name = "user_name")
     private String userName;
 
-    public LifeRecord(String name, String theme, String type, String creators, String pubdate,
+    /**
+     * 给电影的
+     */
+/*    public LifeRecord(String name, String theme, String type, String creators, String pubdate,
                       String remark, String rating, float score, String comment,
                       String mood, String spendTime, String time) {
         this.name = name;
@@ -53,6 +67,25 @@ public class LifeRecord {
         this.comment = comment;
         this.mood = mood;
         this.spendTime = spendTime;
+        this.time = time;
+        this.recordTime = new Date();
+        this.userName = "jimo";
+    }*/
+    public LifeRecord(String name, String theme, String type, String creators, String pubdate,
+                      String remark, String rating, float score, String comment,
+                      String mood, double spendHour, String time) {
+        this.name = name;
+        this.theme = theme;
+        this.type = type;
+        this.creators = creators;
+        this.pubdate = pubdate;
+        this.remark = remark;
+        this.rating = rating;
+        this.score = score;
+        this.comment = comment;
+        this.mood = mood;
+        this.spendHour = spendHour;
+        this.startTime = time;
         this.time = time;
         this.recordTime = new Date();
         this.userName = "jimo";

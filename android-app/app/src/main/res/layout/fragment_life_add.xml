@@ -52,8 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
-                android:layout_toEndOf="@+id/tv_temp1"
                 android:layout_toStartOf="@+id/btn_search_life"
+                android:layout_toEndOf="@+id/tv_temp1"
                 android:hint=""
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15sp" />
@@ -307,8 +307,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/tv_temp10"
-                android:hint=""
+                android:inputType="numberDecimal"
+                android:text="2"
                 android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_temp11"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="小时"
                 android:textSize="15sp" />
 
         </RelativeLayout>

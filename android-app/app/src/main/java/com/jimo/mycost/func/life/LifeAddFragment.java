@@ -147,11 +147,16 @@ public class LifeAddFragment extends Fragment {
 
     @Event(R.id.btn_submit_life)
     private void submit(View view) {
-        if (FuckUtil.checkInput(getContext(), edt_author, edt_comment, edt_name, edt_pubdate, edt_remark, edt_type, edt_rating, edt_spend, edt_mood, tv_date)) {
-            final LifeRecord lifeRecord = new LifeRecord(String.valueOf(edt_name.getText()), theme, String.valueOf(edt_type.getText()),
-                    String.valueOf(edt_author.getText()), String.valueOf(edt_pubdate.getText()), String.valueOf(edt_remark.getText()),
-                    String.valueOf(edt_rating.getText()), myScore, String.valueOf(edt_comment.getText()), String.valueOf(edt_mood.getText()),
-                    String.valueOf(edt_spend.getText()), String.valueOf(tv_date.getText()));
+        if (FuckUtil.checkInput(getContext(), edt_author, edt_comment, edt_name, edt_pubdate,
+                edt_remark, edt_type, edt_rating, edt_spend, edt_mood, tv_date)) {
+
+            final LifeRecord lifeRecord = new LifeRecord(String.valueOf(edt_name.getText()), theme,
+                    String.valueOf(edt_type.getText()), String.valueOf(edt_author.getText()),
+                    String.valueOf(edt_pubdate.getText()), String.valueOf(edt_remark.getText()),
+                    String.valueOf(edt_rating.getText()), myScore, String.valueOf(edt_comment.getText()),
+                    String.valueOf(edt_mood.getText()), Double.parseDouble(String.valueOf(edt_spend.getText())),
+                    String.valueOf(tv_date.getText()));
+
             //image store
             final DbManager db = MyApp.dbManager;
             try {
