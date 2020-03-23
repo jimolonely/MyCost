@@ -13,6 +13,7 @@ import com.jimo.mycost.func.common.MyFragmentAdapter;
 import com.jimo.mycost.func.common.MyOnPageChangeListener;
 import com.jimo.mycost.func.life.LifeAddFragment;
 import com.jimo.mycost.func.life.LifeShowFragment;
+import com.jimo.mycost.func.life.LifeUpdateEndTimeFragment;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -58,9 +59,11 @@ public class LifeActivity extends AppCompatActivity {
         tv_title.setText("Life");
 
         titles.add("Add");
+        titles.add("Update");
         titles.add("Show");
 
         fragments.add(new LifeAddFragment());
+        fragments.add(new LifeUpdateEndTimeFragment());
         fragments.add(new LifeShowFragment());
 
         adapter = new MyFragmentAdapter(getSupportFragmentManager(), fragments, titles);

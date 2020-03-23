@@ -133,4 +133,20 @@ public class LifeRecord {
     public Date getRecordTime() {
         return recordTime;
     }
+
+    public double getSpendHour() {
+        return spendHour;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 }

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?><!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:padding="5dp">-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_temp1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="名字"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/input_name_life"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_toStartOf="@+id/btn_search_life"
+            android:layout_toEndOf="@+id/tv_temp1"
+            android:hint=""
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_search_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:padding="5dp"
+            android:text="搜索"
+            android:textColor="@color/icons" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_temp3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="选中："
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_life_select_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/tv_temp3"
+            android:gravity="center"
+            android:hint="选中的名字"
+            android:text="" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_temp2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="结束时间"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/input_time_life"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_toStartOf="@+id/btn_ok_life"
+            android:layout_toEndOf="@+id/tv_temp2"
+            android:gravity="center|start"
+            android:hint="点击选时间"
+            android:text=""
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_ok_life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:padding="5dp"
+            android:text="更新"
+            android:textColor="@color/icons" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_life_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
