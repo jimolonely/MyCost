@@ -23,9 +23,14 @@ import org.xutils.DbManager;
 import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +66,38 @@ public class TimeCostActivity extends AppCompatActivity {
         lv_day_cost.setAdapter(timeDayItemAdapter);
         loadSubject();
         loadTimeDayRecord();
+    }
+
+    /**
+     * 把外部存储的数据库文件覆盖内部存储
+     */
+    @Event(R.id.btn_sys_cover_db)
+    private void coverSysDb(View view) {
+        File externalFilesDir = this.getExternalFilesDir(null);
+        if (externalFilesDir == null || !externalFilesDir.exists()) {
+            externalFilesDir.mkdirs();
+        }
+        String ext = externalFilesDir.getAbsolutePath();
+        String[] files = {"mycost.db", "mycost.db-shm", "mycost.db-wal"};
+
+        try {
+            for (String file : files) {
+                String parent = this.getDatabasePath("mycost.db").getParent();
+                assert parent != null;
+                Path target = Paths.get(parent, file);
+                // 备份一下
+                Files.copy(target, Paths.get(parent, System.currentTimeMillis() + "_" + file));
+                Files.deleteIfExists(target);
+
+                Files.copy(Paths.get(ext, file), target);
+                String command = "chmod 660 " + target.toString();
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec(command);
+            }
+            JimoUtil.mySnackbar(view, "复制成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

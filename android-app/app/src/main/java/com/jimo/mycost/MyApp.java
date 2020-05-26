@@ -1,18 +1,10 @@
 package com.jimo.mycost;
 
-import android.Manifest;
-import android.app.ActivityManager;
 import android.app.Application;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.jimo.mycost.data.model.TimeCostRecord;
-
 import org.xutils.DbManager;
-import org.xutils.ex.DbException;
 import org.xutils.x;
-
-import java.io.File;
 
 /**
  * Created by root on 17-7-19.
@@ -37,8 +29,9 @@ public class MyApp extends Application {
         x.Ext.setDebug(false); //输出debug日志，开启会影响性能
         daoConfig = new DbManager.DaoConfig()
                 .setDbName("mycost.db")
-                // 不设置dbDir时, 默认存储在app的私有目录.
-                .setDbDir(new File("/mnt/sdcard"))
+                // 不设置dbDir时, 默认存储在app的私有目录. /data/user/0/com.jimo.mycost/databases
+//                .setDbDir(new File("/mnt/sdcard"))
+//                .setDbDir(new File("/storage/emulated/Android/data/com.jimo.mycost/files"))
                 .setDbVersion(5)
                 .setDbOpenListener(db -> {
                     // 开启WAL, 对写入加速提升巨大

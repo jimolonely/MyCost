@@ -125,7 +125,9 @@ public class CloudFileListDialog extends DialogFragment {
             String[] files = {"mycost.db", "mycost.db-shm", "mycost.db-wal"};
             try {
                 for (String file : files) {
-                    byte[] data = Files.readAllBytes(Paths.get("/mnt/sdcard/" + file));
+                    // String path = "/mnt/sdcard/" + file;
+                    String path = context.getDatabasePath("mycost.db").getParent() + "/" + file;
+                    byte[] data = Files.readAllBytes(Paths.get(path));
                     sardine.put(MyConst.CLOUD_DB_PATH + "/" + file, data);
                 }
             } catch (FileNotFoundException e) {

@@ -126,6 +126,9 @@ public class MainActivity extends FragmentActivity {
             double investCost = 0d;
             double lifeCost = 0d;
             double lifeIncome = 0d;
+            if (records == null) {
+                return;
+            }
             for (CostInComeRecord record : records) {
                 if (record.getTypeName().startsWith("投资")) {
                     if (record.getInOut() == MyConst.COST) {
@@ -235,9 +238,7 @@ public class MainActivity extends FragmentActivity {
                 Boolean ok = false;
                 try {
                     ok = test.execute(name, pass).get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
                 if (ok) {
